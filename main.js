@@ -9,6 +9,7 @@ const maxBuilders   = 1;
 
 module.exports.loop = function () {
 
+    console.log('GameTime: ' + Game.time);
     var priSpawn = Game.spawns['Spawn1'];
     processCreeps.checkForSpawn(priSpawn);
     processCreeps.clearMemory();
