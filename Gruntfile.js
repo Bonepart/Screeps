@@ -4,6 +4,7 @@ module.exports = function(grunt) {
     var branch = grunt.option('branch') || config.branch;
     var email = grunt.option('email') || config.email;
     var token = grunt.option('token') || config.token;
+    if(grunt.option('dev')){ branch = config.devBranch;}
 
     grunt.loadNpmTasks('grunt-screeps');
     grunt.initConfig({
