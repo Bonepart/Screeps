@@ -1,0 +1,17 @@
+{
+  "name": "screeps",
+  "description": "Screeps code",
+  "version": "1.0.0",
+  "main": "main.js",
+  "dependencies": {
+    "grunt-screeps": "^1.5.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.6.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joshua Bartz",
+  "license": "ISC"
+}
