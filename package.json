@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "main": "main.js",
   "dependencies": {
+    "@types/lodash": "^4.14.200",
+    "@types/screeps": "^3.3.5",
     "grunt-screeps": "^1.5.0"
   },
   "devDependencies": {
