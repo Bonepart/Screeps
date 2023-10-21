@@ -3,6 +3,7 @@ var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleDefender = require('role.defender');
 var processCreeps = require('process.creeps');
+var construction = require('construction');
 var config = require('config');
 
 config.memory();
