@@ -1,8 +1,10 @@
+var processRenewal = require('process.renewal');
+
 var roleMaintenance = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        if(processRenewal.renew(creep)){ return };
+        //if(processRenewal.renew(creep)){ return };
         if(creep.memory.repairing && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.repairing = false;
             creep.say('🔄 harvest');
@@ -13,7 +15,7 @@ var roleMaintenance = {
 	    }
 
         if(creep.memory.repairing) {
-            var targets = creep.room.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.hits < structure.hitsMax }});
+            var targets = creep.room.find(FIND_STRUCTURES, { filter: (structure) => { return structure.hits < structure.hitsMax }});
             if(targets.length > 0) {
                 if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
@@ -32,7 +34,12 @@ var roleMaintenance = {
                     }
                 }
             }
-        }
+        } else {
+	        var sources = creep.room.find(FIND_SOURCES);
+            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+	    }
     }
 }
 module.exports = roleMaintenance;

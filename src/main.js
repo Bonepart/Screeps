@@ -1,6 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var roleMaint = require('role.maint');
 var roleDefender = require('role.defender');
 var processCreeps = require('process.creeps');
 var construction = require('construction');
@@ -52,6 +53,9 @@ module.exports.loop = function () {
                 break;
             case 'builder':
                 roleBuilder.run(creep);
+                break;
+            case 'maintenance':
+                roleMaint.run(creep);
                 break;
             case 'defender':
                 roleDefender.run(creep);
