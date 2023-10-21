@@ -4,7 +4,7 @@ var config = {
             Memory.maxHarvesters = 2;
         }
         if(!Memory.maxBuilders){
-            Memory.maxBuilders = 0;
+            Memory.maxBuilders = 1;
         }
         if(!Memory.maxUpgraders){
             Memory.maxUpgraders = 1;
@@ -27,17 +27,21 @@ var config = {
         }
     },
     sourceData: function(){
-        let sData = {}
-        var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
-        for (let source in sources){
-            let newData = {};
-            newData.id = sources[source].id;
-            newData.openSpaces = openSpaces(sources[source].room, sources[source].pos);
-            //newData.harvesterList = [];
-
-            sData[sources[source].id] = newData;
+        if (!Memory.sourceList || Memory.sourceList.length == 0){
+            console.log('Building sourceList');
+            let sData = [];
+            var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+            for (let source in sources){
+                let newData = {};
+                newData.id = sources[source].id;
+                newData.openSpaces = openSpaces(sources[source].room, sources[source].pos);
+                newData.roadStatus = 0;
+                //newData.harvesterList = [];
+    
+                sData.push(newData);
+            }
+            Memory.sourceList = sData;
         }
-        return sData;
     }
 };
 module.exports = config;

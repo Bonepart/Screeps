@@ -1,7 +1,6 @@
 var processRenewal = require('process.renewal');
 
 var roleBuilder = {
-    bodyT1: [WORK, CARRY, MOVE, MOVE], //Cost 250
 
     /** @param {Creep} creep **/
     run: function(creep) {

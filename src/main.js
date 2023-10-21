@@ -7,15 +7,17 @@ var construction = require('construction');
 var config = require('config');
 
 config.memory();
-//var sourceData = config.sourceData();
-/*
-console.log('Start Source Data...');
-for (let source in sourceData){
-    console.log(sourceData[source].id);
-    console.log(sourceData[source].openSpaces);
+config.sourceData();
+
+/*console.log('Start Source Data...');
+for (let i in Memory.sourceList){
+    console.log(`Index: ${i}`);
+    console.log(`ID: ${Memory.sourceList[i].id}`);
+    console.log(`openSpaces: ${Memory.sourceList[i].openSpaces}`);
+    console.log(`roadStatus: ${Memory.sourceList[i].roadStatus}`);
 }
-console.log('...finished');
-*/
+console.log('...finished');*/
+
 function isAvailable(index){
     return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
 }
@@ -31,7 +33,9 @@ module.exports.loop = function () {
         //console.log('Spawn Name:' + Game.spawns[i].name);
         //console.log('isAvailable: ' + isAvailable(i));
         processCreeps.checkForSpawn(i);
+        if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){construction.buildSourceRoads(i)};
     }
+    
     
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
