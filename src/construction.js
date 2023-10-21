@@ -98,21 +98,19 @@ var construction = {
         let maxEx = helper.possibleExtensions(spawner.room.controller.level);
         if (maxEx > helper.maxKnownExSites) {maxEx = helper.maxKnownExSites};
         //console.log(`maxEx = ${maxEx}`);
-        if (maxEx > 0) {
+        if (maxEx > 0 && Memory.sourceList[0].roadStatus >= 2) {
             let numUnderConstruction = spawner.room.find(FIND_CONSTRUCTION_SITES, { filter: (conSite) => {return conSite.structureType == STRUCTURE_EXTENSION}}).length;
             //console.log(`numUnderConstruction = ${numUnderConstruction}`);
             let numBuilt = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_EXTENSION}}).length;
             //console.log(`numBuilt = ${numBuilt}`);
-            let possibleSites = helper.getPossibleExtensionSites(spawnIndex);
-            //console.log(`possibleSites = ${possibleSites}`);
-            for (let i = numUnderConstruction + numBuilt; i < maxEx; i++){
-                console.log(`Construction Loop Index = ${i}`);
-                let foundSite = false;
-                while(!foundSite){
-                    if (spawner.room.lookForAt(LOOK_STRUCTURES, possibleSites[0]).length > 0){ possibleSites.shift()}
-                    else {
-                        spawner.room.createConstructionSite(possibleSites.shift(), STRUCTURE_EXTENSION);
-                        foundSite = true;
+            if (numUnderConstruction == 0 && numBuilt < maxEx){
+                let possibleSites = helper.getPossibleExtensionSites(spawnIndex);
+                //console.log(`possibleSites = ${possibleSites}`);
+                for (let i in possibleSites){
+                    if (spawner.room.lookForAt(LOOK_STRUCTURES, possibleSites[i]).length == 0){
+                        let result = spawner.room.createConstructionSite(possibleSites[i], STRUCTURE_EXTENSION);
+                        if (result == 0){ console.log(`Created Extension construction site at Pos(X:${possibleSites[i].x}, Y:${possibleSites[i].y})`)}
+                        else { console.log(`Create Construction Site Failed: ${result}`) }
                     }
                 }
             }
