@@ -1,7 +1,10 @@
+var processRenewal = require('process.renewal');
+
 var roleDefender = {
 
     /** @param {Creep} creep **/
     run: function(creep){
+        if(processRenewal.renew(creep)){ return };
         var dFlag = creep.room.find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Defenders"}});
         var targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {
             return hostile.owner.username != "Source Keeper";

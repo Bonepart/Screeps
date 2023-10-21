@@ -26,14 +26,21 @@ var config = {
             Memory.defenderIndex = 1;
         }
     },
-    sourceData: function(sData){
-        var sources = creep.room.find(FIND_SOURCES);
+    sourceData: function(){
+        let sData = {}
+        var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+        console.log(sources);
         for (let source in sources){
-            let id = source.id;
-            newData = {};
-            newData.openSpaces = openSpaces(source.room, source.pos);
+            let sourceObject = Game.getObjectById(source.id);
+            console.log(sourceObject.room);
+            let newData = {};
+            //newData.id = sourceObject.id;
+            newData.openSpaces = openSpaces(sourceObject.room, sourceObject.pos);
+            //newData.harvesterList = [];
 
+            sData[source.id] = newData;
         }
+        return sData;
     }
 };
 module.exports = config;

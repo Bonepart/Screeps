@@ -6,6 +6,13 @@ var processCreeps = require('process.creeps');
 var config = require('config');
 
 config.memory();
+//var sourceData = config.sourceData();
+
+//for (let source in sourceData){
+    //console.log(source);
+    //console.log(source.openSpaces);
+//}
+
 
 function isAvailable(index){
     return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
@@ -14,8 +21,8 @@ function isAvailable(index){
 module.exports.loop = function () {
     processCreeps.clearMemory();
 
-    let exCount = (_.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_EXTENSION)).length;
-    const maxEnergy = 300 + exCount * 50;
+    //let exCount = (_.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_EXTENSION)).length;
+    //const maxEnergy = 300 + exCount * 50;
 
 
     for (let i in Game.spawns){

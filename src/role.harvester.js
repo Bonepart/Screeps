@@ -1,7 +1,10 @@
+var processRenewal = require('process.renewal');
+
 var roleHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+        if(processRenewal.renew(creep)){ return };
 	    if(creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
             var sources = creep.room.find(FIND_SOURCES_ACTIVE);
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
