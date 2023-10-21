@@ -6,6 +6,9 @@ var config = {
         if(!Memory.maxBuilders){
             Memory.maxBuilders = 4;
         }
+        if(!Memory.maxMaint){
+            Memory.maxMaint = 0;
+        }
         if(!Memory.maxUpgraders){
             Memory.maxUpgraders = 1;
         }
@@ -18,6 +21,9 @@ var config = {
         }
         if(!Memory.builderIndex){
             Memory.builderIndex = 1;
+        }
+        if(!Memory.maintIndex){
+            Memory.maintIndex = 1;
         }
         if(!Memory.upgraderIndex){
             Memory.upgraderIndex = 1;
