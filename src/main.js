@@ -7,13 +7,14 @@ var config = require('config');
 
 config.memory();
 //var sourceData = config.sourceData();
-
-//for (let source in sourceData){
-    //console.log(source);
-    //console.log(source.openSpaces);
-//}
-
-
+/*
+console.log('Start Source Data...');
+for (let source in sourceData){
+    console.log(sourceData[source].id);
+    console.log(sourceData[source].openSpaces);
+}
+console.log('...finished');
+*/
 function isAvailable(index){
     return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
 }

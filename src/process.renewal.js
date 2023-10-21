@@ -19,6 +19,8 @@ var processRenewal = {
             if (spawner.length > 0){
                 let result = spawner[0].renewCreep(creep);
                 switch(result){
+                    case OK:
+                        break;
                     case ERR_NOT_IN_RANGE:
                         creep.moveTo(spawner[0], {visualizePathStyle: {stroke: '#ffffff'}});
                         break;
