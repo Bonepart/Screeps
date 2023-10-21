@@ -55,7 +55,8 @@ var construction = {
     },
 
     buildSourceRoads: function (spawnIndex) {
-        var numConstructionSites = Game.spawns[spawnIndex].room.find(FIND_CONSTRUCTION_SITES).length;
+        let spawner = Game.spawns[spawnIndex];
+        var numConstructionSites = spawner.room.find(FIND_CONSTRUCTION_SITES).length;
         //console.log("Running sourceList for roads...");
         for (let i in Memory.sourceList){
             //console.log(`--${Memory.sourceList[i].id}`);
@@ -66,7 +67,7 @@ var construction = {
                     if (numConstructionSites == 0){
                         //console.log('----Building Roads');
                         let source = Game.getObjectById(Memory.sourceList[i].id);
-                        let roadPath = calcPath(spawnIndex, {pos: source.pos, range: 1});
+                        let roadPath = helper.calcPathForRoad(spawner.pos, {pos: source.pos, range: 1});
                         //let str = JSON.stringify(roadPath, null, 4);
                         //console.log(`roadPath: ${str}`);
                         if (roadPath.incomplete){ 
@@ -123,7 +124,3 @@ var construction = {
     }
 }
 module.exports = construction;
-
-function calcPath(spawnIndex, goal){
-    return PathFinder.search(Game.spawns[spawnIndex].pos, goal);
-}
