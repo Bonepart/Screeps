@@ -4,7 +4,7 @@ var roleMaintenance = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        //if(processRenewal.renew(creep)){ return };
+        if(processRenewal.renew(creep)){ return };
         if(creep.memory.repairing && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.repairing = false;
             creep.say('🔄 harvest');
