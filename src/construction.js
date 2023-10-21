@@ -109,7 +109,10 @@ var construction = {
                 for (let i in possibleSites){
                     if (spawner.room.lookForAt(LOOK_STRUCTURES, possibleSites[i]).length == 0){
                         let result = spawner.room.createConstructionSite(possibleSites[i], STRUCTURE_EXTENSION);
-                        if (result == 0){ console.log(`Created Extension construction site at Pos(X:${possibleSites[i].x}, Y:${possibleSites[i].y})`)}
+                        if (result == 0){ 
+                            console.log(`Created Extension construction site at Pos(X:${possibleSites[i].x}, Y:${possibleSites[i].y})`);
+                            return;
+                        }
                         else { console.log(`Create Construction Site Failed: ${result}`) }
                     }
                 }
