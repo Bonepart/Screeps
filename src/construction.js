@@ -6,11 +6,15 @@ var construction = {
                 case 0:
                     if (numConstructionSites == 0){
                         let source = Game.getObjectById(Memory.sourceList[i].id);
-                        let roadPath = calcPath(spawnIndex, {pos: source.pos});
-                        for (let i = 0; i < roadPath.ops; i++){
+                        let roadPath = calcPath(spawnIndex, {pos: source.pos, range: 1});
+                        //let str = JSON.stringify(roadPath, null, 4);
+                        //console.log(`roadPath: ${str}`);
+                        if (roadPath.incomplete){ return };
+                        for (let i = 0; i <= roadPath.ops; i++){
                             let result = Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[i], STRUCTURE_ROAD);
-                            console.log(`Creating Road Site at ${roadPath.path[i]}`);
-                            console.log(`Response: ${result}`);
+                            //console.log(`Creating Road Site at ${roadPath.path[i]}`);
+                            //console.log(`Response: ${result}`);
+                            if (result != 0){ return };
                         }
                         Memory.sourceList[i].roadStatus = 1;
                     }

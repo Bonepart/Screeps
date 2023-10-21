@@ -4,7 +4,7 @@ var config = {
             Memory.maxHarvesters = 2;
         }
         if(!Memory.maxBuilders){
-            Memory.maxBuilders = 1;
+            Memory.maxBuilders = 4;
         }
         if(!Memory.maxUpgraders){
             Memory.maxUpgraders = 1;
@@ -48,14 +48,40 @@ module.exports = config;
 
 function openSpaces(room, position){
     let count = 0;
+    let data = [];
     let terrain = Game.map.getRoomTerrain(room.name);
-    if (terrain.get(position.x, position.y-1) == 0){ count++ };
-    if (terrain.get(position.x+1, position.y-1) == 0){ count++ };
-    if (terrain.get(position.x+1, position.y) == 0){ count++ };
-    if (terrain.get(position.x+1, position.y+1) == 0){ count++ };
-    if (terrain.get(position.x, position.y+1) == 0){ count++ };
-    if (terrain.get(position.x-1, position.y+1) == 0){ count++ };
-    if (terrain.get(position.x-1, position.y) == 0){ count++ };
-    if (terrain.get(position.x-1, position.y-1) == 0){ count++ };
-    return count;
+    if (terrain.get(position.x, position.y-1) == 0){ 
+        count++;
+        data.push({x: position.x, y: position.y});
+    };
+    if (terrain.get(position.x+1, position.y-1) == 0){ 
+        count++;
+        data.push({x: position.x+1, y: position.y-1});
+    };
+    if (terrain.get(position.x+1, position.y) == 0){ 
+        count++;
+        data.push({x: position.x+1, y: position.y});
+    };
+    if (terrain.get(position.x+1, position.y+1) == 0){ 
+        count++;
+        data.push({x: position.x+1, y: position.y+1});
+    };
+    if (terrain.get(position.x, position.y+1) == 0){ 
+        count++;
+        data.push({x: position.x, y: position.y+1});
+    };
+    if (terrain.get(position.x-1, position.y+1) == 0){ 
+        count++;
+        data.push({x: position.x-1, y: position.y+1});
+    };
+    if (terrain.get(position.x-1, position.y) == 0){ 
+        count++;
+        data.push({x: position.x-1, y: position.y});
+    };
+    if (terrain.get(position.x-1, position.y-1) == 0){ 
+        count++;
+        data.push({x: position.x-1, y: position.y-1});
+    };
+    data.unshift(count);
+    return data;
 }
