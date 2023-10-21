@@ -1,6 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var roleDefender = require('role.defender');
 var processCreeps = require('process.creeps');
 var config = require('config');
 
@@ -13,6 +14,8 @@ function isAvailable(index){
 module.exports.loop = function () {
     processCreeps.clearMemory();
 
+    let exCount = (_.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_EXTENSION)).length;
+    const maxEnergy = 300 + exCount * 50;
 
 
     for (let i in Game.spawns){
@@ -32,6 +35,9 @@ module.exports.loop = function () {
                 break;
             case 'builder':
                 roleBuilder.run(creep);
+                break;
+            case 'defender':
+                roleDefender.run(creep);
                 break;
         }
     }

@@ -1,13 +1,14 @@
 var roleBuilder = {
+    bodyT1: [WORK, CARRY, MOVE, MOVE], //Cost 250
 
     /** @param {Creep} creep **/
     run: function(creep) {
 
-	    if(creep.memory.building && creep.carry.energy == 0) {
+	    if(creep.memory.building && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.building = false;
             creep.say('🔄 harvest');
 	    }
-	    if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
+	    if(!creep.memory.building && creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
 	        creep.memory.building = true;
 	        creep.say('🚧 build');
 	    }
@@ -23,7 +24,7 @@ var roleBuilder = {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
                                 structure.structureType == STRUCTURE_SPAWN ||
-                                structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
+                                structure.structureType == STRUCTURE_TOWER) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                     }
                 });
                 if(targets.length > 0) {
