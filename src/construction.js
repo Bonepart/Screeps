@@ -1,4 +1,17 @@
+var helper = require('helper');
+
 var construction = {
+
+    checkSpawnRoads: function (spawnIndex) {
+        if (!Memory.spawns[spawnIndex]?.hasRoads){
+            let result = Game.spawns[spawnIndex].room.lookAt(Game.spawns[spawnIndex].pos.x, Game.spawns[spawnIndex].pos.y-1);
+            console.log('Printing results:');
+            helper.stringifyToLog(result);
+            Memory.spawns[spawnIndex].hasRoads = true;
+        }
+
+    },
+
     buildSourceRoads: function (spawnIndex) {
         var numConstructionSites = Game.spawns[spawnIndex].room.find(FIND_CONSTRUCTION_SITES).length;
         for (let i in Memory.sourceList){
@@ -25,6 +38,10 @@ var construction = {
                     break;
             }
         }
+    },
+
+    getOpenSourcePoints: function (sourceID) {
+        let source = Game.getObjectById(sourceID);
     }
 }
 module.exports = construction;

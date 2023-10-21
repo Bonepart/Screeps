@@ -30,10 +30,14 @@ module.exports.loop = function () {
 
 
     for (let i in Game.spawns){
+        if (!Memory.spawns[i]) { Memory.spawns[i] = {} }
         //console.log('Spawn Name:' + Game.spawns[i].name);
         //console.log('isAvailable: ' + isAvailable(i));
         processCreeps.checkForSpawn(i);
-        if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){construction.buildSourceRoads(i)};
+        if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){
+            construction.checkSpawnRoads(i);
+            construction.buildSourceRoads(i);
+        };
     }
     
     
