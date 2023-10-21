@@ -17,9 +17,14 @@ var roleMaintenance = {
 
         if(creep.memory.repairing) {
             var targets = creep.room.find(FIND_STRUCTURES, { filter: (structure) => { return structure.hits < structure.hitsMax }});
+            var buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
             if(targets.length > 0) {
                 if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            } else if (buildables.length > 0) {
+                if (creep.build(buildables[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(buildables[0], {visualizePathStyle: {stroke: '#0000aa'}});
                 }
             } else {
                 targets = creep.room.find(FIND_STRUCTURES, {

@@ -3,12 +3,12 @@ var processRenewal = {
     /** @param {Creep} creep **/
     renew: function(creep){
         
-        if (creep.ticksToLive < 100 && !creep.memory.renewing){
+        if (creep.memory.tier > 1 && creep.ticksToLive < 100 && !creep.memory.renewing){
             creep.memory.renewing = true;
-            console.log(`Creep ${creep.name} Renew = ${creep.memory.renewing}`);
+            console.log(`Creep ${creep.name} returning to spawn to renew (${creep.ticksToLive})`);
         } else if (creep.memory.renewing && creep.ticksToLive > 1200){
             creep.memory.renewing = false;
-            console.log(`Creep ${creep.name} Renew = ${creep.memory.renewing}`);
+            console.log(`Creep ${creep.name} renewed! (${creep.ticksToLive})`);
         }
         if (creep.memory.renewing){
             let spawner = creep.room.find(FIND_STRUCTURES, {
@@ -22,7 +22,7 @@ var processRenewal = {
                     case OK:
                         break;
                     case ERR_NOT_IN_RANGE:
-                        creep.moveTo(spawner[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                        creep.moveTo(spawner[0], {visualizePathStyle: {stroke: '#000000'}});
                         break;
                     case ERR_NOT_ENOUGH_ENERGY:
                         creep.memory.renewing = false;

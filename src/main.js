@@ -35,8 +35,8 @@ module.exports.loop = function () {
         if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){
             if (Memory.spawns[i].hasRoads == 0) {construction.checkSpawnRoads(i)}
             else { 
-                construction.buildSourceRoads(i);
                 construction.checkExtensions(i);
+                construction.buildSourceRoads(i);
             }
         };
     }
