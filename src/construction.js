@@ -96,12 +96,12 @@ var construction = {
         let spawner = Game.spawns[spawnIndex];
         let maxEx = helper.possibleExtensions(spawner.room.controller.level);
         if (maxEx > helper.maxKnownExSites) {maxEx = helper.maxKnownExSites};
-        console.log(`maxEx = ${maxEx}`);
+        //console.log(`maxEx = ${maxEx}`);
         if (maxEx > 0) {
             let numUnderConstruction = spawner.room.find(FIND_CONSTRUCTION_SITES, { filter: (conSite) => {return conSite.structureType == STRUCTURE_EXTENSION}}).length;
-            console.log(`numUnderConstruction = ${numUnderConstruction}`);
+            //console.log(`numUnderConstruction = ${numUnderConstruction}`);
             let numBuilt = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_EXTENSION}}).length;
-            console.log(`numBuilt = ${numBuilt}`);
+            //console.log(`numBuilt = ${numBuilt}`);
             let possibleSites = helper.getPossibleExtensionSites(spawnIndex);
             //console.log(`possibleSites = ${possibleSites}`);
             for (let i = numUnderConstruction + numBuilt; i < maxEx; i++){

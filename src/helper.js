@@ -45,6 +45,25 @@ var helper = {
         siteList.push(new RoomPosition(spawner.pos.x, spawner.pos.y+3, spawner.room.name));
 
         return siteList;
+    },
+
+    calcPathForRoad: function (pos, goal){
+        return PathFinder.search(pos, goal, { plainCost: 2, swampCost: 10,        
+            roomCallback: function(roomName) {
+                let room = Game.rooms[roomName];
+                if (!room) return;
+                let costs = new PathFinder.CostMatrix;
+        
+                room.find(FIND_STRUCTURES).forEach(function(struct) {
+                    if (struct.structureType === STRUCTURE_ROAD) {costs.set(struct.pos.x, struct.pos.y, 1)}
+                    else if (struct.structureType !== STRUCTURE_CONTAINER && (struct.structureType !== STRUCTURE_RAMPART || !struct.my)) {
+                        // Can't walk through non-walkable buildings
+                        costs.set(struct.pos.x, struct.pos.y, 0xff);
+                    }
+                });       
+                return costs;
+            },
+        });
     }
 }
 module.exports = helper;
