@@ -44,8 +44,6 @@ var helper = {
         siteList.push(new RoomPosition(spawner.pos.x-1, spawner.pos.y-3, spawner.room.name));
         siteList.push(new RoomPosition(spawner.pos.x+1, spawner.pos.y-3, spawner.room.name));
 
-
-
         return siteList;
     },
 
@@ -78,6 +76,12 @@ var helper = {
                 return costs;
             },
         });
+    },
+
+    findClosestSource: function (pos){
+        return pos.findClosestByPath(FIND_SOURCES_ACTIVE, {filter: (source) => {
+            return !Memory.keeperLair.threatActive || (Memory.keeperLair.threatActive && source.id != Memory.keeperLair.sourceID);
+        }});
     }
 }
 module.exports = helper;

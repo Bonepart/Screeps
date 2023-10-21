@@ -4,11 +4,14 @@ var roleBuilder = require('role.builder');
 var roleMaint = require('role.maint');
 var roleDefender = require('role.defender');
 var processCreeps = require('process.creeps');
+var processDefense = require('process.defense');
 var construction = require('construction');
 var config = require('config');
 
 config.memory();
 config.sourceData();
+
+
 
 /*console.log('Start Source Data...');
 for (let i in Memory.sourceList){
@@ -19,19 +22,13 @@ for (let i in Memory.sourceList){
 }
 console.log('...finished');*/
 
-function isAvailable(index){
-    return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
-}
-
 module.exports.loop = function () {
+    //Game.functions = require('process.defense');
     processCreeps.clearMemory();
-
-    //let exCount = (_.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_EXTENSION)).length;
-    //const maxEnergy = 300 + exCount * 50;
-
 
     for (let i in Game.spawns){
         if (!Memory.spawns[i]) { Memory.spawns[i] = { hasRoads: 0} }
+        processDefense.checkForKeeperLair(Game.spawns[i].room.name);
         //console.log('Spawn Name:' + Game.spawns[i].name);
         //console.log('isAvailable: ' + isAvailable(i));
         processCreeps.checkForSpawn(i);
@@ -65,5 +62,8 @@ module.exports.loop = function () {
                 break;
         }
     }
-
 };
+
+function isAvailable(index){
+    return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
+}
