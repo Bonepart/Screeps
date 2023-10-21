@@ -34,15 +34,29 @@ var helper = {
         let siteList = [];
         siteList.push(new RoomPosition(spawner.pos.x-2, spawner.pos.y-3, spawner.room.name));
         siteList.push(new RoomPosition(spawner.pos.x+2, spawner.pos.y-3, spawner.room.name));
-        siteList.push(new RoomPosition(spawner.pos.x-2, spawner.pos.y+3, spawner.room.name));
-        siteList.push(new RoomPosition(spawner.pos.x+2, spawner.pos.y+3, spawner.room.name));
         siteList.push(new RoomPosition(spawner.pos.x+3, spawner.pos.y-2, spawner.room.name));
-
         siteList.push(new RoomPosition(spawner.pos.x+3, spawner.pos.y+2, spawner.room.name));
-        siteList.push(new RoomPosition(spawner.pos.x-3, spawner.pos.y-2, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x+2, spawner.pos.y+3, spawner.room.name));
+
+        siteList.push(new RoomPosition(spawner.pos.x-2, spawner.pos.y+3, spawner.room.name));
         siteList.push(new RoomPosition(spawner.pos.x-3, spawner.pos.y+2, spawner.room.name));
-        siteList.push(new RoomPosition(spawner.pos.x, spawner.pos.y-3, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x-3, spawner.pos.y-2, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x-1, spawner.pos.y-3, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x+1, spawner.pos.y-3, spawner.room.name));
+
+
+
+        return siteList;
+    },
+
+    maxKnownConSites: 4,
+    getPossibleContainerSites: function (spawnIndex) {
+        let spawner = Game.spawns[spawnIndex];
+        let siteList = [];
+        siteList.push(new RoomPosition(spawner.pos.x+3, spawner.pos.y, spawner.room.name));
         siteList.push(new RoomPosition(spawner.pos.x, spawner.pos.y+3, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x-3, spawner.pos.y, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x, spawner.pos.y-3, spawner.room.name));
 
         return siteList;
     },
