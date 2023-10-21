@@ -4,12 +4,29 @@ var construction = {
 
     checkSpawnRoads: function (spawnIndex) {
         if (!Memory.spawns[spawnIndex]?.hasRoads){
-            let result = Game.spawns[spawnIndex].room.lookAt(Game.spawns[spawnIndex].pos.x, Game.spawns[spawnIndex].pos.y-1);
-            console.log('Printing results:');
-            helper.stringifyToLog(result);
+            this.buildSpawnRoads(spawnIndex);
+            //let result = Game.spawns[spawnIndex].room.lookForAt(LOOK_STRUCTURES, Game.spawns[spawnIndex].pos.x+1, Game.spawns[spawnIndex].pos.y-1).length;
+            //if (result > 0) 
             Memory.spawns[spawnIndex].hasRoads = true;
         }
 
+    },
+
+    buildSpawnRoads: function (spawnIndex) {
+        let spawner = Game.spawns[spawnIndex];
+        spawner.room.createConstructionSite(spawner.pos.x, spawner.pos.y-1, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x+1, spawner.pos.y-1, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x+1, spawner.pos.y, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x+1, spawner.pos.y+1, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x, spawner.pos.y+1, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x-1, spawner.pos.y+1, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x-1, spawner.pos.y, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x-1, spawner.pos.y-1, STRUCTURE_ROAD);
+
+        spawner.room.createConstructionSite(spawner.pos.x+2, spawner.pos.y-2, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x+2, spawner.pos.y+2, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x-2, spawner.pos.y-2, STRUCTURE_ROAD);
+        spawner.room.createConstructionSite(spawner.pos.x-2, spawner.pos.y+2, STRUCTURE_ROAD);
     },
 
     buildSourceRoads: function (spawnIndex) {

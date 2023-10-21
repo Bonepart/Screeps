@@ -3,7 +3,7 @@ var processRenewal = {
     /** @param {Creep} creep **/
     renew: function(creep){
         
-        if (creep.ticksToLive < 200 && !creep.memory.renewing){
+        if (creep.ticksToLive < 100 && !creep.memory.renewing){
             creep.memory.renewing = true;
             console.log(`Creep ${creep.name} Renew = ${creep.memory.renewing}`);
         } else if (creep.memory.renewing && creep.ticksToLive > 1200){
@@ -23,6 +23,9 @@ var processRenewal = {
                         break;
                     case ERR_NOT_IN_RANGE:
                         creep.moveTo(spawner[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                        break;
+                    case ERR_NOT_ENOUGH_ENERGY:
+                        creep.memory.renewing = false;
                         break;
                     default:
                         console.log(`renewCreep Failed: ${creep.name}  ${result}`);
