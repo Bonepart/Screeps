@@ -1,4 +1,5 @@
 var construction = require('construction');
+var helper = require('helper');
 
 var consoleCommands = {
     displayTickLimit: function() {
@@ -63,7 +64,7 @@ var consoleCommands = {
     },
 
     buildRoad: function(flagStart, flagEnd){
-        construction.buildRoad(flagStart, flagEnd);
+        return construction.buildRoad(Game.flags[flagStart].pos, Game.flags[flagEnd].pos);
     },
 
     zombie: function(creepName) {

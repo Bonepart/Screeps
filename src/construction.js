@@ -67,7 +67,7 @@ var construction = {
                             console.log('------Unable to find path');
                             return;
                         };
-                        for (let j = 0; j <= roadPath.ops; j++){
+                        for (let j = 0; j < roadPath.ops; j++){
                             let result = Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
                         }
                         Memory.sourceList[i].roadStatus = 1;
@@ -130,9 +130,12 @@ var construction = {
         if (roadPath.incomplete){ 
             return 'Error: Unable to find path';
         };
-        for (let j = 0; j <= roadPath.ops; j++){
-            startPos.room.createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
+        let count = 0;
+        for (let j = 0; j < roadPath.ops; j++){
+            let result = Game.rooms[roadPath.path[j].roomName].createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
+            if (result == OK){ count++ }
         }
+        return `Created ${count} roads out of ${roadPath.ops}`;
     },
 
     checkExtensions: function (spawnIndex) {
