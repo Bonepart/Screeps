@@ -33,6 +33,33 @@ var consoleCommands = {
         }
     },
 
+    changeMax: function(role, newMax) {
+        switch(role){
+            case 'harvester':
+                Memory.maxHarvesters = newMax;
+                break;
+            case 'builder':
+                Memory.maxBuilders = newMax;
+                break;
+            case 'upgrader':
+                Memory.maxUpgraders = newMax;
+                break;
+            case 'maintenance':
+            case 'maint':
+                Memory.maxMaint = newMax;
+                break;
+            case 'defender':
+                Memory.maxDefenders = newMax;
+                break;
+            case 'ranged':
+                Memory.maxRanged = newMax;
+                break;
+            case 'healer':
+                Memory.maxHealers = newMax;
+                break;
+        }
+    },
+
     zombie: function(creepName) {
         Game.creeps[creepName].memory.role = "zombie";
     }    
