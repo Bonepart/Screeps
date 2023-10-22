@@ -27,6 +27,7 @@ module.exports.loop = function () {
     processCreeps.clearMemory();
 
     for (let i in Game.spawns){
+        if (!Memory.spawns) { Memory.spawns = {}};
         if (!Memory.spawns[i]) { Memory.spawns[i] = { hasRoads: 0} }
         processDefense.checkForKeeperLair(Game.spawns[i].room.name);
         //console.log('Spawn Name:' + Game.spawns[i].name);

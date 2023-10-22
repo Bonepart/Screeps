@@ -3,6 +3,7 @@ var helper = require('helper');
 //Defensive Functions
 var processDefense = {
     checkForKeeperLair: function(roomName){
+        if (Memory.keeperLair == -1) { return };
         let room = Game.rooms[roomName];
         if (!Memory.keeperLair){
             let keeperLair = room.find(FIND_HOSTILE_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_KEEPER_LAIR}});
@@ -17,7 +18,7 @@ var processDefense = {
                         closestRange = range;
                     }
                 }
-            }
+            } else {Memory.keeperLair = -1}
         }
 
         let hostiles = room.find(FIND_HOSTILE_CREEPS);
