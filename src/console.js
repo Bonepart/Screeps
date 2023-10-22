@@ -27,8 +27,14 @@ var consoleCommands = {
         else { Memory.repairPersistance = true }
     },
 
+    healthCheck: function() {
+        for (let creep in Game.creeps){
+            console.log(`${creep}:\t\t${Game.creeps[creep].hits}/${Game.creeps[creep].hitsMax}`);
+        }
+    },
+
     zombie: function(creepName) {
         Game.creeps[creepName].memory.role = "zombie";
-    }
+    }    
 }
 module.exports = consoleCommands;
