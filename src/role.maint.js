@@ -4,7 +4,7 @@ var helper = require('helper');
 var roleMaintenance = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, offset) {
         if(processRenewal.renew(creep)){ return };
         if(creep.memory.repairing && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.repairing = false;
@@ -19,16 +19,23 @@ var roleMaintenance = {
         if(creep.memory.repairing) {
             if (creep.memory.repairID == null){
                 var pendingRepairs = _.sortBy(creep.room.find(FIND_STRUCTURES, { filter: (structure) => { return structure.hits < structure.hitsMax }}), (struct) => struct.hits);
-                if(pendingRepairs.length > 0) { creep.memory.repairID = pendingRepairs[0].id }
+                if(pendingRepairs.length > offset) { creep.memory.repairID = pendingRepairs[offset].id }
+                else if (pendingRepairs.length > 0) { creep.memory.repairID = pendingRepairs[0].id }
             } 
             if (creep.memory.repairID != null) {
                 let repairTarget = Game.getObjectById(creep.memory.repairID);
+                if (repairTarget == null) { 
+                    creep.memory.repairID = null;
+                    console.log(`${creep.name} => Error, repairID = null`);
+                    return;
+                }
                 if (repairTarget.hits == repairTarget.hitsMax) { creep.memory.repairID = null }
                 else {
                     if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
                     }
                 }
+                if (!Memory.repairPersistance) { creep.memory.repairID = null }
             } else {
                 var buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
                 if (buildables.length > 0) {

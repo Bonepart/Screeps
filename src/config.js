@@ -31,6 +31,7 @@ var config = {
         if(!Memory.defenderIndex){
             Memory.defenderIndex = 1;
         }
+        if(!Memory.repairPersistance) { Memory.repairPersistance = false }
     },
     sourceData: function(){
         if (!Memory.sourceList || Memory.sourceList.length == 0){

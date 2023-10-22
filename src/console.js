@@ -20,6 +20,11 @@ var consoleCommands = {
             console.log(`${Game.creeps[i].name}`);
             console.log(`--Body Size: ${Game.creeps[i].body.length}`);
         }
+    },
+
+    toggleRP: function() {
+        if (Memory.repairPersistance) { Memory.repairPersistance = false }
+        else { Memory.repairPersistance = true }
     }
 }
 module.exports = consoleCommands;
