@@ -5,8 +5,6 @@ var construction = {
     checkSpawnRoads: function (spawnIndex) {
         if (Memory.spawns[spawnIndex].hasRoads != -1){
             this.buildSpawnRoads(spawnIndex, Memory.spawns[spawnIndex].hasRoads);
-            //let result = Game.spawns[spawnIndex].room.lookForAt(LOOK_STRUCTURES, Game.spawns[spawnIndex].pos.x+1, Game.spawns[spawnIndex].pos.y-1).length;
-            //if (result > 0) 
             Memory.spawns[spawnIndex].hasRoads++;
         }
     },
@@ -57,38 +55,45 @@ var construction = {
     buildSourceRoads: function (spawnIndex) {
         let spawner = Game.spawns[spawnIndex];
         var numConstructionSites = spawner.room.find(FIND_CONSTRUCTION_SITES).length;
-        //console.log("Running sourceList for roads...");
+        //console.log(`numConstructionSites = ${numConstructionSites}`)
         for (let i in Memory.sourceList){
-            //console.log(`--${Memory.sourceList[i].id}`);
-            //console.log(`--roadStatus = ${Memory.sourceList[i].roadStatus}`);
             switch(Memory.sourceList[i].roadStatus){
                 case 0:
-                    //console.log('----Case 0');
                     if (numConstructionSites == 0){
-                        //console.log('----Building Roads');
                         let source = Game.getObjectById(Memory.sourceList[i].id);
                         let roadPath = helper.calcPathForRoad(spawner.pos, {pos: source.pos, range: 1});
-                        //let str = JSON.stringify(roadPath, null, 4);
-                        //console.log(`roadPath: ${str}`);
                         if (roadPath.incomplete){ 
                             console.log('------Unable to find path');
                             return;
                         };
-                        for (let i = 0; i <= roadPath.ops; i++){
-                            let result = Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[i], STRUCTURE_ROAD);
-                            //console.log(`Creating Road Site at ${roadPath.path[i]}`);
-                            //console.log(`Response: ${result}`);
+                        for (let j = 0; j <= roadPath.ops; j++){
+                            let result = Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
                         }
                         Memory.sourceList[i].roadStatus = 1;
                     }
                     return;
                 case 1:
-                    //console.log('----Case 1');
+                    //console.log(`Case 1: ID = ${Memory.sourceList[i].id}`);
                     if (numConstructionSites > 0){ return }
-                    //console.log('----Road Complete?');
                     Memory.sourceList[i].roadStatus = 2;
+                    return;
+                case 2:
+                    //console.log(`Case 2: ID = ${Memory.sourceList[i].id}`);
+                    for (let j = 1; j <= Memory.sourceList[i].openSpaces[0]; j++){
+                        Game.spawns[spawnIndex].room.createConstructionSite(Memory.sourceList[i].openSpaces[j].x, Memory.sourceList[i].openSpaces[j].y, STRUCTURE_ROAD);
+                    }
+                    let originPos = new RoomPosition(Memory.sourceList[i].openSpaces[1].x, Memory.sourceList[i].openSpaces[1].y, Game.spawns[spawnIndex].room.name);
+                    for (let j = 2; j <= Memory.sourceList[i].openSpaces[0]; j++){
+                        let destinationPos = new RoomPosition(Memory.sourceList[i].openSpaces[j].x, Memory.sourceList[i].openSpaces[j].y, Game.spawns[spawnIndex].room.name);
+                        let roadPath = helper.calcPathForRoad(originPos, destinationPos);
+                        if (roadPath.incomplete){ continue };
+                        for (let h = 0; h <= roadPath.ops; h++){
+                            Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[h], STRUCTURE_ROAD);
+                        }
+                    }
+                    Memory.sourceList[i].roadStatus = 3;
                     this.checkSpawnRoads(spawnIndex);
-                    break;
+                    return;
             }
         }
     },

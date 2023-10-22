@@ -30,8 +30,6 @@ module.exports.loop = function () {
         if (!Memory.spawns) { Memory.spawns = {}};
         if (!Memory.spawns[i]) { Memory.spawns[i] = { hasRoads: 0} }
         processDefense.checkForKeeperLair(Game.spawns[i].room.name);
-        //console.log('Spawn Name:' + Game.spawns[i].name);
-        //console.log('isAvailable: ' + isAvailable(i));
         processCreeps.checkForSpawn(i);
         if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){
             if (Memory.spawns[i].hasRoads == 0) {construction.checkSpawnRoads(i)}

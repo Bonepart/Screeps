@@ -5,7 +5,14 @@ var roleHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-	    if(creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+	    if(creep.memory.harvesting && creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
+            creep.memory.harvesting = false;
+	    }
+	    if(!creep.memory.harvesting && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
+	        creep.memory.harvesting = true;
+	    }
+
+	    if(creep.memory.harvesting) {
             if(processRenewal.renew(creep)){ return };
             let source = helper.findClosestRuin(creep.pos);
             if (source != null){
