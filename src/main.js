@@ -20,7 +20,7 @@ module.exports.loop = function () {
     Game.functions = require('console');
     processCreeps.clearMemory();
     for (let roomName in Game.rooms){
-        thisRoom = Game.rooms[roomName];
+        let thisRoom = Game.rooms[roomName];
         if (!Memory.rooms) { Memory.rooms = {}};
         if (!Memory.rooms[roomName]) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
