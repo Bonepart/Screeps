@@ -37,6 +37,7 @@ let processCreeps = {
         let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == 'maintenance');
         let rangedList = _.filter(Game.creeps, (creep) => creep.memory.role == 'ranged');
         let upgraderList = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+        let zombieList = _.filter(Game.creeps, (creep) => creep.memory.role == 'zombie');
 
         let numRoads = spawner.room.find(FIND_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_ROAD}}).length;
         let numRamparts = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_RAMPART}}).length;

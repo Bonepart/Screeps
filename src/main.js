@@ -1,17 +1,18 @@
-var roleBuilder = require('role.builder');
-var roleDefender = require('role.defender');
-var roleHarvester = require('role.harvester');
-var roleHealer = require('role.healer');
-var roleMaint = require('role.maint');
-var roleRanged = require('role.ranged');
-var roleUpgrader = require('role.upgrader');
+let roleBuilder = require('role.builder');
+let roleDefender = require('role.defender');
+let roleHarvester = require('role.harvester');
+let roleHealer = require('role.healer');
+let roleMaint = require('role.maint');
+let roleRanged = require('role.ranged');
+let roleUpgrader = require('role.upgrader');
+let roleZombie = require('role.zombie');
 
 let towerLogic = require('structure.tower');
 
-var processCreeps = require('process.creeps');
-var processDefense = require('process.defense');
-var construction = require('construction');
-var config = require('config');
+let processCreeps = require('process.creeps');
+let processDefense = require('process.defense');
+let construction = require('construction');
+let config = require('config');
 
 config.memory();
 config.sourceData();
@@ -81,6 +82,11 @@ module.exports.loop = function () {
             case 'upgrader':
                 roleUpgrader.run(creep);
                 break;
+            case 'zombie':
+                roleZombie.run(creep);
+                break;
+            default:
+                console.log(`Unsupported role! (${creep.memory.role})`);
         }
     }
 
