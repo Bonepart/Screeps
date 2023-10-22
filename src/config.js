@@ -1,36 +1,49 @@
 var config = {
     memory: function(){
-        if(!Memory.maxHarvesters){
-            Memory.maxHarvesters = 2;
-        }
         if(!Memory.maxBuilders){
             Memory.maxBuilders = 4;
-        }
-        if(!Memory.maxMaint){
-            Memory.maxMaint = 0;
-        }
-        if(!Memory.maxUpgraders){
-            Memory.maxUpgraders = 1;
         }
         if(!Memory.maxDefenders){
             Memory.maxDefenders = 1;
         }
-
-        if(!Memory.harvesterIndex){
-            Memory.harvesterIndex = 1;
+        if(!Memory.maxHarvesters){
+            Memory.maxHarvesters = 2;
         }
+        if(!Memory.maxHealers){
+            Memory.maxHealers = 0;
+        }
+        if(!Memory.maxMaint){
+            Memory.maxMaint = 0;
+        }
+        if(!Memory.maxRanged){
+            Memory.maxRanged = 0;
+        }
+        if(!Memory.maxUpgraders){
+            Memory.maxUpgraders = 1;
+        }
+
         if(!Memory.builderIndex){
             Memory.builderIndex = 1;
-        }
-        if(!Memory.maintIndex){
-            Memory.maintIndex = 1;
-        }
-        if(!Memory.upgraderIndex){
-            Memory.upgraderIndex = 1;
         }
         if(!Memory.defenderIndex){
             Memory.defenderIndex = 1;
         }
+        if(!Memory.harvesterIndex){
+            Memory.harvesterIndex = 1;
+        }
+        if(!Memory.healerIndex){
+            Memory.healerIndex = 1;
+        }
+        if(!Memory.maintIndex){
+            Memory.maintIndex = 1;
+        }
+        if(!Memory.rangedIndex){
+            Memory.rangedIndex = 1;
+        }
+        if(!Memory.upgraderIndex){
+            Memory.upgraderIndex = 1;
+        }
+
         if(!Memory.repairPersistance) { Memory.repairPersistance = false }
     },
     sourceData: function(){
