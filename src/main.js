@@ -6,6 +6,8 @@ var roleMaint = require('role.maint');
 var roleRanged = require('role.ranged');
 var roleUpgrader = require('role.upgrader');
 
+let towerLogic = require('structure.tower');
+
 var processCreeps = require('process.creeps');
 var processDefense = require('process.defense');
 var construction = require('construction');
@@ -25,6 +27,15 @@ module.exports.loop = function () {
         else { thisRoom.memory.spawnTier = 0 };
         if(Game.time % 20 == 0){
             console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
+        }
+
+        let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
+        for (let structure in structuresToRun){
+            switch (structuresToRun[structure].structureType){
+                case STRUCTURE_TOWER:
+                    towerLogic.run(structuresToRun[structure]);
+                    break;
+            }
         }
     }
     for (let i in Game.spawns){
@@ -72,6 +83,8 @@ module.exports.loop = function () {
                 break;
         }
     }
+
+    
 };
 
 function isAvailable(index){
