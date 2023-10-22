@@ -135,7 +135,10 @@ var construction = {
             //console.log(`numUnderConstruction = ${numUnderConstruction}`);
             let numBuilt = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_EXTENSION}}).length;
             //console.log(`numBuilt = ${numBuilt}`);
-            if (numUnderConstruction == 0 && numBuilt < maxEx){
+            let otherSites = spawner.room.find(FIND_CONSTRUCTION_SITES, { filter: (conSite) => {
+                return conSite.structureType != STRUCTURE_EXTENSION && 
+                       conSite.structureType != STRUCTURE_ROAD}}).length;
+            if (numUnderConstruction == 0 && numBuilt < maxEx && otherSites == 0){
                 let possibleSites = helper.getPossibleExtensionSites(spawnIndex);
                 //console.log(`possibleSites = ${possibleSites}`);
                 for (let i in possibleSites){
