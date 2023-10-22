@@ -23,7 +23,7 @@ for (let i in Memory.sourceList){
 console.log('...finished');*/
 
 module.exports.loop = function () {
-    //Game.functions = require('process.defense');
+    Game.functions = require('console');
     processCreeps.clearMemory();
 
     for (let i in Game.spawns){
