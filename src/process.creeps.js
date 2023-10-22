@@ -34,7 +34,7 @@ var processCreeps = {
         let numRoads = spawner.room.find(FIND_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_ROAD}}).length;
         let numRamparts = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_RAMPART}}).length;
 
-        if (Memory.maxUpgraders < (1 + ((spawner.room.controller.level - 1) * 2))) {Memory.maxUpgraders = (1 + ((spawner.room.controller.level - 1) * 2))};
+        //if (Memory.maxUpgraders < (1 + ((spawner.room.controller.level - 1) * 2))) {Memory.maxUpgraders = (1 + ((spawner.room.controller.level - 1) * 2))};
         if (Memory.maxMaint < ceil(numRoads / 50) + ceil(numRamparts / 4)) {Memory.maxMaint = ceil(numRoads / 50) + ceil(numRamparts / 4)};
 
         let creepTier = spawner.room.memory.spawnTier;
