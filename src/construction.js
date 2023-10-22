@@ -74,8 +74,7 @@ var construction = {
                     return;
                 case 1:
                     //console.log(`Case 1: ID = ${Memory.sourceList[i].id}`);
-                    if (numConstructionSites > 0){ return }
-                    Memory.sourceList[i].roadStatus = 2;
+                    if (numConstructionSites == 0){ Memory.sourceList[i].roadStatus = 2 }
                     return;
                 case 2:
                     //console.log(`Case 2: ID = ${Memory.sourceList[i].id}`);
@@ -95,6 +94,33 @@ var construction = {
                     this.checkSpawnRoads(spawnIndex);
                     return;
             }
+        }
+        return true;
+    },
+
+    buildControllerRoad: function(roomController) {
+        var numConstructionSites = roomController.room.find(FIND_CONSTRUCTION_SITES, { filter: (site) => {return site.structureType == STRUCTURE_ROAD}}).length;
+
+        switch(roomController.room.memory.controllerRoad){
+            case 0:
+                if (numConstructionSites == 0){
+                    let source = roomController.pos.findClosestByRange(FIND_SOURCES);
+
+                    let roadPath = helper.calcPathForRoad(roomController.pos, {pos: source.pos, range: 1});
+                    if (roadPath.incomplete){ 
+                        console.log('------Unable to find path');
+                        return;
+                    };
+                    for (let j = 0; j <= roadPath.ops; j++){
+                        roomController.room.createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
+                    }
+                    roomController.room.memory.controllerRoad = 1;
+                }
+                break;
+            case 1:
+                //console.log(`Case 1: ID = ${Memory.sourceList[i].id}`);
+                if (numConstructionSites == 0){ roomController.room.memory.controllerRoad = 2 }
+                break;
         }
     },
 

@@ -28,20 +28,23 @@ module.exports.loop = function () {
     for (let roomName in Game.rooms){
         thisRoom = Game.rooms[roomName];
         if (!Memory.rooms) { Memory.rooms = {}};
-        if (!Memory.rooms[roomName]) { Memory.rooms[roomName] = { spawnTier: 0} }
+        if (!Memory.rooms[roomName]) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
         else { thisRoom.memory.spawnTier = 0 };
     }
     for (let i in Game.spawns){
         if (!Memory.spawns) { Memory.spawns = {}};
         if (!Memory.spawns[i]) { Memory.spawns[i] = { hasRoads: 0} }
+        let spawner = Game.spawns[i];
         processDefense.checkForKeeperLair(Game.spawns[i].room.name);
         if (isAvailable(i)) {processCreeps.checkForSpawn(i)}
         if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){
-            if (Memory.spawns[i].hasRoads == 0) {construction.checkSpawnRoads(i)}
+            if (spawner.memory.hasRoads == 0) {construction.checkSpawnRoads(i)}
             else { 
                 construction.checkExtensions(i);
-                construction.buildSourceRoads(i);
+                if (construction.buildSourceRoads(i)) {
+                    if (spawner.room.memory.controllerRoad != 2){ construction.buildControllerRoad(spawner.room.controller)};
+                }
             }
         };
     }
