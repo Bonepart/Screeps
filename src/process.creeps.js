@@ -41,8 +41,10 @@ var processCreeps = {
 
         if (spawner.store[RESOURCE_ENERGY] >= 250){   
             let newName = '';
-            let result = 1;
+            let result = null;
             if (harvesterList.length < Memory.maxHarvesters){
+                //Spawn Tier 0 Harvester if there are zero Harvesters
+                if (harvesterList.length == 0 && creepTier > 0){creepTier = 0};
                 newName = 'harvester' + Memory.harvesterIndex;
                 result = spawner.spawnCreep(harvesterBody[creepTier], newName, { memory: {role: 'harvester', tier: creepTier}});
                 while (result === -3){
@@ -50,11 +52,9 @@ var processCreeps = {
                     newName = 'harvester' + Memory.harvesterIndex;
                     result = spawner.spawnCreep(harvesterBody[creepTier], newName, { memory: {role: 'harvester', tier: creepTier}});
                 }
-                if (result === 0){
-                    console.log(`Spawning new ${Game.creeps[newName].memory.role}: ${newName}`);
-                    Memory.harvesterIndex++;
-                } else if (result !== 1) {console.log(`Spawn of new ${Game.creeps[newName].memory.role} failed: ${result} - ${newName}`)}}
-            
+                if(result == OK){Memory.harvesterIndex++};
+                logSpawnResults(result, newName);
+            }
             else if (defenderList.length < Memory.maxDefenders){
                 newName = 'defender' + Memory.defenderIndex;
                 result = spawner.spawnCreep(defenderBody[creepTier], newName, { memory: {role: 'defender', tier: creepTier}});
@@ -63,11 +63,9 @@ var processCreeps = {
                     newName = 'defender' + Memory.defenderIndex;
                     result = spawner.spawnCreep(defenderBody[creepTier], newName, { memory: {role: 'defender', tier: creepTier}});
                 }
-                if (result === 0){
-                    console.log(`Spawning new ${Game.creeps[newName].memory.role}: ${newName}`);
-                    Memory.defenderIndex++;
-                } else if (result !== 1) { console.log(`Spawn of new ${Game.creeps[newName].memory.role} failed: ${result} - ${newName}`)}}
-            
+                if(result == OK){Memory.defenderIndex++};
+                logSpawnResults(result, newName);
+            }
             else if(maintList.length < Memory.maxMaint){
                 newName = 'maintenance' + Memory.maintIndex;
                 result = spawner.spawnCreep(maintenanceBody[creepTier], newName, { memory: {role: 'maintenance', tier: creepTier}});
@@ -76,11 +74,9 @@ var processCreeps = {
                     newName = 'maintenance' + Memory.maintIndex;
                     result = spawner.spawnCreep(maintenanceBody[creepTier], newName, { memory: {role: 'maintenance', tier: creepTier}});
                 }
-                if (result === 0){
-                    console.log(`Spawning new ${Game.creeps[newName].memory.role}: ${newName}`);
-                    Memory.maintIndex++;
-                } else if (result !== 1) { console.log(`Spawn of new ${Game.creeps[newName].memory.role} failed: ${result} - ${newName}`)}}
-            
+                if(result == OK){Memory.maintIndex++};
+                logSpawnResults(result, newName);
+            }
             else if(upgraderList.length < Memory.maxUpgraders){
                 newName = 'upgrader' + Memory.upgraderIndex;
                 result = spawner.spawnCreep(upgraderBody[creepTier], newName, { memory: {role: 'upgrader', tier: creepTier}});
@@ -89,11 +85,9 @@ var processCreeps = {
                     newName = 'upgrader' + Memory.upgraderIndex;
                     result = spawner.spawnCreep(upgraderBody[creepTier], newName, { memory: {role: 'upgrader', tier: creepTier}});
                 }
-                if (result === 0){
-                    console.log(`Spawning new ${Game.creeps[newName].memory.role}: ${newName}`);
-                    Memory.upgraderIndex++;
-                } else if (result !== 1) { console.log(`Spawn of new ${Game.creeps[newName].memory.role} failed: ${result} - ${newName}`)}}
-                
+                if(result == OK){Memory.upgraderIndex++};
+                logSpawnResults(result, newName);
+            }    
             else if(builderList.length < Memory.maxBuilders){
                 newName = 'builder' + Memory.builderIndex;
                 result = spawner.spawnCreep(builderBody[creepTier], newName, { memory: {role: 'builder', tier: creepTier}});
@@ -102,12 +96,8 @@ var processCreeps = {
                     newName = 'builder' + Memory.builderIndex;
                     result = spawner.spawnCreep(builderBody[creepTier], newName, { memory: {role: 'builder', tier: creepTier}});
                 }
-                if (result === 0){
-                    console.log(`Spawning new ${Game.creeps[newName].memory.role}: ${newName}`);
-                    Memory.builderIndex++;
-                } else if (result !== 1) {
-                    console.log(`Spawn of new ${Game.creeps[newName].memory.role} failed: ${result} - ${newName}`);
-                }
+                if(result == OK){Memory.builderIndex++};
+                logSpawnResults(result, newName);
             }
         }
     },
@@ -121,3 +111,15 @@ var processCreeps = {
     }
 };
 module.exports = processCreeps;
+
+function logSpawnResults(result, newName) {
+    switch(result){
+        case OK:
+            console.log(`Spawning ${newName}`);
+            break;
+        case ERR_NOT_ENOUGH_ENERGY:
+            break;
+        default:
+            console.log(`Spawn of ${newName} failed: ${result}`);
+    }
+}

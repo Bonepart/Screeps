@@ -13,6 +13,13 @@ var consoleCommands = {
             console.log(`Role: ${roleList[role].role}`);
             console.log(`-- ${roleList[role].count}`);
         }
+    },
+
+    listCreeps: function() {
+        for (let i in Game.creeps){
+            console.log(`${Game.creeps[i].name}`);
+            console.log(`--Body Size: ${Game.creeps[i].body.length}`);
+        }
     }
 }
 module.exports = consoleCommands;
