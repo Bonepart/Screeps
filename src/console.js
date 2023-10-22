@@ -25,6 +25,10 @@ var consoleCommands = {
     toggleRP: function() {
         if (Memory.repairPersistance) { Memory.repairPersistance = false }
         else { Memory.repairPersistance = true }
+    },
+
+    zombie: function(creepName) {
+        Game.creeps[creepName].memory.role = "zombie";
     }
 }
 module.exports = consoleCommands;
