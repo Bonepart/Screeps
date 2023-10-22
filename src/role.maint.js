@@ -18,7 +18,10 @@ var roleMaintenance = {
 
         if(creep.memory.repairing) {
             if (creep.memory.repairID == null){
-                var pendingRepairs = _.sortBy(creep.room.find(FIND_STRUCTURES, { filter: (structure) => { return structure.hits < structure.hitsMax }}), (struct) => struct.hits);
+                let containerRepairs = creep.room.find(FIND_STRUCTURES, { 
+                    filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER}});
+                let pendingRepairs = containerRepairs.concat(_.sortBy(creep.room.find(FIND_STRUCTURES, { 
+                    filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_CONTAINER}}), (struct) => struct.hits));
                 if(pendingRepairs.length > offset) { creep.memory.repairID = pendingRepairs[offset].id }
                 else if (pendingRepairs.length > 0) { creep.memory.repairID = pendingRepairs[0].id }
             } 
