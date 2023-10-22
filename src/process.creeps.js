@@ -62,7 +62,7 @@ module.exports = {
                 result = spawner.spawnCreep(maintenanceBody[creepTier], newName, { memory: {role: 'maintenance', tier: creepTier}});
                 while (result === -3){
                     Memory.maintIndex++;
-                    newName = 'maintenance' + Memory.upgraderIndex;
+                    newName = 'maintenance' + Memory.maintIndex;
                     result = spawner.spawnCreep(maintenanceBody[creepTier], newName, { memory: {role: 'maintenance', tier: creepTier}});
                 }
                 if (result === 0){
