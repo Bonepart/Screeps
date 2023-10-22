@@ -1,5 +1,6 @@
 var processRenewal = require('process.renewal');
 var helper = require('helper');
+var pathing = require('pathing');
 
 var roleBuilder = {
 
@@ -40,7 +41,7 @@ var roleBuilder = {
             }
 	    }
 	    else {
-	        let source = helper.findClosestSource(creep.pos);
+	        let source = pathing.findClosestSource(creep.pos);
             if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
             }

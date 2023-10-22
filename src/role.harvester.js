@@ -1,5 +1,6 @@
 var processRenewal = require('process.renewal');
 var helper = require('helper');
+var pathing = require('pathing');
 
 var roleHarvester = {
 
@@ -14,13 +15,13 @@ var roleHarvester = {
 
 	    if(creep.memory.harvesting) {
             if(processRenewal.renew(creep)){ return };
-            let source = helper.findClosestRuin(creep.pos);
+            let source = pathing.findClosestRuin(creep.pos);
             if (source != null){
                 if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             } else {
-                source = helper.findClosestSource(creep.pos)
+                source = pathing.findClosestSource(creep.pos)
                 if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }

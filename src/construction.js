@@ -1,4 +1,5 @@
 var helper = require('helper');
+var pathing = require('pathing');
 
 var construction = {
 
@@ -61,7 +62,7 @@ var construction = {
                 case 0:
                     if (numConstructionSites == 0){
                         let source = Game.getObjectById(Memory.sourceList[i].id);
-                        let roadPath = helper.calcPathForRoad(spawner.pos, {pos: source.pos, range: 1});
+                        let roadPath = pathing.calcPathForRoad(spawner.pos, {pos: source.pos, range: 1});
                         if (roadPath.incomplete){ 
                             console.log('------Unable to find path');
                             return;
@@ -84,7 +85,7 @@ var construction = {
                     let originPos = new RoomPosition(Memory.sourceList[i].openSpaces[1].x, Memory.sourceList[i].openSpaces[1].y, Game.spawns[spawnIndex].room.name);
                     for (let j = 2; j <= Memory.sourceList[i].openSpaces[0]; j++){
                         let destinationPos = new RoomPosition(Memory.sourceList[i].openSpaces[j].x, Memory.sourceList[i].openSpaces[j].y, Game.spawns[spawnIndex].room.name);
-                        let roadPath = helper.calcPathForRoad(originPos, destinationPos);
+                        let roadPath = pathing.calcPathForRoad(originPos, destinationPos);
                         if (roadPath.incomplete){ continue };
                         for (let h = 0; h <= roadPath.ops; h++){
                             Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[h], STRUCTURE_ROAD);
@@ -106,7 +107,7 @@ var construction = {
                 if (numConstructionSites == 0){
                     let source = roomController.pos.findClosestByRange(FIND_SOURCES);
 
-                    let roadPath = helper.calcPathForRoad(roomController.pos, {pos: source.pos, range: 1});
+                    let roadPath = pathing.calcPathForRoad(roomController.pos, {pos: source.pos, range: 1});
                     if (roadPath.incomplete){ 
                         console.log('------Unable to find path');
                         return;
