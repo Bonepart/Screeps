@@ -20,16 +20,23 @@ const defenderBody = [
     [TOUGH, TOUGH, ATTACK, MOVE, MOVE, MOVE], //Cost 250
     [TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE] //Cost 500
 ];
+const healerBody = [
+    [ HEAL, MOVE], //Cost 300
+    [ RANGED_ATTACK, HEAL, MOVE, MOVE] //Cost 500
+];
 
-var processCreeps = {
+let processCreeps = {
 
     checkForSpawn: function(spawnIndex){
         let spawner = Game.spawns[spawnIndex];
-        var harvesterList = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-        var upgraderList = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-        var builderList = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-        var defenderList = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender');
-        var maintList = _.filter(Game.creeps, (creep) => creep.memory.role == 'maintenance');
+
+        let builderList = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+        let defenderList = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender');
+        let harvesterList = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+        let healerList = _.filter(Game.creeps, (creep) => creep.memory.role == 'healer');
+        let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == 'maintenance');
+        let rangedList = _.filter(Game.creeps, (creep) => creep.memory.role == 'ranged');
+        let upgraderList = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
 
         let numRoads = spawner.room.find(FIND_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_ROAD}}).length;
         let numRamparts = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_RAMPART}}).length;
@@ -39,7 +46,7 @@ var processCreeps = {
 
         let creepTier = spawner.room.memory.spawnTier;
 
-        if (spawner.store[RESOURCE_ENERGY] >= 250){   
+        if (spawner.store[RESOURCE_ENERGY] >= 250){
             let newName = '';
             let result = null;
             if (harvesterList.length < Memory.maxHarvesters){
@@ -64,6 +71,17 @@ var processCreeps = {
                     result = spawner.spawnCreep(defenderBody[creepTier], newName, { memory: {role: 'defender', tier: creepTier}});
                 }
                 if(result == OK){Memory.defenderIndex++};
+                logSpawnResults(result, newName);
+            }
+            else if (healerList.length < Memory.maxHealers){
+                newName = 'healer' + Memory.healerIndex;
+                result = spawner.spawnCreep(healerBody[creepTier], newName, { memory: {role: 'healer', tier: creepTier}});
+                while (result === -3){
+                    Memory.healerIndex++;
+                    newName = 'healer' + Memory.healerIndex;
+                    result = spawner.spawnCreep(healerBody[creepTier], newName, { memory: {role: 'healer', tier: creepTier}});
+                }
+                if(result == OK){Memory.healerIndex++};
                 logSpawnResults(result, newName);
             }
             else if(maintList.length < Memory.maxMaint){
