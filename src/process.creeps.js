@@ -1,3 +1,4 @@
+let helper = require('helper');
 const { ceil } = require("lodash");
 
 const harvesterBody = [
@@ -44,6 +45,13 @@ let processCreeps = {
 
         //if (Memory.maxUpgraders < (1 + ((spawner.room.controller.level - 1) * 2))) {Memory.maxUpgraders = (1 + ((spawner.room.controller.level - 1) * 2))};
         if (Memory.maxMaint < ceil(numRoads / 50) + ceil(numRamparts / 4)) {Memory.maxMaint = ceil(numRoads / 50) + ceil(numRamparts / 4)};
+
+        if (zombieList == 0){
+            if (builderList.length > Memory.maxBuilders){ 
+                builderList[0].memory.role = 'zombie';
+                console.log(`Builders: ${builderList.length}/${Memory.maxBuilders}, ${builderList[0].name} is now a zombie`)
+            }
+        }
 
         let creepTier = spawner.room.memory.spawnTier;
 
