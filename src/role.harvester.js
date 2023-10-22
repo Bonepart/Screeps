@@ -7,9 +7,16 @@ var roleHarvester = {
     run: function(creep) {
 	    if(creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
             if(processRenewal.renew(creep)){ return };
-            let source = helper.findClosestSource(creep.pos);
-            if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+            let source = helper.findClosestRuin(creep.pos);
+            if (source != null){
+                if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            } else {
+                source = helper.findClosestSource(creep.pos)
+                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
         }
         else {

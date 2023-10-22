@@ -82,6 +82,11 @@ var helper = {
         return pos.findClosestByPath(FIND_SOURCES_ACTIVE, {filter: (source) => {
             return !Memory.keeperLair.threatActive || (Memory.keeperLair.threatActive && source.id != Memory.keeperLair.sourceID);
         }});
+    },
+
+    findClosestRuin: function (pos){
+        if (Game.rooms[pos.roomName].find(FIND_HOSTILE_CREEPS).length > 0) { return null };
+        return pos.findClosestByPath(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }});
     }
 }
 module.exports = helper;
