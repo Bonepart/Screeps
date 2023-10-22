@@ -18,7 +18,7 @@ const maintenanceBody = [
 ];
 const defenderBody = [
     [TOUGH, TOUGH, ATTACK, MOVE, MOVE, MOVE], //Cost 250
-    [TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 500
+    [TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUCH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE] //Cost 500
 ];
 
 var processCreeps = {
