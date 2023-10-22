@@ -28,7 +28,7 @@ var helper = {
         }
     },
 
-    maxKnownExSites: 10,
+    maxKnownExSites: 16,
     getPossibleExtensionSites: function (spawnIndex) {
         let spawner = Game.spawns[spawnIndex];
         let siteList = [];
@@ -43,6 +43,14 @@ var helper = {
         siteList.push(new RoomPosition(spawner.pos.x-3, spawner.pos.y-2, spawner.room.name));
         siteList.push(new RoomPosition(spawner.pos.x-1, spawner.pos.y-3, spawner.room.name));
         siteList.push(new RoomPosition(spawner.pos.x+1, spawner.pos.y-3, spawner.room.name));
+
+        siteList.push(new RoomPosition(spawner.pos.x+3, spawner.pos.y-1, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x+3, spawner.pos.y+1, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x+1, spawner.pos.y+3, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x-1, spawner.pos.y+3, spawner.room.name));
+        siteList.push(new RoomPosition(spawner.pos.x-3, spawner.pos.y+1, spawner.room.name));
+
+        siteList.push(new RoomPosition(spawner.pos.x-3, spawner.pos.y-1, spawner.room.name));
 
         return siteList;
     },
