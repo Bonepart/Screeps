@@ -37,26 +37,26 @@ var consoleCommands = {
         switch(role){
             case 'harvester':
                 Memory.maxHarvesters = newMax;
-                break;
+                return `maxHarvesters = ${Memory.maxHarvesters}`;
             case 'builder':
                 Memory.maxBuilders = newMax;
-                break;
+                return `maxBuilders = ${Memory.maxBuilders}`;
             case 'upgrader':
                 Memory.maxUpgraders = newMax;
-                break;
+                return `maxUpgraders = ${Memory.maxUpgraders}`;
             case 'maintenance':
             case 'maint':
                 Memory.maxMaint = newMax;
-                break;
+                return `maxMaint = ${Memory.maxMaint}`;
             case 'defender':
                 Memory.maxDefenders = newMax;
-                break;
+                return `maxDefenders = ${Memory.maxDefenders}`;
             case 'ranged':
                 Memory.maxRanged = newMax;
-                break;
+                return `maxRanged = ${Memory.maxRanged}`;
             case 'healer':
                 Memory.maxHealers = newMax;
-                break;
+                return `maxHealers = ${Memory.maxHealers}`;
         }
     },
 
