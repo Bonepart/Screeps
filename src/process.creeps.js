@@ -32,9 +32,10 @@ var processCreeps = {
         var maintList = _.filter(Game.creeps, (creep) => creep.memory.role == 'maintenance');
 
         let numRoads = spawner.room.find(FIND_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_ROAD}}).length;
+        let numRamparts = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_RAMPART}}).length;
         //console.log(`numRoads = ${numRoads}`);
         //console.log(`Desired  = ${ceil(numRoads / 50)}`);
-        if (Memory.maxMaint < ceil(numRoads / 50)) {Memory.maxMaint = ceil(numRoads / 50)};
+        if (Memory.maxMaint < ceil(numRoads / 50) + ceil(numRamparts / 4)) {Memory.maxMaint = ceil(numRoads / 50) + ceil(numRamparts / 4)};
 
         let creepTier = 0;
         if (spawner.room.energyCapacityAvailable >= 500) { creepTier = 1 };
