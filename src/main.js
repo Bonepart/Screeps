@@ -25,24 +25,30 @@ console.log('...finished');*/
 module.exports.loop = function () {
     Game.functions = require('console');
     processCreeps.clearMemory();
-
+    for (let roomName in Game.rooms){
+        thisRoom = Game.rooms[roomName];
+        if (!Memory.rooms) { Memory.rooms = {}};
+        if (!Memory.rooms[roomName]) { Memory.rooms[roomName] = { spawnTier: 0} }
+        if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
+        else { thisRoom.memory.spawnTier = 0 };
+    }
     for (let i in Game.spawns){
         if (!Memory.spawns) { Memory.spawns = {}};
         if (!Memory.spawns[i]) { Memory.spawns[i] = { hasRoads: 0} }
         processDefense.checkForKeeperLair(Game.spawns[i].room.name);
-        processCreeps.checkForSpawn(i);
+        if (isAvailable(i)) {processCreeps.checkForSpawn(i)}
         if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){
             if (Memory.spawns[i].hasRoads == 0) {construction.checkSpawnRoads(i)}
             else { 
-                //construction.checkExtensions(i);
+                construction.checkExtensions(i);
                 construction.buildSourceRoads(i);
             }
         };
     }
     
-    
-    for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
+    let maintOffset = 0;
+    for(let name in Game.creeps) {
+        let creep = Game.creeps[name];
         switch(creep.memory.role){
             case 'harvester':
                 roleHarvester.run(creep);
@@ -54,7 +60,8 @@ module.exports.loop = function () {
                 roleBuilder.run(creep);
                 break;
             case 'maintenance':
-                roleMaint.run(creep);
+                roleMaint.run(creep, maintOffset);
+                maintOffset++;
                 break;
             case 'defender':
                 roleDefender.run(creep);
