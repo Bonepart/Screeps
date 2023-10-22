@@ -15,16 +15,24 @@ var roleHarvester = {
 
 	    if(creep.memory.harvesting) {
             if(processRenewal.renew(creep)){ return };
-            let source = pathing.findClosestRuin(creep.pos);
-            if (source != null){
-                if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffffff'}});
+
+            let searchTarget = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}});
+            if (searchTarget) {
+                if(creep.pickup(searchTarget) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
-            } else {
-                source = pathing.findClosestSource(creep.pos)
-                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+                return;
+            }
+            searchTarget = pathing.findClosestRuin(creep.pos);
+            if (searchTarget){
+                if(creep.withdraw(searchTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
+                return;
+            }
+            searchTarget = pathing.findClosestSource(creep.pos)
+            if(creep.harvest(searchTarget) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
         else {
