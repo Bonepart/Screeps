@@ -1,8 +1,11 @@
-var roleHarvester = require('role.harvester');
-var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
-var roleMaint = require('role.maint');
 var roleDefender = require('role.defender');
+var roleHarvester = require('role.harvester');
+var roleHealer = require('rold.healer');
+var roleMaint = require('role.maint');
+var roleRanged = require('role.ranged');
+var roleUpgrader = require('role.upgrader');
+
 var processCreeps = require('process.creeps');
 var processDefense = require('process.defense');
 var construction = require('construction');
@@ -10,17 +13,6 @@ var config = require('config');
 
 config.memory();
 config.sourceData();
-
-
-
-/*console.log('Start Source Data...');
-for (let i in Memory.sourceList){
-    console.log(`Index: ${i}`);
-    console.log(`ID: ${Memory.sourceList[i].id}`);
-    console.log(`openSpaces: ${Memory.sourceList[i].openSpaces}`);
-    console.log(`roadStatus: ${Memory.sourceList[i].roadStatus}`);
-}
-console.log('...finished');*/
 
 module.exports.loop = function () {
     Game.functions = require('console');
@@ -53,21 +45,27 @@ module.exports.loop = function () {
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
         switch(creep.memory.role){
+            case 'builder':
+                roleBuilder.run(creep);
+                break;
+            case 'defender':
+                roleDefender.run(creep);
+                break;
             case 'harvester':
                 roleHarvester.run(creep);
                 break;
-            case 'upgrader':
-                roleUpgrader.run(creep);
-                break;
-            case 'builder':
-                roleBuilder.run(creep);
+            case 'healer':
+                roleHealer.run(creep);
                 break;
             case 'maintenance':
                 roleMaint.run(creep, maintOffset);
                 maintOffset++;
                 break;
-            case 'defender':
-                roleDefender.run(creep);
+            case 'ranged':
+                roleRanged.run(creep);
+                break;
+            case 'upgrader':
+                roleUpgrader.run(creep);
                 break;
         }
     }
