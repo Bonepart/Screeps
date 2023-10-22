@@ -2,7 +2,7 @@ const { ceil } = require("lodash");
 
 const harvesterBody = [
     [WORK, CARRY, MOVE, MOVE], //Cost 250
-    [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE] //Cost 500
+    [WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE] //Cost 500
 ];
 const upgraderBody = [
     [WORK, CARRY, MOVE, MOVE], //Cost 250
