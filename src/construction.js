@@ -125,6 +125,16 @@ var construction = {
         }
     },
 
+    buildRoad: function(startPos, endPos){
+        let roadPath = pathing.calcPathForRoad(startPos, endPos);
+        if (roadPath.incomplete){ 
+            return 'Error: Unable to find path';
+        };
+        for (let j = 0; j <= roadPath.ops; j++){
+            startPos.room.createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
+        }
+    },
+
     checkExtensions: function (spawnIndex) {
         let spawner = Game.spawns[spawnIndex];
         let maxEx = helper.possibleExtensions(spawner.room.controller.level);

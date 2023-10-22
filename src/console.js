@@ -1,3 +1,5 @@
+var construction = require('construction');
+
 var consoleCommands = {
     displayTickLimit: function() {
         console.log(`tickLimit = ${Game.cpu.tickLimit}`);
@@ -58,6 +60,10 @@ var consoleCommands = {
                 Memory.maxHealers = newMax;
                 return `maxHealers = ${Memory.maxHealers}`;
         }
+    },
+
+    buildRoad: function(flagStart, flagEnd){
+        construction.buildRoad(flagStart, flagEnd);
     },
 
     zombie: function(creepName) {
