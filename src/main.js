@@ -23,6 +23,9 @@ module.exports.loop = function () {
         if (!Memory.rooms[roomName]) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
         else { thisRoom.memory.spawnTier = 0 };
+        if(Game.time % 10 == 0){
+            console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable}`);
+        }
     }
     for (let i in Game.spawns){
         if (!Memory.spawns) { Memory.spawns = {}};
