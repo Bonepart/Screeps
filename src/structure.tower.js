@@ -67,7 +67,7 @@ function repairStructures (thisTower) {
     let result = thisTower.repair(pendingRepairs[0]);
     switch (result){
         case OK:
-            console.log(`Tower ${thisTower.id} repaired ${pendingRepairs[0].id} (${pendingRepairs[0].hits}/${pendingRepairs[0].hitsMax})`);
+            //console.log(`Tower ${thisTower.id} repaired ${pendingRepairs[0].id} (${pendingRepairs[0].hits}/${pendingRepairs[0].hitsMax})`);
             return true;
         case ERR_NOT_ENOUGH_ENERGY:
             console.log(`Tower ${thisTower.id} does not have enough energy to do repairs`);
