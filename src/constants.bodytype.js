@@ -23,3 +23,7 @@ exports.healer = [
     [ HEAL, MOVE], //Cost 300
     [ RANGED_ATTACK, HEAL, MOVE, MOVE] //Cost 500
 ];
+
+exports.longhauler = [
+    [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE] //Cost 800
+];
