@@ -27,6 +27,11 @@ exports.healer = [
     [ HEAL, MOVE], //Cost 300
     [ RANGED_ATTACK, HEAL, MOVE, MOVE], //Cost 500
     [ TOUGH, TOUGH, HEAL, HEAL, MOVE, MOVE, MOVE, MOVE] //Cost 720
+]; 
+exports.viking = [ 
+    [ ],
+    [ ],
+    [ TOUGH, TOUGH, RANGED_ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 710
 ];
 
 //Explorer Bodytypes
