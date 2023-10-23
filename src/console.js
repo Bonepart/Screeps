@@ -23,6 +23,7 @@ var consoleCommands = {
             console.log(`${Game.creeps[i].name}`);
             console.log(`--Body Size: ${Game.creeps[i].body.length}`);
         }
+        return 'Complete';
     },
 
     toggleRP: function() {
