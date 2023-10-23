@@ -67,7 +67,7 @@ var construction = {
                             console.log('------Unable to find path');
                             return;
                         };
-                        for (let j = 0; j < roadPath.ops; j++){
+                        for (let j = 0; j < roadPath.path.length; j++){
                             let result = Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
                         }
                         Memory.sourceList[i].roadStatus = 1;
@@ -87,7 +87,7 @@ var construction = {
                         let destinationPos = new RoomPosition(Memory.sourceList[i].openSpaces[j].x, Memory.sourceList[i].openSpaces[j].y, Game.spawns[spawnIndex].room.name);
                         let roadPath = pathing.calcPathForRoad(originPos, destinationPos);
                         if (roadPath.incomplete){ continue };
-                        for (let h = 0; h <= roadPath.ops; h++){
+                        for (let h = 0; h < roadPath.path.length; h++){
                             Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[h], STRUCTURE_ROAD);
                         }
                     }
@@ -112,7 +112,7 @@ var construction = {
                         console.log('------Unable to find path');
                         return;
                     };
-                    for (let j = 0; j <= roadPath.ops; j++){
+                    for (let j = 0; j < roadPath.path.length; j++){
                         roomController.room.createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
                     }
                     roomController.room.memory.controllerRoad = 1;
@@ -131,11 +131,11 @@ var construction = {
             return 'Error: Unable to find path';
         };
         let count = 0;
-        for (let j = 0; j < roadPath.ops; j++){
+        for (let j = 0; j < roadPath.path.length; j++){
             let result = Game.rooms[roadPath.path[j].roomName].createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
             if (result == OK){ count++ }
         }
-        return `Created ${count} roads out of ${roadPath.ops}`;
+        return `Created ${count} roads out of ${roadPath.path.length}`;
     },
 
     checkExtensions: function (spawnIndex) {
