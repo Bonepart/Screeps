@@ -69,6 +69,7 @@ var consoleCommands = {
 
     zombie: function(creepName) {
         Game.creeps[creepName].memory.role = "zombie";
+        return `${creepName} is now a zombie`;
     }    
 }
 module.exports = consoleCommands;
