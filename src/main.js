@@ -27,7 +27,10 @@ module.exports.loop = function () {
         let thisRoom = Game.rooms[roomName];
         if (!Memory.rooms) { Memory.rooms = {}};
         if (!Memory.rooms[roomName]) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
-        if (thisRoom.energyCapacityAvailable >= 800) { explorer.run(roomName) }
+        if (thisRoom.energyCapacityAvailable >= 800) { 
+            thisRoom.memory.spawnTier = 2;
+            explorer.run(roomName) 
+        }
         else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
         else { thisRoom.memory.spawnTier = 0 };
         if(Game.time % 20 == 0){
