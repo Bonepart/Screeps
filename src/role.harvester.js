@@ -39,12 +39,15 @@ var roleHarvester = {
             var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
-                                structure.structureType == STRUCTURE_SPAWN ||
-                                structure.structureType == STRUCTURE_TOWER) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                                structure.structureType == STRUCTURE_SPAWN) && 
+                                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                     }
             });
             targets = targets.concat(creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => { return (structure.structureType == STRUCTURE_CONTAINER) && 
+                filter: (structure) => { return (structure.structureType == STRUCTURE_TOWER ) && 
+                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}));
+            targets = targets.concat(creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => { return (structure.structureType == STRUCTURE_CONTAINER ) && 
                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}));
             var parkingFlag = creep.room.find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Parking"}});
             var buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
