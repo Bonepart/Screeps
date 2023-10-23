@@ -60,6 +60,11 @@ var consoleCommands = {
             case 'healer':
                 Memory.maxHealers = newMax;
                 return `maxHealers = ${Memory.maxHealers}`;
+            case 'longhauler':
+                Memory.maxLonghaulers = newMax;
+                return `maxLonghaulers = ${Memory.maxLonghaulers}`;
+            default:
+                return `${role} is unsupported`;
         }
     },
 
