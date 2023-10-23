@@ -94,11 +94,11 @@ let processCreeps = {
             }    
             else if(builderList.length < Memory.maxBuilders){
                 newName = 'builder' + Memory.builderIndex;
-                result = spawner.spawnCreep(builderBody[creepTier], newName, { memory: {role: 'builder', tier: creepTier}});
+                result = spawner.spawnCreep(bodytype.builder[creepTier], newName, { memory: {role: 'builder', tier: creepTier}});
                 while (result === -3){
                     Memory.builderIndex++;
                     newName = 'builder' + Memory.builderIndex;
-                    result = spawner.spawnCreep(builderBody[creepTier], newName, { memory: {role: 'builder', tier: creepTier}});
+                    result = spawner.spawnCreep(bodytype.builder[creepTier], newName, { memory: {role: 'builder', tier: creepTier}});
                 }
                 if(result == OK){Memory.builderIndex++};
                 logSpawnResults(result, newName);
