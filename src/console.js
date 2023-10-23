@@ -6,7 +6,7 @@ var consoleCommands = {
         console.log(`tickLimit = ${Game.cpu.tickLimit}`);
     },
 
-    creepCount: function() {
+    countCreeps: function() {
         let roleList = [];
         for (let i in Game.creeps){
             if(!roleList[Game.creeps[i].memory.role]){ roleList[Game.creeps[i].memory.role] = {role: Game.creeps[i].memory.role, count: 1}}
