@@ -4,7 +4,7 @@ var config = {
             Memory.maxBuilders = 4;
         }
         if(!Memory.maxDefenders){
-            Memory.maxDefenders = 1;
+            Memory.maxDefenders = 0;
         }
         if(!Memory.maxHarvesters){
             Memory.maxHarvesters = 2;

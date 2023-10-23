@@ -20,8 +20,7 @@ var consoleCommands = {
 
     listCreeps: function() {
         for (let i in Game.creeps){
-            console.log(`${Game.creeps[i].name}`);
-            console.log(`--Body Size: ${Game.creeps[i].body.length}`);
+            console.log(`${Game.creeps[i].name}\tT${Game.creeps[i].memory.tier + 1}\t Body Size: ${Game.creeps[i].body.length}`);
         }
         return 'Complete';
     },
