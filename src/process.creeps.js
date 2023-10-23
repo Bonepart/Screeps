@@ -112,6 +112,14 @@ let processCreeps = {
                 console.log('Clearing non-existing creep memory:', name);
             }
         }
+        for(let name in Memory.rooms) {
+            for (let exit in Memory.rooms[name].exits){
+                if (Game.getObjectById(Memory.rooms[name].exits[exit].id) == null) {
+                    Memory.rooms[name].exits[exit].id = null;
+                    console.log(`Clearing invalid ID from ${name}-E${exit}`);
+                }
+            }
+        }
     }
 };
 module.exports = processCreeps;
