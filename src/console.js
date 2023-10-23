@@ -63,8 +63,13 @@ var consoleCommands = {
         }
     },
 
-    buildRoad: function(flagStart, flagEnd){
-        return construction.buildRoad(Game.flags[flagStart].pos, Game.flags[flagEnd].pos);
+    buildRoad: function(flagStart, flagEnd, deleteFlags=false){
+        let returnValue = construction.buildRoad(Game.flags[flagStart].pos, Game.flags[flagEnd].pos);
+        if (deleteFlags){
+            Game.flags[flagStart].remove();
+            Game.flags[flagEnd].remove();
+        }
+        return returnValue;
     },
 
     buildTowerRoad: function(roomName){
