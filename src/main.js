@@ -7,6 +7,8 @@ let roleRanged = require('role.ranged');
 let roleUpgrader = require('role.upgrader');
 let roleZombie = require('role.zombie');
 
+let roleLonghaul = require('role.longhaul');
+
 let towerLogic = require('structure.tower');
 
 let processCreeps = require('process.creeps');
@@ -90,6 +92,9 @@ module.exports.loop = function () {
                 break;
             case 'zombie':
                 roleZombie.run(creep);
+                break;
+            case 'longhauler':
+                roleLonghaul.run(creep);
                 break;
             default:
                 console.log(`Unsupported role! (${creep.memory.role})`);

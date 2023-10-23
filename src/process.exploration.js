@@ -45,11 +45,11 @@ module.exports = processExploration;
 
 function spawnExplorers(spawnIndex) {
     let spawner = Game.spawns[spawnIndex];
-    let longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == 'longhaul');
+    let longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == 'longhauler');
 
     if (longhaulList.length < Memory.maxLonghaulers){
         newName = 'longhaul' + Memory.longhaulerIndex;
-        result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: 'longhauler', assignedRoom: null}});
+        result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: 'longhauler', originRoom: spawner.room.name, assignedRoom: null}});
         while (result === -3){
             Memory.longhaulerIndex++;
             newName = 'harvester' + Memory.longhaulerIndex;
