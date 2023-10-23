@@ -67,6 +67,17 @@ var consoleCommands = {
         return construction.buildRoad(Game.flags[flagStart].pos, Game.flags[flagEnd].pos);
     },
 
+    buildTowerRoad: function(roomName){
+        let thisRoom = Game.rooms[roomName];
+        let startSpawn = Game.spawns[thisRoom.memory.spawns[0].name];
+        let roomTowers = thisRoom.find(FIND_MY_STRUCTURES, {filter: (struct) => { return struct.structureType == STRUCTURE_TOWER}});
+        let returnString = [];
+        for (let tower in roomTowers){
+            returnString.push(construction.buildRoad(startSpawn.pos, { pos: roomTowers[tower].pos, range: 1}));
+        }
+        return returnString;
+    },
+
     zombie: function(creepName) {
         Game.creeps[creepName].memory.role = "zombie";
         return `${creepName} is now a zombie`;
