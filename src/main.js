@@ -42,6 +42,10 @@ module.exports.loop = function () {
         }
     }
     for (let i in Game.spawns){
+        let roomName = Game.spawns[i].room.name;
+        if (!Memory.rooms[roomName].spawns) { Memory.rooms[roomName].spawns = []};
+        if (!Memory.rooms[roomName].spawns[0]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
+
         if (!Memory.spawns) { Memory.spawns = {}};
         if (!Memory.spawns[i]) { Memory.spawns[i] = { hasRoads: 0} }
         let spawner = Game.spawns[i];
