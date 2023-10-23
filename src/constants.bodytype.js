@@ -1,11 +1,3 @@
-function define(name, value) {
-    Object.defineProperty(exports, name, {
-        value:      value,
-        enumerable: true
-    });
-}
-
-
 exports.harvester = [
     [WORK, CARRY, MOVE, MOVE], //Cost 250
     [WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE] //Cost 500
