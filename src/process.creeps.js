@@ -83,7 +83,7 @@ let processCreeps = {
             }
             else if(upgraderList.length < Memory.maxUpgraders){
                 newName = 'upgrader' + Memory.upgraderIndex;
-                result = spawner.spawnCreep(bodytype.upgrder[creepTier], newName, { memory: {role: 'upgrader', tier: creepTier}});
+                result = spawner.spawnCreep(bodytype.upgrader[creepTier], newName, { memory: {role: 'upgrader', tier: creepTier}});
                 while (result === -3){
                     Memory.upgraderIndex++;
                     newName = 'upgrader' + Memory.upgraderIndex;
