@@ -6,10 +6,12 @@ var structureTower = {
         if (thisTower.store.getUsedCapacity(RESOURCE_ENERGY) == 0){ return }
 
         let numHostiles = thisTower.room.find(FIND_HOSTILE_CREEPS).length;
-        if(numHostiles > 0){
-            attackHostile(thisTower);
-            return;
-        }
+        if (numHostiles > 0) { if (attackHostile(thisTower)) { return } }
+
+        let numWounded = thisTower.room.find(FIND_MY_CREEPS, { filter: (creep) => {return creep.hits < creep.hitsMax}});
+        if (numWounded > 0) { if (healWounded(thisTower)) { return } }
+
+        if (thisTower.store.getUsedCapacity(RESOURCE_ENERGY) > 500) { repairStructures(thisTower) }
     }
 }
 module.exports = structureTower;
@@ -21,7 +23,7 @@ function attackHostile(thisTower){
     switch (result){
         case OK:
             console.log(`Tower ${thisTower.id} attacked ${target.name} (${target.hits}/${target.hitsMax})`);
-            break;
+            return true;
         case ERR_NOT_ENOUGH_ENERGY:
             console.log(`Tower ${thisTower.id} does not have enough energy to attack!`);
             break;
@@ -31,4 +33,50 @@ function attackHostile(thisTower){
         default:
             console.log(`Tower ${thisTower.id}: Error ${result}`);
     }
+    return false;
 }
+
+/** @param {StructureTower} thisTower **/
+function healWounded(thisTower){
+    let target = thisTower.pos.findClosestByRange(FIND_MY_CREEPS, { filter: (creep) => {return creep.hits < creep.hitsMax}});
+    let result = thisTower.heal(target);
+    switch (result){
+        case OK:
+            console.log(`Tower ${thisTower.id} healed ${target.name} (${target.hits}/${target.hitsMax})`);
+            return true;
+        case ERR_NOT_ENOUGH_ENERGY:
+            console.log(`Tower ${thisTower.id} does not have enough energy to heal`);
+            break;
+        case ERR_INVALID_TARGET:
+            console.log(`Tower ${thisTower.id} was passed an Invalid Target: ${target.id}`);
+            break;
+        default:
+            console.log(`Tower ${thisTower.id}: Error ${result}`);
+    }
+    return false;
+}
+
+/** @param {StructureTower} thisTower **/
+function repairStructures (thisTower) {
+    let containerRepairs = thisTower.pos.findInRange(FIND_STRUCTURES, 15, { 
+        filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER}});
+    let pendingRepairs = containerRepairs.concat(_.sortBy(thisTower.pos.findInRange(FIND_STRUCTURES, 15, { 
+        filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_CONTAINER}}), (struct) => struct.hits));
+
+    if (pendingRepairs.length == 0) { return false }
+    let result = thisTower.repair(pendingRepairs[0]);
+    switch (result){
+        case OK:
+            console.log(`Tower ${thisTower.id} repaired ${pendingRepairs[0].id} (${pendingRepairs[0].hits}/${pendingRepairs[0].hitsMax})`);
+            return true;
+        case ERR_NOT_ENOUGH_ENERGY:
+            console.log(`Tower ${thisTower.id} does not have enough energy to do repairs`);
+            break;
+        case ERR_INVALID_TARGET:
+            console.log(`Tower ${thisTower.id} was passed an Invalid Target: ${pendingRepairs[0].id}`);
+            break;
+        default:
+            console.log(`Tower ${thisTower.id}: Error ${result}`);
+    }
+    return false;
+}    
