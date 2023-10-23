@@ -2,6 +2,16 @@ var helper = require('helper');
 
 //Defensive Functions
 var processDefense = {
+    scanForHostiles: function(roomName) {
+        let hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
+        if (hostiles.length > 0){
+            if (Memory.maxDefenders < hostiles.length) {
+                Memory.maxDefenders = hostiles.length;
+                console.log(`Set Defender Limit to ${Memory.maxDefenders} to counter hostile creeps`);
+            }
+        }
+    },
+
     checkForKeeperLair: function(roomName){
         if (Memory.keeperLair == -1) { return };
         let room = Game.rooms[roomName];

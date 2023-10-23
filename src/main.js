@@ -55,6 +55,7 @@ module.exports.loop = function () {
         if (!Memory.spawns[i]) { Memory.spawns[i] = { hasRoads: 0} }
         let spawner = Game.spawns[i];
         processDefense.checkForKeeperLair(Game.spawns[i].room.name);
+        processDefense.scanForHostiles(Game.spawns[i].room.name);
         if (isAvailable(i)) {processCreeps.checkForSpawn(i)}
         if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){
             if (spawner.memory.hasRoads == 0) {construction.checkSpawnRoads(i)}
