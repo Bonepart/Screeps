@@ -33,6 +33,11 @@ exports.viking = [
     [ ],
     [ TOUGH, TOUGH, RANGED_ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 710
 ];
+exports.gofer = [
+    [ WORK, CARRY, MOVE, MOVE], //Cost 250
+    [ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], //Cost 400
+    [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 600
+];
 
 //Explorer Bodytypes
 exports.longhauler = [
