@@ -71,6 +71,7 @@ module.exports.loop = function () {
     let maintOffset = 0;
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
+        if (creep.spawning) { continue }
         switch(creep.memory.role){
             case 'builder':
                 roleBuilder.run(creep);
