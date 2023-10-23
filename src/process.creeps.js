@@ -114,7 +114,8 @@ let processCreeps = {
         }
         for(let name in Memory.rooms) {
             for (let exit in Memory.rooms[name].exits){
-                if (Game.getObjectById(Memory.rooms[name].exits[exit].id) == null) {
+
+                if ( Memory.rooms[name].exits[exit].id != null && Game.getObjectById(Memory.rooms[name].exits[exit].id) == null) {
                     Memory.rooms[name].exits[exit].id = null;
                     console.log(`Clearing invalid ID from ${name}-E${exit}`);
                 }
