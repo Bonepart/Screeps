@@ -21,7 +21,7 @@ let processCreeps = {
         let numTowers = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_TOWER}}).length;
 
         //if (Memory.maxUpgraders < (1 + ((spawner.room.controller.level - 1) * 2))) {Memory.maxUpgraders = (1 + ((spawner.room.controller.level - 1) * 2))};
-        if (Memory.maxMaint < (ceil(numRoads / 50) + ceil(numRamparts / 4)) - numTowers) {Memory.maxMaint = (ceil(numRoads / 50) + ceil(numRamparts / 4)) - numTowers};
+        //if (Memory.maxMaint < (ceil(numRoads / 50) + ceil(numRamparts / 4)) - numTowers) {Memory.maxMaint = (ceil(numRoads / 50) + ceil(numRamparts / 4)) - numTowers};
 
         if (zombieList == 0){
             if (builderList.length > Memory.maxBuilders){ 
