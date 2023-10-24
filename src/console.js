@@ -9,7 +9,7 @@ var consoleCommands = {
     countCreeps: function() {
         let roleList = [];
         for (let i in Game.creeps){
-            if(!roleList[Game.creeps[i].memory.role]){ roleList[Game.creeps[i].memory.role] = {role: Game.creeps[i].memory.role, count: 1}}
+            if(typeof roleList[Game.creeps[i].memory.role === undefined]){ roleList[Game.creeps[i].memory.role] = {role: Game.creeps[i].memory.role, count: 1}}
             else { roleList[Game.creeps[i].memory.role].count++}
         }
         for (let role in roleList){
@@ -20,7 +20,7 @@ var consoleCommands = {
 
     listCreeps: function() {
         for (let i in Game.creeps){
-            console.log(`${Game.creeps[i].name}\tT${Game.creeps[i].memory.tier + 1}\t Body Size: ${Game.creeps[i].body.length}`);
+            console.log(`${Game.creeps[i].name.padEnd(14)}T${Game.creeps[i].memory.tier}\t Body Size: ${Game.creeps[i].body.length}`);
         }
         return 'Complete';
     },
@@ -37,35 +37,8 @@ var consoleCommands = {
     },
 
     changeMax: function(role, newMax) {
-        switch(role){
-            case 'harvester':
-                Memory.maxHarvesters = newMax;
-                return `maxHarvesters = ${Memory.maxHarvesters}`;
-            case ROLE_BUILDER:
-                Memory.role.limit[ROLE_BUILDER] = newMax;
-                return `role.limit[ROLE_BUILDER] = ${Memory.role.limit[ROLE_BUILDER]}`;
-            case ROLE_UPGRADER:
-                Memory.role.limit[ROLE_UPGRADER] = newMax;
-                return `role.limit[ROLE_UPGRADER] = ${Memory.role.limit[ROLE_UPGRADER]}`;
-            case ROLE_MAINTENANCE:
-            case 'maint':
-                Memory.role.limit[ROLE_MAINTENANCE] = newMax;
-                return `role.limit[ROLE_MAINTENANCE] = ${Memory.role.limit[ROLE_MAINTENANCE]}`;
-            case 'defender':
-                Memory.maxDefenders = newMax;
-                return `maxDefenders = ${Memory.maxDefenders}`;
-            case 'ranged':
-                Memory.maxRanged = newMax;
-                return `maxRanged = ${Memory.maxRanged}`;
-            case ARMY_HEALER:
-                Memory.role.limit[ARMY_HEALER] = newMax;
-                return `role.limit[ARMY_HEALER] = ${Memory.role.limit[ARMY_HEALER]}`;
-            case 'longhauler':
-                Memory.maxLonghaulers = newMax;
-                return `maxLonghaulers = ${Memory.maxLonghaulers}`;
-            default:
-                return `${role} is unsupported`;
-        }
+        Memory.role.limit[role] = newMax;
+        return `${role} limit = ${Memory.role.limit[role]}`;
     },
 
     buildRoad: function(flagStart, flagEnd, deleteFlags=false){
@@ -89,7 +62,7 @@ var consoleCommands = {
     },
 
     zombie: function(creepName) {
-        Game.creeps[creepName].memory.role = "zombie";
+        Game.creeps[creepName].memory.role = ZOMBIE;
         return `${creepName} is now a zombie`;
     }    
 }

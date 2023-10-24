@@ -80,10 +80,10 @@ module.exports.loop = function () {
             case ROLE_BUILDER:
                 roleBuilder.run(creep);
                 break;
-            case 'defender':
+            case ARMY_DEFENDER:
                 roleDefender.run(creep);
                 break;
-            case 'harvester':
+            case ROLE_HARVESTER:
                 roleHarvester.run(creep);
                 break;
             case ARMY_HEALER:
@@ -93,16 +93,16 @@ module.exports.loop = function () {
                 roleMaint.run(creep, maintOffset);
                 maintOffset++;
                 break;
-            case 'ranged':
+            case ARMY_RANGED:
                 roleRanged.run(creep);
                 break;
             case ROLE_UPGRADER:
                 roleUpgrader.run(creep);
                 break;
-            case 'zombie':
+            case ZOMBIE:
                 roleZombie.run(creep);
                 break;
-            case 'longhauler':
+            case ROLE_LONGHAUL:
                 roleLonghaul.run(creep);
                 break;
             default:
