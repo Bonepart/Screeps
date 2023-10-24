@@ -34,6 +34,10 @@ module.exports.loop = function () {
 
         if (Memory.rooms === undefined) { Memory.rooms = {}};
         if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
+
+        //Determine Room State
+        if (thisRoom.controller.my) { thisRoom.memory.roomState = ROOM_OWNED }
+        else if (thisRoom.controller.owner != undefined && thisRoom.controller.owner.username != ME) { thisRoom.memory.roomState = ROOM_HOSTILE }
         
         if (thisRoom.energyCapacityAvailable >= 800) { 
             thisRoom.memory.spawnTier = 3;
