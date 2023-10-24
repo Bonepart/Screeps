@@ -5,30 +5,31 @@ let processDefense = {
     scanForHostiles: function(roomName) {
         let hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
         if (hostiles.length > 0){
-            if (Memory.roles.limit[ARMY_DEFENDER] < hostiles.length) {
+            console.log(`WARMING!! ${hostiles.length} Hostiles in ${roomName}`);
+            /*if (Memory.roles.limit[ARMY_DEFENDER] < hostiles.length) {
                 Memory.roles.limit[ARMY_DEFENDER] = hostiles.length;
                 console.log(`Set Defender Limit to ${Memory.roles.limit[ARMY_DEFENDER]} to counter hostile creeps`);
-            }
+            }*/
         }
     },
 
     checkForKeeperLair: function(roomName){
-        if (Memory.keeperLair == -1) { return };
         let room = Game.rooms[roomName];
-        if (!Memory.keeperLair){
+        if (room.memory.keeperLair == -1) { return };
+        if (room.memory.keeperLair === undefined){
             let keeperLair = room.find(FIND_HOSTILE_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_KEEPER_LAIR}});
             if (keeperLair.length > 0){
-                Memory.keeperLair = {sourceID: '', threatActive: false}
+                room.memory.keeperLair = {sourceID: null, threatActive: false}
                 let sources = room.find(FIND_SOURCES);
                 let closestRange = Infinity;
                 for( let i in sources) {
                     let range = sources[i].pos.getRangeTo(keeperLair[0].pos);
                     if (range < closestRange){
-                        Memory.keeperLair.sourceID = sources[i].id;
+                        room.memory.keeperLair.sourceID = sources[i].id;
                         closestRange = range;
                     }
                 }
-            } else {Memory.keeperLair = -1}
+            } else {room.memory.keeperLair = -1}
         }
 
         let hostiles = room.find(FIND_HOSTILE_CREEPS);
@@ -45,7 +46,7 @@ let processDefense = {
                 
             }
         }
-        Memory.keeperLair.threatActive = keeperCreeperFound;
+        room.memory.keeperLair.threatActive = keeperCreeperFound;
     }
 }
 module.exports = processDefense;
