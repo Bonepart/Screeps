@@ -37,7 +37,7 @@ module.exports.loop = function () {
         
         if (thisRoom.energyCapacityAvailable >= 800) { 
             thisRoom.memory.spawnTier = 3;
-            //explorer.run(roomName) 
+            explorer.run(roomName) 
         }
         else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
         else { thisRoom.memory.spawnTier = 1 };

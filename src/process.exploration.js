@@ -36,7 +36,7 @@ let processExploration = {
         }
 
 
-        //spawnExplorers(thisRoom.memory.spawns[0].name);
+        spawnExplorers(thisRoom.memory.spawns[0].name);
 
 
     }
