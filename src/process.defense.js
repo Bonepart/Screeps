@@ -1,7 +1,7 @@
-var helper = require('helper');
+let helper = require('helper');
 
 //Defensive Functions
-var processDefense = {
+let processDefense = {
     scanForHostiles: function(roomName) {
         let hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
         if (hostiles.length > 0){

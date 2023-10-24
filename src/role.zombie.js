@@ -1,5 +1,5 @@
 
-var roleZombie = {
+let roleZombie = {
 
     /** @param {Creep} creep */
     run: function(creep){

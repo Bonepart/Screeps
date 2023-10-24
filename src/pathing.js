@@ -1,6 +1,6 @@
-var helper = require('helper');
+let helper = require('helper');
 
-var pathing = {
+let pathing = {
 
     findClosestSource: function (pos){
         return pos.findClosestByPath(FIND_SOURCES_ACTIVE, {filter: (source) => {

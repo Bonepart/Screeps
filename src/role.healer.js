@@ -1,8 +1,8 @@
-var processRenewal = require('process.renewal');
-var helper = require('helper');
-var pathing = require('pathing');
+let processRenewal = require('process.renewal');
+let helper = require('helper');
+let pathing = require('pathing');
 
-var roleHealer = {
+let roleHealer = {
 
     /** @param {Creep} creep **/
     run: function (creep) {

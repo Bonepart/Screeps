@@ -14,7 +14,7 @@ const roleDefinitions = [
     [ROLE_CLAIMER, 0]
 ];
 
-var config = {
+let config = {
 
     loadRoles: function(){
         if (Memory.roles === undefined) { Memory.roles = { limit: {}, index: {} } }
@@ -29,7 +29,7 @@ var config = {
         if (Memory.sourceList === undefined){
             console.log('Building sourceList');
             let sData = [];
-            var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
+            let sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
             for (let source in sources){
                 let newData = {};
                 newData.id = sources[source].id;

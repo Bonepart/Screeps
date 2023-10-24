@@ -1,4 +1,4 @@
-var helper = {
+let helper = {
 
     stringifyToLog: function (object) {
         let str = JSON.stringify(object, null, 4);

@@ -1,8 +1,8 @@
-var processRenewal = require('process.renewal');
-var helper = require('helper');
-var pathing = require('pathing');
+let processRenewal = require('process.renewal');
+let helper = require('helper');
+let pathing = require('pathing');
 
-var roleHarvester = {
+let roleHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -36,7 +36,7 @@ var roleHarvester = {
             }
         }
         else {
-            var targets = creep.room.find(FIND_STRUCTURES, {
+            let targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
                                 structure.structureType == STRUCTURE_SPAWN) && 
@@ -49,8 +49,8 @@ var roleHarvester = {
             targets = targets.concat(creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => { return (structure.structureType == STRUCTURE_CONTAINER ) && 
                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}));
-            var parkingFlag = creep.room.find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Parking"}});
-            var buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
+            let parkingFlag = creep.room.find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Parking"}});
+            let buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
             if(targets.length > 0) {
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});

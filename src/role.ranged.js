@@ -1,7 +1,7 @@
-var helper = require('helper');
-var pathing = require('pathing');
+let helper = require('helper');
+let pathing = require('pathing');
 
-var roleRanged = {
+let roleRanged = {
 
 }
 module.exports = roleRanged;

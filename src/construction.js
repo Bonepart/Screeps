@@ -1,7 +1,7 @@
-var helper = require('helper');
-var pathing = require('pathing');
+let helper = require('helper');
+let pathing = require('pathing');
 
-var construction = {
+let construction = {
 
     checkSpawnRoads: function (spawnIndex) {
         if (Memory.spawns[spawnIndex].hasRoads != -1){
@@ -55,7 +55,7 @@ var construction = {
 
     buildSourceRoads: function (spawnIndex) {
         let spawner = Game.spawns[spawnIndex];
-        var numConstructionSites = spawner.room.find(FIND_CONSTRUCTION_SITES).length;
+        let numConstructionSites = spawner.room.find(FIND_CONSTRUCTION_SITES).length;
         //console.log(`numConstructionSites = ${numConstructionSites}`)
         for (let i in Memory.sourceList){
             switch(Memory.sourceList[i].roadStatus){
@@ -100,7 +100,7 @@ var construction = {
     },
 
     buildControllerRoad: function(roomController) {
-        var numConstructionSites = roomController.room.find(FIND_CONSTRUCTION_SITES, { filter: (site) => {return site.structureType == STRUCTURE_ROAD}}).length;
+        let numConstructionSites = roomController.room.find(FIND_CONSTRUCTION_SITES, { filter: (site) => {return site.structureType == STRUCTURE_ROAD}}).length;
 
         switch(roomController.room.memory.controllerRoad){
             case 0:

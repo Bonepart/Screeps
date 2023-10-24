@@ -1,4 +1,4 @@
-var processRenewal = {
+let processRenewal = {
 
     /** @param {Creep} creep **/
     renew: function(creep){

@@ -1,6 +1,6 @@
-var processRenewal = require('process.renewal');
-var helper = require('helper');
-var roleDefender = {
+let processRenewal = require('process.renewal');
+let helper = require('helper');
+let roleDefender = {
 
     /** @param {Creep} creep **/
     run: function(creep){

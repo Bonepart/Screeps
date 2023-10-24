@@ -56,7 +56,7 @@ let roleLonghaul = {
         }
         else {
             let originRoom = Game.rooms[creep.memory.originRoom];
-            var targets = originRoom.find(FIND_STRUCTURES, {
+            let targets = originRoom.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
                                 structure.structureType == STRUCTURE_SPAWN) && 
@@ -69,8 +69,8 @@ let roleLonghaul = {
             targets = targets.concat(originRoom.find(FIND_STRUCTURES, {
                 filter: (structure) => { return (structure.structureType == STRUCTURE_CONTAINER ) && 
                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}));
-            var parkingFlag = originRoom.find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Parking"}});
-            var buildables = originRoom.find(FIND_CONSTRUCTION_SITES);
+            let parkingFlag = originRoom.find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Parking"}});
+            let buildables = originRoom.find(FIND_CONSTRUCTION_SITES);
             if(targets.length > 0) {
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});

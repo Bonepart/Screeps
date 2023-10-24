@@ -1,8 +1,8 @@
-var processRenewal = require('process.renewal');
-var helper = require('helper');
-var pathing = require('pathing');
+let processRenewal = require('process.renewal');
+let helper = require('helper');
+let pathing = require('pathing');
 
-var roleBuilder = {
+let roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -19,14 +19,14 @@ var roleBuilder = {
 	    if(creep.memory.building) {
             let defensiveSites = creep.room.find(FIND_CONSTRUCTION_SITES, { filter: (site) => { 
                 return site.structureType == STRUCTURE_WALL || site.structureType == STRUCTURE_RAMPART}});
-	        var targets = defensiveSites.concat(creep.room.find(FIND_CONSTRUCTION_SITES, {filter: (site) => { 
+	        let targets = defensiveSites.concat(creep.room.find(FIND_CONSTRUCTION_SITES, {filter: (site) => { 
                 return site.structureType != STRUCTURE_WALL && site.structureType != STRUCTURE_RAMPART}}));
-            if(targets.length) {
+            if(targets.length > 0) {
                 if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#0000aa'}});
                 }
             }else{
-                var targets = creep.room.find(FIND_STRUCTURES, {
+                let targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
                                 structure.structureType == STRUCTURE_SPAWN ||

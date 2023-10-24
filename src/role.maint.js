@@ -1,8 +1,8 @@
-var processRenewal = require('process.renewal');
-var helper = require('helper');
-var pathing = require('pathing');
+let processRenewal = require('process.renewal');
+let helper = require('helper');
+let pathing = require('pathing');
 
-var roleMaintenance = {
+let roleMaintenance = {
 
     /** @param {Creep} creep **/
     run: function(creep, offset) {
@@ -41,7 +41,7 @@ var roleMaintenance = {
                 }
                 if (!Memory.repairPersistance) { creep.memory.repairID = null }
             } else {
-                var buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
+                let buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
                 if (buildables.length > 0) {
                     if (creep.build(buildables[0]) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(buildables[0], {visualizePathStyle: {stroke: '#0000aa'}});

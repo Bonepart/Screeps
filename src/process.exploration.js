@@ -1,7 +1,7 @@
 let bodytype = require('constants.bodytype');
-var helper = require('helper');
+let helper = require('helper');
 
-var processExploration = {
+let processExploration = {
     
     run: function (roomName) {
         thisRoom = Game.rooms[roomName];

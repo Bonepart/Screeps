@@ -1,5 +1,5 @@
 
-var structureTower = {
+let structureTower = {
     
     /** @param {StructureTower} thisTower **/
     run: function(thisTower){

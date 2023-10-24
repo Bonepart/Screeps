@@ -1,7 +1,7 @@
-var construction = require('construction');
-var helper = require('helper');
+let construction = require('construction');
+let helper = require('helper');
 
-var consoleCommands = {
+let consoleCommands = {
     displayTickLimit: function() {
         console.log(`tickLimit = ${Game.cpu.tickLimit}`);
     },
