@@ -16,3 +16,9 @@ global.ROLE_CLAIMER = 'claimer';
 
 //Zombie
 global.ZOMBIE = 'zombie';
+
+//Room States
+global.ROOM_HOSTILE = -1;
+global.ROOM_NEUTRAL = 0;
+global.ROOM_RESERVED = 1;
+global.ROOM_OWNED = 2;
