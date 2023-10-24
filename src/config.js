@@ -17,19 +17,23 @@ const roleDefinitions = [
 var config = {
 
     memory: function(){
-        if(typeof Memory.repairPersistance === undefined) { Memory.repairPersistance = false }
+        if(Memory.repairPersistance === undefined) { Memory.repairPersistance = false }
     },
 
     loadRoles: function(){
-        if (typeof Memory.roles === undefined) { Memory.roles = { limit: {}, index: {} } }
+        console.log('Loading Roles');
+        if (Memory.roles === undefined) { 
+            console.log('Role');
+            Memory.roles = { limit: {}, index: {} } }
+        console.log(Memory.roles);
         for (let role in roleDefinitions) {
-            if (typeof Memory.roles.limit[role[0]] === undefined) { Memory.roles.limit[role[0]] = role[1] }
-            if (typeof Memory.roles.index[role[0]] === undefined) { Memory.roles.index[role[0]] = 1 }
+            if (Memory.roles.limit[role[0]] === undefined) { Memory.roles.limit[role[0]] = role[1] }
+            if (Memory.roles.index[role[0]] === undefined) { Memory.roles.index[role[0]] = 1 }
         }
     },
 
     sourceData: function(){
-        if (typeof Memory.sourceList === undefined){
+        if (Memory.sourceList === undefined){
             console.log('Building sourceList');
             let sData = [];
             var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);

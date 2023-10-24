@@ -9,7 +9,7 @@ var consoleCommands = {
     countCreeps: function() {
         let roleList = [];
         for (let i in Game.creeps){
-            if(typeof roleList[Game.creeps[i].memory.role === undefined]){ roleList[Game.creeps[i].memory.role] = {role: Game.creeps[i].memory.role, count: 1}}
+            if(roleList[Game.creeps[i].memory.role === undefined]){ roleList[Game.creeps[i].memory.role] = {role: Game.creeps[i].memory.role, count: 1}}
             else { roleList[Game.creeps[i].memory.role].count++}
         }
         for (let role in roleList){

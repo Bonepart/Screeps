@@ -19,20 +19,19 @@ let processDefense = require('process.defense');
 let explorer = require('process.exploration');
 let construction = require('construction');
 
-
+config.memory();
+config.loadRoles();
 config.sourceData();
 
 module.exports.loop = function () {
+    console.log('Start of Main');
     Game.functions = require('console');
     processCreeps.clearMemory();
-
-    config.memory();
-    config.loadRoles();
     
     for (let roomName in Game.rooms){
         let thisRoom = Game.rooms[roomName];
-        if (typeof Memory.rooms === undefined) { Memory.rooms = {}};
-        if (typeof Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
+        if (Memory.rooms === undefined) { Memory.rooms = {}};
+        if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         
         if (thisRoom.energyCapacityAvailable >= 800) { 
             thisRoom.memory.spawnTier = 3;
@@ -55,8 +54,8 @@ module.exports.loop = function () {
     }
     for (let i in Game.spawns){
         let roomName = Game.spawns[i].room.name;
-        if (typeof Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
-        if (typeof Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
+        if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
+        if (Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
         processDefense.checkForKeeperLair(Game.spawns[i].room.name);
         processDefense.scanForHostiles(Game.spawns[i].room.name);
