@@ -28,6 +28,10 @@ module.exports.loop = function () {
     
     for (let roomName in Game.rooms){
         let thisRoom = Game.rooms[roomName];
+        if(Game.time % 20 == 0){
+            console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
+        }
+
         if (Memory.rooms === undefined) { Memory.rooms = {}};
         if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         
@@ -37,9 +41,9 @@ module.exports.loop = function () {
         }
         else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
         else { thisRoom.memory.spawnTier = 1 };
-        if(Game.time % 20 == 0){
-            console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
-        }
+
+        processDefense.checkForKeeperLair(roomName);
+        processDefense.scanForHostiles(roomName);
 
         let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
         for (let structure in structuresToRun){
@@ -55,8 +59,7 @@ module.exports.loop = function () {
         if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
         if (Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
-        processDefense.checkForKeeperLair(Game.spawns[i].room.name);
-        processDefense.scanForHostiles(Game.spawns[i].room.name);
+
         if (isAvailable(i)) {processCreeps.checkForSpawn(i)}
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
             if (spawner.memory.hasRoads == 0) {construction.checkSpawnRoads(i)}

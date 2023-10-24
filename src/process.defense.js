@@ -5,9 +5,9 @@ let processDefense = {
     scanForHostiles: function(roomName) {
         let hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
         if (hostiles.length > 0){
-            if (Memory.maxDefenders < hostiles.length) {
-                Memory.maxDefenders = hostiles.length;
-                console.log(`Set Defender Limit to ${Memory.maxDefenders} to counter hostile creeps`);
+            if (Memory.roles.limit[ARMY_DEFENDER] < hostiles.length) {
+                Memory.roles.limit[ARMY_DEFENDER] = hostiles.length;
+                console.log(`Set Defender Limit to ${Memory.roles.limit[ARMY_DEFENDER]} to counter hostile creeps`);
             }
         }
     },

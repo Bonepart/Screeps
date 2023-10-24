@@ -5,12 +5,12 @@ let processExploration = {
     
     run: function (roomName) {
         thisRoom = Game.rooms[roomName];
-        if (!Memory.maxLonghaulers) {
-            Memory.maxLonghaulers = 1;
-            Memory.longhaulerIndex = 1;
+        if (Memory.roles.limit[ROLE_LONGHAUL] === undefined) {
+            Memory.roles.limit[ROLE_LONGHAUL] = 0;
+            Memory.roles.index[ROLE_LONGHAUL] = 1;
         }
 
-        if (!thisRoom.memory.exits){
+        if (thisRoom.memory.exits === undefined){
             thisRoom.memory.exits = {};
             let exitInfo = Game.map.describeExits(roomName);
             if(exitInfo[1]){
@@ -36,7 +36,7 @@ let processExploration = {
         }
 
 
-        spawnExplorers(thisRoom.memory.spawns[0].name);
+        //spawnExplorers(thisRoom.memory.spawns[0].name);
 
 
     }
@@ -47,7 +47,7 @@ function spawnExplorers(spawnIndex) {
     let spawner = Game.spawns[spawnIndex];
     let longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == 'longhauler');
 
-    if (longhaulList.length < Memory.maxLonghaulers){
+    if (longhaulList.length < Memory.roles.limit[ROLE_LONGHAUL]){
         newName = 'longhaul' + Memory.longhaulerIndex;
         result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: 'longhauler', originRoom: spawner.room.name, assignedRoom: null}});
         while (result === -3){
