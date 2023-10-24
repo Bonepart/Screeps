@@ -29,7 +29,7 @@ module.exports.loop = function () {
         if (!Memory.rooms[roomName]) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         if (thisRoom.energyCapacityAvailable >= 800) { 
             thisRoom.memory.spawnTier = 2;
-            explorer.run(roomName) 
+            //explorer.run(roomName) 
         }
         else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
         else { thisRoom.memory.spawnTier = 0 };
