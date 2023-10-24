@@ -47,7 +47,7 @@ let roleMaintenance = {
                         creep.moveTo(buildables[0], {visualizePathStyle: {stroke: '#0000aa'}});
                     }
                 } else {
-                    targets = creep.room.find(FIND_STRUCTURES, {
+                    let targets = creep.room.find(FIND_STRUCTURES, {
                         filter: (structure) => {
                             return (structure.structureType == STRUCTURE_EXTENSION ||
                                     structure.structureType == STRUCTURE_SPAWN ||
