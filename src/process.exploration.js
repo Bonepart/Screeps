@@ -45,17 +45,17 @@ module.exports = processExploration;
 
 function spawnExplorers(spawnIndex) {
     let spawner = Game.spawns[spawnIndex];
-    let longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == 'longhauler');
+    let longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_LONGHAUL);
 
     if (longhaulList.length < Memory.roles.limit[ROLE_LONGHAUL]){
-        newName = 'longhaul' + Memory.longhaulerIndex;
-        result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: 'longhauler', originRoom: spawner.room.name, assignedRoom: null}});
+        newName = ROLE_LONGHAUL + Memory.roles.index[ROLE_LONGHAUL];
+        result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: ROLE_LONGHAUL, originRoom: spawner.room.name, assignedRoom: null}});
         while (result === -3){
-            Memory.longhaulerIndex++;
-            newName = 'harvester' + Memory.longhaulerIndex;
-            result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: 'longhauler', assignedRoom: null}});
+            Memory.roles.index[ROLE_LONGHAUL]++;
+            newName = ROLE_LONGHAUL + Memory.roles.index[ROLE_LONGHAUL];
+            result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: ROLE_LONGHAUL, assignedRoom: null}});
         }
-        if(result == OK){Memory.longhaulerIndex++};
+        if(result == OK){Memory.roles.index[ROLE_LONGHAUL]++};
         logSpawnResults(result, newName);
     }
 }
