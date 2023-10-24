@@ -1,3 +1,5 @@
+global.ME = 'Bonepart';
+
 //Basic Creeps
 global.ROLE_BUILDER = 'builder';
 global.ROLE_HARVESTER = 'harvester';
