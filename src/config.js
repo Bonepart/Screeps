@@ -16,13 +16,16 @@ const roleDefinitions = [
 
 var config = {
 
+    memory: function(){
+        if(typeof Memory.repairPersistance === undefined) { Memory.repairPersistance = false }
+    },
+
     loadRoles: function(){
         if (typeof Memory.roles === undefined) { Memory.roles = { limit: {}, index: {} } }
         for (let role in roleDefinitions) {
             if (typeof Memory.roles.limit[role[0]] === undefined) { Memory.roles.limit[role[0]] = role[1] }
             if (typeof Memory.roles.index[role[0]] === undefined) { Memory.roles.index[role[0]] = 1 }
         }
-        if(typeof Memory.repairPersistance === undefined) { Memory.repairPersistance = false }
     },
 
     sourceData: function(){

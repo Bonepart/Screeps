@@ -26,6 +26,7 @@ module.exports.loop = function () {
     Game.functions = require('console');
     processCreeps.clearMemory();
 
+    config.memory();
     config.loadRoles();
     
     for (let roomName in Game.rooms){
@@ -34,11 +35,11 @@ module.exports.loop = function () {
         if (typeof Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         
         if (thisRoom.energyCapacityAvailable >= 800) { 
-            thisRoom.memory.spawnTier = 2;
+            thisRoom.memory.spawnTier = 3;
             //explorer.run(roomName) 
         }
         else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
-        else { thisRoom.memory.spawnTier = 0 };
+        else { thisRoom.memory.spawnTier = 1 };
         if(Game.time % 20 == 0){
             console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
         }
@@ -60,7 +61,7 @@ module.exports.loop = function () {
         processDefense.checkForKeeperLair(Game.spawns[i].room.name);
         processDefense.scanForHostiles(Game.spawns[i].room.name);
         if (isAvailable(i)) {processCreeps.checkForSpawn(i)}
-        if(_.filter(Game.creeps, (creep) => creep.memory.role == 'builder').length > 0){
+        if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
             if (spawner.memory.hasRoads == 0) {construction.checkSpawnRoads(i)}
             else { 
                 construction.checkExtensions(i);
@@ -76,7 +77,7 @@ module.exports.loop = function () {
         let creep = Game.creeps[name];
         if (creep.spawning) { continue }
         switch(creep.memory.role){
-            case 'builder':
+            case ROLE_BUILDER:
                 roleBuilder.run(creep);
                 break;
             case 'defender':
@@ -85,17 +86,17 @@ module.exports.loop = function () {
             case 'harvester':
                 roleHarvester.run(creep);
                 break;
-            case 'healer':
+            case ARMY_HEALER:
                 roleHealer.run(creep);
                 break;
-            case 'maintenance':
+            case ROLE_MAINTENANCE:
                 roleMaint.run(creep, maintOffset);
                 maintOffset++;
                 break;
             case 'ranged':
                 roleRanged.run(creep);
                 break;
-            case 'upgrader':
+            case ROLE_UPGRADER:
                 roleUpgrader.run(creep);
                 break;
             case 'zombie':

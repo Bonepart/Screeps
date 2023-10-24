@@ -41,25 +41,25 @@ var consoleCommands = {
             case 'harvester':
                 Memory.maxHarvesters = newMax;
                 return `maxHarvesters = ${Memory.maxHarvesters}`;
-            case 'builder':
-                Memory.maxBuilders = newMax;
-                return `maxBuilders = ${Memory.maxBuilders}`;
-            case 'upgrader':
-                Memory.maxUpgraders = newMax;
-                return `maxUpgraders = ${Memory.maxUpgraders}`;
-            case 'maintenance':
+            case ROLE_BUILDER:
+                Memory.role.limit[ROLE_BUILDER] = newMax;
+                return `role.limit[ROLE_BUILDER] = ${Memory.role.limit[ROLE_BUILDER]}`;
+            case ROLE_UPGRADER:
+                Memory.role.limit[ROLE_UPGRADER] = newMax;
+                return `role.limit[ROLE_UPGRADER] = ${Memory.role.limit[ROLE_UPGRADER]}`;
+            case ROLE_MAINTENANCE:
             case 'maint':
-                Memory.maxMaint = newMax;
-                return `maxMaint = ${Memory.maxMaint}`;
+                Memory.role.limit[ROLE_MAINTENANCE] = newMax;
+                return `role.limit[ROLE_MAINTENANCE] = ${Memory.role.limit[ROLE_MAINTENANCE]}`;
             case 'defender':
                 Memory.maxDefenders = newMax;
                 return `maxDefenders = ${Memory.maxDefenders}`;
             case 'ranged':
                 Memory.maxRanged = newMax;
                 return `maxRanged = ${Memory.maxRanged}`;
-            case 'healer':
-                Memory.maxHealers = newMax;
-                return `maxHealers = ${Memory.maxHealers}`;
+            case ARMY_HEALER:
+                Memory.role.limit[ARMY_HEALER] = newMax;
+                return `role.limit[ARMY_HEALER] = ${Memory.role.limit[ARMY_HEALER]}`;
             case 'longhauler':
                 Memory.maxLonghaulers = newMax;
                 return `maxLonghaulers = ${Memory.maxLonghaulers}`;
