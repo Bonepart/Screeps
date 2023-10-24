@@ -6,6 +6,13 @@ let consoleCommands = {
         console.log(`tickLimit = ${Game.cpu.tickLimit}`);
     },
 
+    assignRoomToCreep: function(creepName, roomName){
+        let creep = Game.creeps[creepName];
+        if (creep === undefined) { return `${creepName} is not a valid Creep` };
+        creep.memory.assignedRoom = roomName;    
+        return `${creepName} is now assigned to ${creep.memory.assignedRoom}`;
+    },
+
     countCreeps: function() {
         let roleList = [];
         for (let i in Game.creeps){
