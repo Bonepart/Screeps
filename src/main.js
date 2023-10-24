@@ -1,3 +1,6 @@
+require('constants');
+let config = require('config');
+
 let roleBuilder = require('role.builder');
 let roleDefender = require('role.defender');
 let roleHarvester = require('role.harvester');
@@ -15,18 +18,21 @@ let processCreeps = require('process.creeps');
 let processDefense = require('process.defense');
 let explorer = require('process.exploration');
 let construction = require('construction');
-let config = require('config');
 
-config.memory();
+
 config.sourceData();
 
 module.exports.loop = function () {
     Game.functions = require('console');
     processCreeps.clearMemory();
+
+    config.loadRoles();
+    
     for (let roomName in Game.rooms){
         let thisRoom = Game.rooms[roomName];
-        if (!Memory.rooms) { Memory.rooms = {}};
-        if (!Memory.rooms[roomName]) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
+        if (typeof Memory.rooms === undefined) { Memory.rooms = {}};
+        if (typeof Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
+        
         if (thisRoom.energyCapacityAvailable >= 800) { 
             thisRoom.memory.spawnTier = 2;
             explorer.run(roomName) 
@@ -48,11 +54,8 @@ module.exports.loop = function () {
     }
     for (let i in Game.spawns){
         let roomName = Game.spawns[i].room.name;
-        if (!Memory.rooms[roomName].spawns) { Memory.rooms[roomName].spawns = []};
-        if (!Memory.rooms[roomName].spawns[0]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
-
-        if (!Memory.spawns) { Memory.spawns = {}};
-        if (!Memory.spawns[i]) { Memory.spawns[i] = { hasRoads: 0} }
+        if (typeof Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
+        if (typeof Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
         processDefense.checkForKeeperLair(Game.spawns[i].room.name);
         processDefense.scanForHostiles(Game.spawns[i].room.name);

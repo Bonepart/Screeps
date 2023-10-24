@@ -1,53 +1,32 @@
+const roleDefinitions = [
+    //<roleName>, <maxLimit>
+    [ROLE_BUILDER, 2],
+    [ROLE_HARVESTER, 2],
+    [ROLE_UPGRADER, 1],
+    [ROLE_MAINTENANCE, 1],
+
+    [ARMY_DEFENDER, 0],
+    [ARMY_VIKING, 0],
+    [ARMY_RANGED, 0],
+    [ARMY_HEALER, 0],
+
+    [ROLE_LONGHAUL, 0],
+    [ROLE_CLAIMER, 0]
+];
+
 var config = {
-    memory: function(){
-        if(!Memory.maxBuilders){
-            Memory.maxBuilders = 4;
-        }
-        if(!Memory.maxDefenders){
-            Memory.maxDefenders = 0;
-        }
-        if(!Memory.maxHarvesters){
-            Memory.maxHarvesters = 2;
-        }
-        if(!Memory.maxHealers){
-            Memory.maxHealers = 0;
-        }
-        if(!Memory.maxMaint){
-            Memory.maxMaint = 0;
-        }
-        if(!Memory.maxRanged){
-            Memory.maxRanged = 0;
-        }
-        if(!Memory.maxUpgraders){
-            Memory.maxUpgraders = 1;
-        }
 
-        if(!Memory.builderIndex){
-            Memory.builderIndex = 1;
+    loadRoles: function(){
+        if (typeof Memory.roles === undefined) { Memory.roles = { limit: {}, index: {} } }
+        for (let role in roleDefinitions) {
+            if (typeof Memory.roles.limit[role[0]] === undefined) { Memory.roles.limit[role[0]] = role[1] }
+            if (typeof Memory.roles.index[role[0]] === undefined) { Memory.roles.index[role[0]] = 1 }
         }
-        if(!Memory.defenderIndex){
-            Memory.defenderIndex = 1;
-        }
-        if(!Memory.harvesterIndex){
-            Memory.harvesterIndex = 1;
-        }
-        if(!Memory.healerIndex){
-            Memory.healerIndex = 1;
-        }
-        if(!Memory.maintIndex){
-            Memory.maintIndex = 1;
-        }
-        if(!Memory.rangedIndex){
-            Memory.rangedIndex = 1;
-        }
-        if(!Memory.upgraderIndex){
-            Memory.upgraderIndex = 1;
-        }
-
-        if(!Memory.repairPersistance) { Memory.repairPersistance = false }
+        if(typeof Memory.repairPersistance === undefined) { Memory.repairPersistance = false }
     },
+
     sourceData: function(){
-        if (!Memory.sourceList || Memory.sourceList.length == 0){
+        if (typeof Memory.sourceList === undefined){
             console.log('Building sourceList');
             let sData = [];
             var sources = Game.spawns['Spawn1'].room.find(FIND_SOURCES);
@@ -56,8 +35,6 @@ var config = {
                 newData.id = sources[source].id;
                 newData.openSpaces = openSpaces(sources[source].room, sources[source].pos);
                 newData.roadStatus = 0;
-                //newData.harvesterList = [];
-    
                 sData.push(newData);
             }
             Memory.sourceList = sData;
