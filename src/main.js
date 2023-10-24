@@ -19,12 +19,10 @@ let processDefense = require('process.defense');
 let explorer = require('process.exploration');
 let construction = require('construction');
 
-config.memory();
 config.loadRoles();
 config.sourceData();
 
 module.exports.loop = function () {
-    console.log('Start of Main');
     Game.functions = require('console');
     processCreeps.clearMemory();
     

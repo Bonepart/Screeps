@@ -37,8 +37,8 @@ var consoleCommands = {
     },
 
     changeMax: function(role, newMax) {
-        Memory.role.limit[role] = newMax;
-        return `${role} limit = ${Memory.role.limit[role]}`;
+        Memory.roles.limit[role] = newMax;
+        return `${role} limit = ${Memory.roles.limit[role]}`;
     },
 
     buildRoad: function(flagStart, flagEnd, deleteFlags=false){

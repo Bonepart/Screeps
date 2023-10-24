@@ -16,20 +16,13 @@ const roleDefinitions = [
 
 var config = {
 
-    memory: function(){
-        if(Memory.repairPersistance === undefined) { Memory.repairPersistance = false }
-    },
-
     loadRoles: function(){
-        console.log('Loading Roles');
-        if (Memory.roles === undefined) { 
-            console.log('Role');
-            Memory.roles = { limit: {}, index: {} } }
-        console.log(Memory.roles);
+        if (Memory.roles === undefined) { Memory.roles = { limit: {}, index: {} } }
         for (let role in roleDefinitions) {
-            if (Memory.roles.limit[role[0]] === undefined) { Memory.roles.limit[role[0]] = role[1] }
-            if (Memory.roles.index[role[0]] === undefined) { Memory.roles.index[role[0]] = 1 }
+            if (Memory.roles.limit[roleDefinitions[role][0]] === undefined) { Memory.roles.limit[roleDefinitions[role][0]] = roleDefinitions[role][1] }
+            if (Memory.roles.index[roleDefinitions[role][0]] === undefined) { Memory.roles.index[roleDefinitions[role][0]] = 1 }
         }
+        if(Memory.roles.repairPersistance === undefined) { Memory.roles.repairPersistance = false }
     },
 
     sourceData: function(){
