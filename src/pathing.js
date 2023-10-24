@@ -4,7 +4,7 @@ let pathing = {
 
     findClosestSource: function (pos){
         return pos.findClosestByPath(FIND_SOURCES_ACTIVE, {filter: (source) => {
-            return !Memory.keeperLair.threatActive || (Memory.keeperLair.threatActive && source.id != Memory.keeperLair.sourceID);
+            return !Memory.rooms[pos.roomName].keeperLair.threatActive || (Memory.rooms[pos.roomName].keeperLair.threatActive && source.id != Memory.rooms[pos.roomName].keeperLair.sourceID);
         }});
     },
 
