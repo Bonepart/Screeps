@@ -48,7 +48,8 @@ let roleBuilder = {
                     if (importContainer.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
                         let result = creep.withdraw(importContainer, RESOURCE_ENERGY);
                         if(result == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(importContainer, {visualizePathStyle: {stroke: '#ffffff'}});
+                        	creep.moveTo(importContainer, {visualizePathStyle: {stroke: '#ffffff'}});
+				return;
                         } else if (result == OK) { return }
                     }
                 }
