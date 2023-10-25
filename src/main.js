@@ -11,6 +11,7 @@ let roleUpgrader = require('role.upgrader');
 let roleZombie = require('role.zombie');
 
 let roleLonghaul = require('role.longhaul');
+let roleClaimer = require('role.claimer');
 
 let towerLogic = require('structure.tower');
 let bodytype = require('constants.bodytype');
@@ -39,7 +40,12 @@ module.exports.loop = function () {
         //Determine Room State
 
         if (thisRoom.controller.owner == undefined) { 
-            thisRoom.memory.roomState = ROOM_NEUTRAL
+
+            if (thisRoom.controller.reservation != undefined){
+                if (thisRoom.controller.reservation.username == ME) {thisRoom.memory.roomState = ROOM_RESERVED}
+                else {thisRoom.memory.roomState = ROOM_HOSTILE_RESERVED}
+            }
+            else {thisRoom.memory.roomState = ROOM_NEUTRAL}
         }
         else if (thisRoom.controller.my) { 
             if (thisRoom.controller.safeMode > 0) { thisRoom.memory.roomState = ROOM_OWNED_SAFE}
@@ -50,20 +56,40 @@ module.exports.loop = function () {
             else {thisRoom.memory.roomState = ROOM_HOSTILE}
         }
         
-        if ( thisRoom.memory.roomState == ROOM_NEUTRAL || thisRoom.memory.roomState == ROOM_RESERVED){
-            if (thisRoom.memory.missionaryID == undefined) { thisRoom.memory.missionaryID = null}
-            if (thisRoom.memory.missionaryID == null) { 
-                if (explorer.spawnCreep(ROLE_CLAIMER, bodytype.claimer[0], roomName)){
-                    thisRoom.memory.missionaryID = 'placeholder';
+        switch (thisRoom.memory.roomState){
+            case ROOM_NEUTRAL:
+            case ROOM_RESERVED:
+                if (thisRoom.memory.missionaryID == undefined) { thisRoom.memory.missionaryID = null}
+                if (thisRoom.memory.missionaryID == null) { 
+                    if (explorer.spawnCreep(ROLE_CLAIMER, bodytype.claimer[0], roomName)){
+                        thisRoom.memory.missionaryID = 'spawning';
+                    }
                 }
-            }
+                break;
+            case ROOM_OWNED:
+            case ROOM_OWNED_SAFE:
+                if (thisRoom.energyCapacityAvailable >= 800) { 
+                    thisRoom.memory.spawnTier = 3;
+                    explorer.run(roomName) 
+                }
+                else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
+                else { thisRoom.memory.spawnTier = 1 };
+                break;
+            case ROOM_HOSTILE_SAFE:
+                let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
+                if (thisRoom.controller.safeMode < 400) {
+                    if (vikingList.length < 4) {
+                        processDefense.spawnViking(roomName);
+                    }
+                    if (vikingList.length > 0) {
+                        processDefense.spawnViking(roomName);
+                    }
+                }
+                break;
+            case ROOM_HOSTILE:
+
+                break;
         }
-        if ( thisRoom.memory.roomState >= ROOM_OWNED && thisRoom.energyCapacityAvailable >= 800) { 
-            thisRoom.memory.spawnTier = 3;
-            explorer.run(roomName) 
-        }
-        else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
-        else { thisRoom.memory.spawnTier = 1 };
 
         processDefense.checkForKeeperLair(roomName);
         processDefense.scanForHostiles(roomName);
@@ -127,6 +153,9 @@ module.exports.loop = function () {
                 break;
             case ROLE_LONGHAUL:
                 roleLonghaul.run(creep);
+                break;
+            case ROLE_CLAIMER:
+                roleClaimer.run(creep);
                 break;
             default:
                 console.log(`Unsupported role! (${creep.memory.role})`);
