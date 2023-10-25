@@ -1,3 +1,5 @@
+let bodytype = require('constants.bodytype');
+let roleGeneral = require('role.general');
 let helper = require('helper');
 
 //Defensive Functions
@@ -5,10 +7,11 @@ let processDefense = {
     scanForHostiles: function(roomName) {
         let hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
         if (hostiles.length > 0){
-            /*if (Memory.roles.limit[ARMY_DEFENDER] < hostiles.length) {
-                Memory.roles.limit[ARMY_DEFENDER] = hostiles.length;
-                console.log(`Set Defender Limit to ${Memory.roles.limit[ARMY_DEFENDER]} to counter hostile creeps`);
-            }*/
+            let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
+            if (vikingList.length < 4) {
+                this.spawnViking();
+            }
+            if (vikingList.length > 0) {roleGeneral.run(roomName)}
         }
     },
 
@@ -46,6 +49,25 @@ let processDefense = {
             }
         }
         room.memory.keeperLair.threatActive = keeperCreeperFound;
+    },
+
+    spawnViking: function(){
+        newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
+        body = bodytype.viking[2];
+        for (let i in Game.spawns){
+            let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
+            while (result === -3){
+                Memory.roles.index[ARMY_VIKING]++;
+                newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
+                result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
+            }
+            if (result == OK) {
+                Game.spawns[i].spawnCreep(body, newName, { memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
+                Memory.roles.index[ARMY_VIKING]++;
+                console.log(`Spawning ${newName}`);
+                return true;
+            } else { return false }
+        }
     }
 }
 module.exports = processDefense;

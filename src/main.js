@@ -10,6 +10,7 @@ let roleRanged = require('role.ranged');
 let roleUpgrader = require('role.upgrader');
 let roleZombie = require('role.zombie');
 
+let roleGeneral = require('role.general');
 let roleLonghaul = require('role.longhaul');
 let roleClaimer = require('role.claimer');
 
@@ -55,7 +56,8 @@ module.exports.loop = function () {
             if (thisRoom.controller.safeMode > 0) { thisRoom.memory.roomState = ROOM_HOSTILE_SAFE}
             else {thisRoom.memory.roomState = ROOM_HOSTILE}
         }
-        
+
+        let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         switch (thisRoom.memory.roomState){
             case ROOM_NEUTRAL:
             case ROOM_RESERVED:
@@ -68,43 +70,54 @@ module.exports.loop = function () {
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
+                processDefense.scanForHostiles(roomName);
                 if (thisRoom.energyCapacityAvailable >= 800) { 
                     thisRoom.memory.spawnTier = 3;
                     explorer.run(roomName) 
                 }
                 else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
                 else { thisRoom.memory.spawnTier = 1 };
+
+                let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
+                for (let structure in structuresToRun){
+                    switch (structuresToRun[structure].structureType){
+                        case STRUCTURE_TOWER:
+                            towerLogic.run(structuresToRun[structure]);
+                            break;
+                    }
+                }
+
                 break;
             case ROOM_HOSTILE_SAFE:
-                let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
                 if (thisRoom.controller.safeMode < 400) {
                     if (vikingList.length < 4) {
                         processDefense.spawnViking(roomName);
                     }
                     if (vikingList.length > 0) {
-                        processDefense.spawnViking(roomName);
+                        roleGeneral.run();
                     }
                 }
                 break;
             case ROOM_HOSTILE:
-
+                if (vikingList.length < 4) {
+                    processDefense.spawnViking(roomName);
+                }
+                if (vikingList.length > 0) {
+                    roleGeneral.run(roomName);
+                }
                 break;
+            
+
         }
 
         processDefense.checkForKeeperLair(roomName);
-        processDefense.scanForHostiles(roomName);
+        
 
-        let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
-        for (let structure in structuresToRun){
-            switch (structuresToRun[structure].structureType){
-                case STRUCTURE_TOWER:
-                    towerLogic.run(structuresToRun[structure]);
-                    break;
-            }
-        }
+
     }
     for (let i in Game.spawns){
         let roomName = Game.spawns[i].room.name;
+        roleGeneral.moveToFlag(roomName);
         if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
         if (Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
@@ -156,6 +169,8 @@ module.exports.loop = function () {
                 break;
             case ROLE_CLAIMER:
                 roleClaimer.run(creep);
+                break;
+            case ARMY_VIKING:
                 break;
             default:
                 console.log(`Unsupported role! (${creep.memory.role})`);
