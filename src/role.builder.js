@@ -6,7 +6,7 @@ let roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        if(processRenewal.renew(creep)){ return };
+        //if(processRenewal.renew(creep)){ return };
 	    if(creep.memory.building && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.building = false;
             creep.say('🔄 harvest');
