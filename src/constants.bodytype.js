@@ -44,5 +44,5 @@ exports.longhauler = [
     [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE] //Cost 800
 ];
 exports.claimer = [
-    [TOUGH, CLAIM, MOVE, MOVE] //Cost 710
+    [CLAIM, MOVE, MOVE, MOVE, MOVE] //Cost 800
 ]
