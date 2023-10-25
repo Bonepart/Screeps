@@ -62,6 +62,16 @@ let roleMaintenance = {
                 }
             }
         } else {
+            if (creep.room.memory.importContainerID != undefined){
+                let importContainer = Game.getObjectById(creep.room.memory.importContainerID);
+                if (importContainer == undefined) { creep.room.memory.importContainerID = undefined }
+                else {
+                    let result = creep.withdraw(importContainer, RESOURCE_ENERGY);
+                    if(result == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(importContainer, {visualizePathStyle: {stroke: '#ffffff'}});
+                    } else if (result == OK) { return }
+                }
+            }
 	        let source = pathing.findClosestSource(creep.pos);
             if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
