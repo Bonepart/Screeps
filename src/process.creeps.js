@@ -12,6 +12,9 @@ let processCreeps = {
         let upgraderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER);
         let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE);
 
+        let goferList = 0;
+        if (Memory.roles.limit[ROLE_GOFER] > 0){goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER)}
+        
         let defenderList = 0;
         let vikingList = 0;
         let rangedList = 0;
@@ -54,6 +57,17 @@ let processCreeps = {
                     result = spawner.spawnCreep(bodytype.harvester[creepTier], newName, { memory: {role: ROLE_HARVESTER, tier: creepTier + 1}});
                 }
                 if(result == OK){Memory.roles.index[ROLE_HARVESTER]++};
+                logSpawnResults(result, newName);
+            }
+            else if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
+                newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
+                result = spawner.spawnCreep(bodytype.gofer[creepTier], newName, { memory: {role: ROLE_GOFER, tier: creepTier + 1}});
+                while (result === -3){
+                    Memory.roles.index[ROLE_GOFER]++;
+                    newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
+                    result = spawner.spawnCreep(bodytype.gofer[creepTier], newName, { memory: {role: ROLE_GOFER, tier: creepTier + 1}});
+                }
+                if(result == OK){Memory.roles.index[ROLE_GOFER]++};
                 logSpawnResults(result, newName);
             }
             else if (defenderList.length < Memory.roles.limit[ARMY_DEFENDER]){
