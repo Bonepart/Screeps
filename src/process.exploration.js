@@ -55,7 +55,6 @@ let processExploration = {
                 Memory.roles.index[role]++;
                 return true;
             } else { return false }
-
         }
         
         result = spawner.spawnCreep(body, newName, { memory: {role: role}});
