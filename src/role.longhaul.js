@@ -56,8 +56,8 @@ let roleLonghaul = {
         }
         else {
             let originRoom = Game.rooms[creep.memory.originRoom];
-            let importContainer = originRoom.find(FIND_FLAGS, { filter: (flag) => { return flag.name = "Import"}});
-            if (importContainer.length > 0) {importContainer = importContainer.pos.lookFor(LOOK_STRUCTURES, { 
+            let importContainer = originRoom.find(FIND_FLAGS, { filter: (flag) => { return flag.name == "Import"}});
+            if (importContainer.length > 0) {importContainer = importContainer[0].pos.lookFor(LOOK_STRUCTURES, { 
                 filter: (struct) => { return struct.structureType == STRUCTURE_CONTAINER}})};
             if (importContainer.length > 0) {
                 if(creep.transfer(importContainer[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
