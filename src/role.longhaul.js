@@ -21,8 +21,9 @@ let roleLonghaul = {
 
         if (creep.memory.harvesting){
             let destRoom = Game.rooms[creep.memory.assignedRoom];
+        
             if (destRoom == undefined){
-                let newRoom = new RoomPosition(24, 45, creep.memory.assignedRoom);
+                let newRoom = new RoomPosition(2, 32, creep.memory.assignedRoom);
                 creep.moveTo(newRoom, {visualizePathStyle: {stroke: '#ffffff'}});
             } else {
                 if (creep.room.name != creep.memory.assignedRoom){

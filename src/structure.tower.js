@@ -38,6 +38,7 @@ function attackHostile(thisTower){
 
 /** @param {StructureTower} thisTower **/
 function healWounded(thisTower){
+    console.log('Tower trying to heal');
     let target = thisTower.pos.findClosestByRange(FIND_MY_CREEPS, { filter: (creep) => {return creep.hits < creep.hitsMax}});
     let result = thisTower.heal(target);
     switch (result){

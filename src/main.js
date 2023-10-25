@@ -117,7 +117,7 @@ module.exports.loop = function () {
     }
     for (let i in Game.spawns){
         let roomName = Game.spawns[i].room.name;
-        roleGeneral.moveToFlag(roomName);
+        //roleGeneral.moveToFlag(roomName);
         if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
         if (Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];

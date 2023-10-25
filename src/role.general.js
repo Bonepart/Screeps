@@ -3,7 +3,7 @@ let helper = require('helper');
 let roleGeneral = {
 
     run: function(roomName=null){
-        console.log(`Called general.run\troomName = ${roomName}`);
+        //console.log(`Called general.run\troomName = ${roomName}`);
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         let hostiles = vikingList[0].room.find(FIND_HOSTILE_CREEPS);
         let target = vikingList[0].pos.findClosestByRange(FIND_HOSTILE_CREEPS);
@@ -28,6 +28,8 @@ let roleGeneral = {
             }
         } else {
             hostiles = vikingList[0].room.find(FIND_HOSTILE_SPAWNS);
+            hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_STRUCTURES));
+            hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_CONSTRUCTION_SITES));
             if (hostiles.length > 0){
                 for (let i in vikingList){
                     let creep = vikingList[i];
@@ -51,6 +53,7 @@ let roleGeneral = {
             }
         }
         if (roomName != null){
+            //console.log('General should be moving');
             let destRoom = Game.rooms[roomName];
             let newRoomPos = undefined;
             if (destRoom == undefined){newRoomPos = new RoomPosition(24, 45, creep.memory.assignedRoom)}
