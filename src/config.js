@@ -11,6 +11,7 @@ const roleDefinitions = [
     [ARMY_HEALER, 0],
 
     [ROLE_LONGHAUL, 0],
+    [ROLE_GOFER, 0],
     [ROLE_CLAIMER, 0]
 ];
 
