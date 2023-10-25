@@ -52,7 +52,6 @@ let processExploration = {
             }
             if (result == OK) {
                 Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
-                console.log(`Spawning new missionary, ID: ${Game.spawns[i].spawning.id}`);
                 Memory.roles.index[role]++;
                 return true;
             } else { return false }
