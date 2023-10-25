@@ -77,7 +77,9 @@ let consoleCommands = {
     },
 
     zombie: function(creepName) {
-        Game.creeps[creepName].memory.role = ZOMBIE;
+        creep = Game.creeps[creepName];
+        if (creep == undefined) {return `${creepName} is not a valid name`}
+        creep.memory.role = ZOMBIE;
         return `${creepName} is now a zombie`;
     }    
 }
