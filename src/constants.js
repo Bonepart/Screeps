@@ -14,7 +14,7 @@ global.ARMY_HEALER = 'healer';
 
 //Special Creeps
 global.ROLE_LONGHAUL = 'longhaul';
-global.ROLE_CLAIMER = 'claimer';
+global.ROLE_CLAIMER = 'missionary';
 
 //Zombie
 global.ZOMBIE = 'zombie';

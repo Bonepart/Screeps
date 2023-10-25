@@ -68,6 +68,14 @@ let consoleCommands = {
         return returnString;
     },
 
+    setImportContainer: function(roomName, containerID) {
+        let thisRoom = Game.rooms[roomName];
+        let container = Game.getObjectById(containerID);
+        if (container.structureType != STRUCTURE_CONTAINER) { return `Error: ${containerID} is not a valid container`};
+        thisRoom.memory.importContainerID = containerID;
+        return 'Comeplete';
+    },
+
     zombie: function(creepName) {
         Game.creeps[creepName].memory.role = ZOMBIE;
         return `${creepName} is now a zombie`;

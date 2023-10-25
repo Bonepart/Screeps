@@ -39,6 +39,35 @@ let processExploration = {
         spawnExplorers(thisRoom.memory.spawns[0].name);
 
 
+    },
+
+    spawnCreep: function(role, body, roomName){
+        newName = role + Memory.roles.index[role];
+        for (let i in Game.spawns){
+            let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
+            while (result === -3){
+                Memory.roles.index[role]++;
+                newName = role + Memory.roles.index[role];
+                result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
+            }
+            if (result == OK) {
+                Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
+                console.log(`Spawning new missionary, ID: ${Game.spawns[i].spawning.id}`);
+                Memory.roles.index[role]++;
+                return true;
+            } else { return false }
+
+        }
+        
+        result = spawner.spawnCreep(body, newName, { memory: {role: role}});
+        while (result === -3){
+            Memory.roles.index[role]++;
+            newName = role + Memory.roles.index[role];
+            result = spawner.spawnCreep(bodytype.defender[creepTier], newName, { memory: {role: ARMY_DEFENDER, tier: creepTier + 1}});
+        }
+        if(result == OK){Memory.roles.index[ARMY_DEFENDER]++};
+        logSpawnResults(result, newName);
+        
     }
 }
 module.exports = processExploration;

@@ -13,11 +13,12 @@ let roleZombie = require('role.zombie');
 let roleLonghaul = require('role.longhaul');
 
 let towerLogic = require('structure.tower');
-
+let bodytype = require('constants.bodytype');
 let processCreeps = require('process.creeps');
 let processDefense = require('process.defense');
 let explorer = require('process.exploration');
 let construction = require('construction');
+let helper = require('helper');
 
 config.loadRoles();
 config.sourceData();
@@ -36,10 +37,28 @@ module.exports.loop = function () {
         if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
 
         //Determine Room State
-        if (thisRoom.controller.my) { thisRoom.memory.roomState = ROOM_OWNED }
-        else if (thisRoom.controller.owner != undefined && thisRoom.controller.owner.username != ME) { thisRoom.memory.roomState = ROOM_HOSTILE }
+
+        if (thisRoom.controller.owner == undefined) { 
+            thisRoom.memory.roomState = ROOM_NEUTRAL
+        }
+        else if (thisRoom.controller.my) { 
+            if (thisRoom.controller.safeMode > 0) { thisRoom.memory.roomState = ROOM_OWNED_SAFE}
+            else {thisRoom.memory.roomState = ROOM_OWNED}
+        }
+        else if (thisRoom.controller.owner.username != ME) { 
+            if (thisRoom.controller.safeMode > 0) { thisRoom.memory.roomState = ROOM_HOSTILE_SAFE}
+            else {thisRoom.memory.roomState = ROOM_HOSTILE}
+        }
         
-        if (thisRoom.energyCapacityAvailable >= 800) { 
+        if ( thisRoom.memory.roomState == ROOM_NEUTRAL || thisRoom.memory.roomState == ROOM_RESERVED){
+            if (thisRoom.memory.missionaryID == undefined) { thisRoom.memory.missionaryID = null}
+            if (thisRoom.memory.missionaryID == null) { 
+                if (explorer.spawnCreep(ROLE_CLAIMER, bodytype.claimer[0], roomName)){
+                    thisRoom.memory.missionaryID = 'placeholder';
+                }
+            }
+        }
+        if ( thisRoom.memory.roomState >= ROOM_OWNED && thisRoom.energyCapacityAvailable >= 800) { 
             thisRoom.memory.spawnTier = 3;
             explorer.run(roomName) 
         }
