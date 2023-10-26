@@ -5,12 +5,6 @@ let roleLonghaul = {
     
     /** @param {Creep} creep **/
     run: function (creep) {
-        if (creep.memory.assignedRoom == null){
-            if(creep.room.memory.exits[1] && creep.room.memory.exits[1].id == null){
-                creep.memory.assignedRoom = creep.room.memory.exits[1].name;
-                creep.room.memory.exits[1].id = creep.id;
-            }
-        }
 
         if(creep.memory.harvesting && creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.harvesting = false;
