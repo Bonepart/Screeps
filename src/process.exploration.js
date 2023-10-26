@@ -3,6 +3,17 @@ let helper = require('helper');
 
 let processExploration = {
     
+    checkForMissionary: function (roomName){
+        for (let i in Memory.rooms[roomName].exits){
+            let checkName = Memory.rooms[roomName].exits[i];
+            if (Memory.rooms[checkName].roomState == ROOM_NEUTRAL || Memory.rooms[checkName].roomState == ROOM_RESERVED){
+                if (Memory.rooms[checkName].missionaryID == null) { 
+                    if (this.spawnCreep(ROLE_CLAIMER, bodytype.claimer[1], checkName)){Memory.rooms[checkName].missionaryID = 'spawning'}
+                }
+            }
+        }
+    },
+
     checkExits: function (roomName) {
         thisRoom = Game.rooms[roomName];
         if (thisRoom.memory.exits === undefined){

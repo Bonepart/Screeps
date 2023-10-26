@@ -61,16 +61,13 @@ module.exports.loop = function () {
             case ROOM_NEUTRAL:
             case ROOM_RESERVED:
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
-                if (thisRoom.memory.missionaryID == undefined) { thisRoom.memory.missionaryID = null}
-                if (thisRoom.memory.missionaryID == null) { 
-                    //if (explorer.spawnCreep(ROLE_CLAIMER, bodytype.claimer[0], roomName)){thisRoom.memory.missionaryID = 'spawning'}
-                }
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
                 if(Game.time % 20 == 0){
                     console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
                 }
+                if (thisRoom.energyAvailable >= 1300) { explorer.checkForMissionary(roomName) }
                 if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 processDefense.scanForHostiles(roomName);
                 if (thisRoom.energyCapacityAvailable >= 800) { thisRoom.memory.spawnTier = 3 }
