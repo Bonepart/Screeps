@@ -45,4 +45,5 @@ exports.longhauler = [
 ];
 exports.claimer = [
     [CLAIM, MOVE, MOVE, MOVE, MOVE] //Cost 800
-]
+];
+exports.sentry = [ MOVE ]; //Cost 50
