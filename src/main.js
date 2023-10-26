@@ -65,7 +65,6 @@ module.exports.loop = function () {
                 if (thisRoom.memory.missionaryID == null) { 
                     //if (explorer.spawnCreep(ROLE_CLAIMER, bodytype.claimer[0], roomName)){thisRoom.memory.missionaryID = 'spawning'}
                 }
-                explorer.checkExits(roomName)
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
@@ -74,10 +73,7 @@ module.exports.loop = function () {
                 }
                 if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 processDefense.scanForHostiles(roomName);
-                if (thisRoom.energyCapacityAvailable >= 800) { 
-                    thisRoom.memory.spawnTier = 3;
-                     
-                }
+                if (thisRoom.energyCapacityAvailable >= 800) { thisRoom.memory.spawnTier = 3 }
                 else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
                 else { thisRoom.memory.spawnTier = 1 };
 
