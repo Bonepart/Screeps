@@ -26,7 +26,6 @@ let roleClaimer = {
                 default:
                     console.log(`${creep.name} had an error: ${result}`);
             }
-            if (creep.ticksToLive < 5 && destRoom.memory.missionaryID == creep.id) { destRoom.memory.missionaryID = null }
         }
         
     }

@@ -7,8 +7,11 @@ let processExploration = {
         for (let i in Memory.rooms[roomName].exits){
             let checkName = Memory.rooms[roomName].exits[i];
             if (Memory.rooms[checkName].roomState == ROOM_NEUTRAL || Memory.rooms[checkName].roomState == ROOM_RESERVED){
-                if (Memory.rooms[checkName].missionaryID == null) { 
-                    if (this.spawnCreep(ROLE_CLAIMER, bodytype.claimer[1], checkName)){Memory.rooms[checkName].missionaryID = 'spawning'}
+                if ((Memory.rooms[checkName].missionaryID != null && 
+                        Game.creeps[Memory.rooms[checkName].missionaryID] == undefined) || 
+                        Memory.rooms[checkName].missionaryID == null) { 
+                    let missionaryName = this.spawnCreep(ROLE_CLAIMER, bodytype.claimer[1], checkName);
+                    if (missionaryName != null) {Memory.rooms[checkName].missionaryID = missionaryName}
                 }
             }
         }
@@ -39,8 +42,8 @@ let processExploration = {
                 Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
                 Memory.roles.index[role]++;
                 console.log(`Spawning ${newName} assigned to ${roomName}`);
-                return true;
-            } else { return false }
+                return newName;
+            } else { return null }
         }        
     },
 
