@@ -47,7 +47,8 @@ module.exports.loop = function () {
                 break;
             case ROOM_RESERVED:         
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
-                explorer.checkExits(roomName)
+                explorer.checkExits(roomName);
+                explorer.assignLongHauls(roomName);
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
@@ -104,7 +105,6 @@ module.exports.loop = function () {
         if (Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
 
-        explorer.checkExits(i);
         if (isAvailable(i)) { processCreeps.checkForSpawn(i) }
         //if (isAvailable(i)) { explorer.spawnSentry(i) }
 

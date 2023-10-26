@@ -72,6 +72,17 @@ let processExploration = {
                 }
             }
         }
+    },
+
+    assignLongHauls: function(roomName){
+        let longhaulList = 0;
+        if (Memory.roles.limit[ROLE_LONGHAUL] > 0){longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_LONGHAUL)}
+        if (longhaulList.length < Memory.roles.limit[ROLE_LONGHAUL]){
+            this.spawnCreep(ROLE_LONGHAUL, bodytype.longhauder[0], roomName);
+        }
+
+        longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_LONGHAUL && !creep.spawning && creep.memory.assignedRoom == roomName);
+        console.log(`Longhauls assigned to ${roomName}: ${longhaulList.length}`);
     }
 }
 module.exports = processExploration;
