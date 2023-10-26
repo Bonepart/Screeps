@@ -33,16 +33,14 @@ module.exports.loop = function () {
     
     for (let roomName in Game.rooms){
         let thisRoom = Game.rooms[roomName];
-        if(Game.time % 20 == 0){
-            console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
-        }
 
         if (Memory.rooms === undefined) { Memory.rooms = {}};
         if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         explorer.checkExits(roomName)
 
         //Determine Room State
-        if (thisRoom.controller.owner == undefined) { 
+        if (thisRoom.controller === undefined){thisRoom.memory.roomState = ROOM_NO_CONTROLLER}
+        else if (thisRoom.controller.owner == undefined) { 
             if (thisRoom.controller.reservation != undefined){
                 if (thisRoom.controller.reservation.username == ME) {thisRoom.memory.roomState = ROOM_RESERVED}
                 else {thisRoom.memory.roomState = ROOM_HOSTILE_RESERVED}
@@ -71,6 +69,9 @@ module.exports.loop = function () {
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
+                if(Game.time % 20 == 0){
+                    console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
+                }
                 if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 processDefense.scanForHostiles(roomName);
                 if (thisRoom.energyCapacityAvailable >= 800) { 

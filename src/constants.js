@@ -22,8 +22,9 @@ global.ROLE_SENTRY = 'sentry';
 global.ZOMBIE = 'zombie';
 
 //Room States
-global.ROOM_HOSTILE_SAFE = -3
-global.ROOM_HOSTILE = -2
+global.ROOM_NO_CONTROLLER = -Infinity;
+global.ROOM_HOSTILE_SAFE = -3;
+global.ROOM_HOSTILE = -2;
 global.ROOM_HOSTILE_RESERVED = -1;
 global.ROOM_NEUTRAL = 0;
 global.ROOM_RESERVED = 1;
