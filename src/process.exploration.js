@@ -3,42 +3,16 @@ let helper = require('helper');
 
 let processExploration = {
     
-    run: function (roomName) {
+    checkExits: function (roomName) {
         thisRoom = Game.rooms[roomName];
-        if (Memory.roles.limit[ROLE_LONGHAUL] === undefined) {
-            Memory.roles.limit[ROLE_LONGHAUL] = 0;
-            Memory.roles.index[ROLE_LONGHAUL] = 1;
-        }
-
         if (thisRoom.memory.exits === undefined){
             thisRoom.memory.exits = {};
             let exitInfo = Game.map.describeExits(roomName);
-            if(exitInfo[1]){
-                thisRoom.memory.exits[1] = {};
-                thisRoom.memory.exits[1].name = exitInfo[1];
-                thisRoom.memory.exits[1].id = null;
-            }
-            if(exitInfo[3]){
-                thisRoom.memory.exits[3] = {};
-                thisRoom.memory.exits[3].name = exitInfo[3];
-                thisRoom.memory.exits[3].id = null;
-            }
-            if(exitInfo[5]){
-                thisRoom.memory.exits[5] = {};
-                thisRoom.memory.exits[5].name = exitInfo[5];
-                thisRoom.memory.exits[5].id = null;
-            }
-            if(exitInfo[7]){
-                thisRoom.memory.exits[7] = {};
-                thisRoom.memory.exits[7].name = exitInfo[7];
-                thisRoom.memory.exits[7].id = null;
+            for (let i in exitInfo){
+                thisRoom.memory.exits[i] = exitInfo[i];
+                if (Memory.rooms[exitInfo[i]] == undefined) { Memory.rooms[exitInfo[i]] = { sentryID: null }}
             }
         }
-
-
-        spawnExplorers(thisRoom.memory.spawns[0].name);
-
-
     },
 
     spawnCreep: function(role, body, roomName){
@@ -55,46 +29,46 @@ let processExploration = {
                 Memory.roles.index[role]++;
                 return true;
             } else { return false }
+        }        
+    },
+
+    spawnSentry: function (spawnIndex) {
+        let spawner = Game.spawns[spawnIndex];
+        if (spawner.room.energyAvailable < 800) { return }
+        let role = ROLE_SENTRY;
+        let body = bodytype.sentry;
+
+        for (let i in Game.rooms) {
+            let thisRoom = Game.rooms[i];
+            for (let j in thisRoom.memory.exits){
+                exitName = thisRoom.memory.exits[j]
+                if (Memory.rooms[exitName].sentryID === null){
+                    newName = role + Memory.roles.index[role];
+                    let result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, assignedRoom: exitName}});
+                    while (result === -3){
+                        Memory.roles.index[role]++;
+                        newName = role + Memory.roles.index[role];
+                        result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, assignedRoom: exitName}});
+                    }
+                    if (result == OK) {
+                        spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: exitName}});
+                        Memory.roles.index[role]++;
+                        Memory.rooms[exitName].sentryID = 'spawning';
+                        console.log(`Spawning ${newName} to surveil ${exitName}`);
+                        return true;
+                    }else {logSpawnResults(result, newName)}
+                }
+            }
         }
-        
-        result = spawner.spawnCreep(body, newName, { memory: {role: role}});
-        while (result === -3){
-            Memory.roles.index[role]++;
-            newName = role + Memory.roles.index[role];
-            result = spawner.spawnCreep(bodytype.defender[creepTier], newName, { memory: {role: ARMY_DEFENDER, tier: creepTier + 1}});
-        }
-        if(result == OK){Memory.roles.index[ARMY_DEFENDER]++};
-        logSpawnResults(result, newName);
-        
     }
 }
 module.exports = processExploration;
 
-function spawnExplorers(spawnIndex) {
-    let spawner = Game.spawns[spawnIndex];
-    let longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_LONGHAUL);
-
-    if (longhaulList.length < Memory.roles.limit[ROLE_LONGHAUL]){
-        newName = ROLE_LONGHAUL + Memory.roles.index[ROLE_LONGHAUL];
-        result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: ROLE_LONGHAUL, originRoom: spawner.room.name, assignedRoom: null}});
-        while (result === -3){
-            Memory.roles.index[ROLE_LONGHAUL]++;
-            newName = ROLE_LONGHAUL + Memory.roles.index[ROLE_LONGHAUL];
-            result = spawner.spawnCreep(bodytype.longhauler[0], newName, { memory: {role: ROLE_LONGHAUL, assignedRoom: null}});
-        }
-        if(result == OK){Memory.roles.index[ROLE_LONGHAUL]++};
-        logSpawnResults(result, newName);
-    }
-}
-
 function logSpawnResults(result, newName) {
     switch(result){
-        case OK:
-            console.log(`Spawning ${newName}`);
-            break;
-        case ERR_BUSY:
-        case ERR_NOT_ENOUGH_ENERGY:
-            break;
+        //case ERR_BUSY:
+        //case ERR_NOT_ENOUGH_ENERGY:
+           // break;
         default:
             console.log(`Spawn of ${newName} failed: ${result}`);
     }

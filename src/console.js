@@ -27,7 +27,9 @@ let consoleCommands = {
 
     listCreeps: function() {
         for (let i in Game.creeps){
-            console.log(`${Game.creeps[i].name.padEnd(14)}T${Game.creeps[i].memory.tier}\t Body Size: ${Game.creeps[i].body.length}`);
+            let tier = Game.creeps[i].memory.tier;
+            if (tier == undefined){ tier = '-NA'};
+            console.log(`${Game.creeps[i].name.padEnd(14)}T${tier}\t Body Size: ${Game.creeps[i].body.length}`);
         }
         return 'Complete';
     },

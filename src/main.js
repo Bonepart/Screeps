@@ -22,6 +22,7 @@ let processDefense = require('process.defense');
 let explorer = require('process.exploration');
 let construction = require('construction');
 let helper = require('helper');
+const roleSentry = require('./role.sentry');
 
 config.loadRoles();
 config.sourceData();
@@ -38,11 +39,10 @@ module.exports.loop = function () {
 
         if (Memory.rooms === undefined) { Memory.rooms = {}};
         if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
+        explorer.checkExits(roomName)
 
         //Determine Room State
-
         if (thisRoom.controller.owner == undefined) { 
-
             if (thisRoom.controller.reservation != undefined){
                 if (thisRoom.controller.reservation.username == ME) {thisRoom.memory.roomState = ROOM_RESERVED}
                 else {thisRoom.memory.roomState = ROOM_HOSTILE_RESERVED}
@@ -62,19 +62,20 @@ module.exports.loop = function () {
         switch (thisRoom.memory.roomState){
             case ROOM_NEUTRAL:
             case ROOM_RESERVED:
+                if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
                 if (thisRoom.memory.missionaryID == undefined) { thisRoom.memory.missionaryID = null}
                 if (thisRoom.memory.missionaryID == null) { 
-                    if (explorer.spawnCreep(ROLE_CLAIMER, bodytype.claimer[0], roomName)){
-                        thisRoom.memory.missionaryID = 'spawning';
-                    }
+                    //if (explorer.spawnCreep(ROLE_CLAIMER, bodytype.claimer[0], roomName)){thisRoom.memory.missionaryID = 'spawning'}
                 }
+                explorer.checkExits(roomName)
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
+                if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 processDefense.scanForHostiles(roomName);
                 if (thisRoom.energyCapacityAvailable >= 800) { 
                     thisRoom.memory.spawnTier = 3;
-                    explorer.run(roomName) 
+                     
                 }
                 else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
                 else { thisRoom.memory.spawnTier = 1 };
@@ -90,6 +91,8 @@ module.exports.loop = function () {
 
                 break;
             case ROOM_HOSTILE_SAFE:
+                if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
+                /*
                 if (thisRoom.controller.safeMode < 400) {
                     if (vikingList.length < 4) {
                         processDefense.spawnViking(roomName);
@@ -97,25 +100,23 @@ module.exports.loop = function () {
                     if (vikingList.length > 0) {
                         roleGeneral.run();
                     }
-                }
+                }*/
                 break;
             case ROOM_HOSTILE:
+                if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
+                /*
                 if (vikingList.length < 4) {
                     processDefense.spawnViking(roomName);
                 }
                 if (vikingList.length > 0) {
                     roleGeneral.run(roomName);
-                }
+                }*/
                 break;
-            
-
         }
 
         processDefense.checkForKeeperLair(roomName);
-        
-
-
     }
+
     for (let i in Game.spawns){
         let roomName = Game.spawns[i].room.name;
         //roleGeneral.moveToFlag(roomName);
@@ -123,7 +124,9 @@ module.exports.loop = function () {
         if (Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
 
-        if (isAvailable(i)) {processCreeps.checkForSpawn(i)}
+        if (isAvailable(i)) { processCreeps.checkForSpawn(i) }
+        //if (isAvailable(i)) { explorer.spawnSentry(i) }
+
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
             if (spawner.memory.hasRoads == 0) {construction.checkSpawnRoads(i)}
             else { 
@@ -173,6 +176,9 @@ module.exports.loop = function () {
                 break;
             case ROLE_CLAIMER:
                 roleClaimer.run(creep);
+                break;
+            case ROLE_SENTRY:
+                roleSentry.run(creep);
                 break;
             case ARMY_VIKING:
                 break;
