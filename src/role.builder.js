@@ -41,18 +41,16 @@ let roleBuilder = {
             }
 	    }
 	    else {
-            if (creep.room.memory.importContainerID != undefined){
-                let importContainer = Game.getObjectById(creep.room.memory.importContainerID);
-                if (importContainer == undefined) { creep.room.memory.importContainerID = undefined }
-                else {
-                    if (importContainer.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
-                        let result = creep.withdraw(importContainer, RESOURCE_ENERGY);
-                        if(result == ERR_NOT_IN_RANGE) {
-                        	creep.moveTo(importContainer, {visualizePathStyle: {stroke: '#ffffff'}});
-				return;
-                        } else if (result == OK) { return }
-                    }
-                }
+            let energyStore = creep.room.find(FIND_STRUCTURES, {
+                filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
+                    structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
+            );
+            if (energyStore.length > 0){
+                let result = creep.withdraw(energyStore[0], RESOURCE_ENERGY);
+                if(result == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(energyStore[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    return;
+                } else if (result == OK) { return }        
             }
 	        let source = pathing.findClosestSource(creep.pos);
             if(creep.harvest(source) == ERR_NOT_IN_RANGE) {

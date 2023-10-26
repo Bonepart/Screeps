@@ -27,11 +27,7 @@ let roleGofer = {
             }
             return;
         }
-        searchTarget = pathing.findClosestSource(creep.pos)
-        if(creep.harvest(searchTarget) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
-        }
-        
+
         if (creep.room.memory.importContainerID != undefined){
             let importContainer = Game.getObjectById(creep.room.memory.importContainerID);
             if (importContainer == undefined) { creep.room.memory.importContainerID = undefined }
@@ -46,13 +42,13 @@ let roleGofer = {
         }
     }
     else {
-        let targets = creep.room.find(FIND_STRUCTURES, {
+        let targets = (creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION ||
                         structure.structureType == STRUCTURE_SPAWN) && 
                         structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
             }
-        });
+        }));
         targets = targets.concat(creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => { return (structure.structureType == STRUCTURE_TOWER ) && 
                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
