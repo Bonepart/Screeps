@@ -38,6 +38,7 @@ let processExploration = {
             if (result == OK) {
                 Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
                 Memory.roles.index[role]++;
+                console.log(`Spawning ${newName} assigned to ${roomName}`);
                 return true;
             } else { return false }
         }        

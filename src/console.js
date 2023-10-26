@@ -78,6 +78,17 @@ let consoleCommands = {
         return 'Comeplete';
     },
 
+    wipeRooms: function(){
+        for (let i in Memory.rooms){
+            let thisRoom = Game.rooms[i];
+            if (thisRoom == undefined){
+                console.log(`Wiping ${i} from memory`);
+                Memory.rooms[i] = undefined;
+            } else { console.log(`Room ${i} is visible`)}
+        }
+        return 'Comeplete';
+    },
+
     zombie: function(creepName) {
         creep = Game.creeps[creepName];
         if (creep == undefined) {return `${creepName} is not a valid name`}

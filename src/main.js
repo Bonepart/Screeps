@@ -19,13 +19,13 @@ let towerLogic = require('structure.tower');
 let bodytype = require('constants.bodytype');
 let processCreeps = require('process.creeps');
 let processDefense = require('process.defense');
+let processRooms = require('process.rooms');
 let explorer = require('process.exploration');
 let construction = require('construction');
 let helper = require('helper');
 const roleSentry = require('./role.sentry');
 
 config.loadRoles();
-config.sourceData();
 
 module.exports.loop = function () {
     Game.functions = require('console');
@@ -37,29 +37,16 @@ module.exports.loop = function () {
         if (Memory.rooms === undefined) { Memory.rooms = {}};
         if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
         explorer.checkExits(roomName)
-
-        //Determine Room State
-        if (thisRoom.controller === undefined){thisRoom.memory.roomState = ROOM_NO_CONTROLLER}
-        else if (thisRoom.controller.owner == undefined) { 
-            if (thisRoom.controller.reservation != undefined){
-                if (thisRoom.controller.reservation.username == ME) {thisRoom.memory.roomState = ROOM_RESERVED}
-                else {thisRoom.memory.roomState = ROOM_HOSTILE_RESERVED}
-            }
-            else {thisRoom.memory.roomState = ROOM_NEUTRAL}
-        }
-        else if (thisRoom.controller.my) { 
-            if (thisRoom.controller.safeMode > 0) { thisRoom.memory.roomState = ROOM_OWNED_SAFE}
-            else {thisRoom.memory.roomState = ROOM_OWNED}
-        }
-        else if (thisRoom.controller.owner.username != ME) { 
-            if (thisRoom.controller.safeMode > 0) { thisRoom.memory.roomState = ROOM_HOSTILE_SAFE}
-            else {thisRoom.memory.roomState = ROOM_HOSTILE}
-        }
+        processRooms.sourceData(roomName);
+        processRooms.checkRoomState(roomName);
+        processDefense.checkForKeeperLair(roomName);
 
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         switch (thisRoom.memory.roomState){
             case ROOM_NEUTRAL:
+                break;
             case ROOM_RESERVED:
+                explorer.checkExits(roomName)
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
                 break;
             case ROOM_OWNED:
@@ -67,6 +54,7 @@ module.exports.loop = function () {
                 if(Game.time % 20 == 0){
                     console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
                 }
+                explorer.checkExits(roomName)
                 if (thisRoom.energyAvailable >= 1300) { explorer.checkForMissionary(roomName) }
                 if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 processDefense.scanForHostiles(roomName);
@@ -107,8 +95,6 @@ module.exports.loop = function () {
                 }*/
                 break;
         }
-
-        processDefense.checkForKeeperLair(roomName);
     }
 
     for (let i in Game.spawns){
