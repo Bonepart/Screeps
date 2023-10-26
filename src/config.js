@@ -12,7 +12,8 @@ const roleDefinitions = [
 
     [ROLE_LONGHAUL, 0],
     [ROLE_GOFER, 0],
-    [ROLE_CLAIMER, 0]
+    [ROLE_CLAIMER, 0],
+    [ROLE_SENTRY, 0]
 ];
 
 let config = {

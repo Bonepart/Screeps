@@ -16,6 +16,7 @@ global.ARMY_HEALER = 'healer';
 global.ROLE_LONGHAUL = 'longhaul';
 global.ROLE_GOFER = 'gofer';
 global.ROLE_CLAIMER = 'missionary';
+global.ROLE_SENTRY = 'sentry';
 
 //Zombie
 global.ZOMBIE = 'zombie';
