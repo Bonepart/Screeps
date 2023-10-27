@@ -56,11 +56,14 @@ module.exports.loop = function () {
                     console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
                 }
                 explorer.checkExits(roomName)
-                if (thisRoom.energyAvailable >= 1300) { explorer.checkForMissionary(roomName) }
                 if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 processDefense.scanForHostiles(roomName);
-                if (thisRoom.energyCapacityAvailable >= 800) { thisRoom.memory.spawnTier = 3 }
-                else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 1 }
+                if (thisRoom.energyAvailable >= 1300) { 
+                    explorer.checkForMissionary(roomName)
+                    thisRoom.memory.spawnTier = 4
+                }
+                else if (thisRoom.energyCapacityAvailable >= 800) { thisRoom.memory.spawnTier = 3 }
+                else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 2 }
                 else { thisRoom.memory.spawnTier = 1 };
 
                 let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
