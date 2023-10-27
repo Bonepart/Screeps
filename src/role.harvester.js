@@ -16,21 +16,7 @@ let roleHarvester = {
 	    if(creep.memory.harvesting) {
             if(processRenewal.renew(creep)){ return };
 
-            let searchTarget = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}});
-            if (searchTarget) {
-                if(creep.pickup(searchTarget) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
-                }
-                return;
-            }
-            searchTarget = pathing.findClosestRuin(creep.pos);
-            if (searchTarget){
-                if(creep.withdraw(searchTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
-                }
-                return;
-            }
-            searchTarget = pathing.findClosestSource(creep.pos)
+            let searchTarget = pathing.findClosestSource(creep.pos)
             if(creep.harvest(searchTarget) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
@@ -44,7 +30,7 @@ let roleHarvester = {
                     }
             });
             targets = targets.concat(creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => { return (structure.structureType == STRUCTURE_TOWER ) && 
+                filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}));
             targets = targets.concat(creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => { return (structure.structureType == STRUCTURE_CONTAINER ) && 

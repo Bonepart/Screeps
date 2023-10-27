@@ -23,12 +23,14 @@ let roleUpgrader = {
             }
         }
         else {
-            let container = creep.room.controller.pos.findInRange(FIND_STRUCTURES, 10, { 
-                filter: (struct) => {return struct.structureType == STRUCTURE_CONTAINER && struct.store.getUsedCapacity(RESOURCE_ENERGY)
-            }})
-            if (container.length > 0){
-                if(creep.withdraw(container[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(container[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            let container = creep.room.controller.pos.findClosestByRange(FIND_STRUCTURES, { 
+                filter: (struct) => {return (struct.structureType == STRUCTURE_CONTAINER || 
+                                            struct.structureType == STRUCTURE_STORAGE) &&
+                                            struct.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
+            );
+            if (container){
+                if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             } else {
                 let source = pathing.findClosestSource(creep.pos);
