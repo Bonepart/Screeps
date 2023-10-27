@@ -1,3 +1,4 @@
+let explorer = require('process.exploration');
 
 let processRooms = {
 
@@ -23,7 +24,10 @@ let processRooms = {
         if (thisRoom.controller === undefined){thisRoom.memory.roomState = ROOM_NO_CONTROLLER}
         else if (thisRoom.controller.owner == undefined) { 
             if (thisRoom.controller.reservation != undefined){
-                if (thisRoom.controller.reservation.username == ME) {thisRoom.memory.roomState = ROOM_RESERVED}
+                if (thisRoom.controller.reservation.username == ME) {
+                    if (thisRoom.memory.roomState = ROOM_NEUTRAL) {explorer.checkExits(roomName, true)}
+                    thisRoom.memory.roomState = ROOM_RESERVED;
+                }
                 else {thisRoom.memory.roomState = ROOM_HOSTILE_RESERVED}
             }
             else {thisRoom.memory.roomState = ROOM_NEUTRAL}
