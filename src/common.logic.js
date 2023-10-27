@@ -10,6 +10,13 @@ let commonLogic = {
         if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
             creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
         }
+    },
+
+    /** @param {Creep} creep **/
+    moveToAssignedRoom: function(creep){
+        let newRoom = new RoomPosition(24, 24, creep.memory.assignedRoom);
+        creep.moveTo(newRoom, {visualizePathStyle: {stroke: '#ffffff'}});
     }
+
 }
 module.exports = commonLogic;
