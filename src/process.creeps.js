@@ -9,9 +9,14 @@ let processCreeps = {
 
         let builderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER);
         let harvesterList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER);
-        let upgraderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER);
+        let upgraderList = {};
         let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE);
 
+        for (let i in Game.rooms){
+            if (Memory.rooms[i].roomState == ROOM_OWNED || Memory.rooms[i].roomState == ROOM_OWNED_SAFE){
+                upgraderList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER && creep.memory.assignedRoom == i).length;
+            }
+        }
         let goferList = 0;
         if (Memory.roles.limit[ROLE_GOFER] > 0){goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER)}
         
@@ -72,15 +77,19 @@ let processCreeps = {
                 body = bodytype.maintenance[creepTier]
                 spawnCreep(spawnIndex, ROLE_MAINTENANCE, body, creepTier);
             }
-            else if(upgraderList.length < Memory.roles.limit[ROLE_UPGRADER]){
-                if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
-                body = bodytype.upgrader[creepTier]
-                spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier);
-            }    
             else if(builderList.length < Memory.roles.limit[ROLE_BUILDER]){
                 if (creepTier >= bodytype.builder.length) { creepTier = bodytype.builder.length - 1}
                 body = bodytype.builder[creepTier]
                 spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier);
+            }
+            else {
+                for (let i in Game.rooms) {
+                    if(upgraderList[i] < Memory.roles.limit[ROLE_UPGRADER]){
+                        if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
+                        body = bodytype.upgrader[creepTier]
+                        spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier, i);
+                    }
+                }
             }
         }
     },
@@ -105,7 +114,7 @@ let processCreeps = {
 };
 module.exports = processCreeps;
 
-function spawnCreep(spawnIndex, role, body, creepTier, assignRoom){
+function spawnCreep(spawnIndex, role, body, creepTier, assignRoom = undefined){
     let spawner = Game.spawns[spawnIndex];
     let newName = role + Memory.roles.index[role];
 
