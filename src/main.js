@@ -29,7 +29,7 @@ const roleSentry = require('./role.sentry');
 config.loadRoles();
 
 module.exports.loop = function () {
-    Game.functions = require('console');
+    Game.c = require('console');
     processCreeps.clearMemory();
     
     for (let roomName in Game.rooms){
