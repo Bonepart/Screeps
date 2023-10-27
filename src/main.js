@@ -52,9 +52,8 @@ module.exports.loop = function () {
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
-                if(Game.time % 20 == 0){
-                    console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
-                }
+                roomLogging(thisRoom.name);
+
                 explorer.checkExits(roomName)
                 if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 processDefense.scanForHostiles(roomName);
@@ -176,4 +175,16 @@ module.exports.loop = function () {
 
 function isAvailable(index){
     return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
+}
+
+function roomLogging(roomName){
+    
+    if(Game.time % 20 == 0){
+        let thisRoom = Game.rooms[roomName];
+        let storage = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE}});
+        console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, ' ')}/${thisRoom.energyCapacityAvailable}`);
+        if (storage.length > 0) {
+            console.log(`${thisRoom.name} storage used:\t ${storage[0].store.getUsedCapacity(RESOURCE_ENERGY)}`);
+        }
+    }
 }
