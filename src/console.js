@@ -34,8 +34,9 @@ let consoleCommands = {
     },
 
     toggleRP: function() {
-        if (Memory.repairPersistance) { Memory.repairPersistance = false }
-        else { Memory.repairPersistance = true }
+        if (Memory.roles.repairPersistance) { Memory.roles.repairPersistance = false }
+        else { Memory.roles.repairPersistance = true }
+		return `Repair Persistance = ${Memory.roles.repairPersistance}`;
     },
 
     healthCheck: function() {
@@ -77,7 +78,7 @@ let consoleCommands = {
     setImportContainer: function(roomName, containerID) {
         let thisRoom = Game.rooms[roomName];
         let container = Game.getObjectById(containerID);
-        if (container.structureType != STRUCTURE_CONTAINER) { return `Error: ${containerID} is not a valid container`};
+        if (container.structureType != STRUCTURE_CONTAINER || container.structureType != STRUCTURE_LINK) { return `Error: ${containerID} is not a valid Import Target`};
         thisRoom.memory.importContainerID = containerID;
         return 'Comeplete';
     },
