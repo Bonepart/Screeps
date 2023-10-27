@@ -16,6 +16,7 @@ let roleGofer = require('role.gofer');
 let roleClaimer = require('role.claimer');
 
 let towerLogic = require('structure.tower');
+let linkLogic = require('structure.link');
 let bodytype = require('constants.bodytype');
 let processCreeps = require('process.creeps');
 let processDefense = require('process.defense');
@@ -69,6 +70,9 @@ module.exports.loop = function () {
                     switch (structuresToRun[structure].structureType){
                         case STRUCTURE_TOWER:
                             towerLogic.run(structuresToRun[structure]);
+                            break;
+                        case STRUCTURE_LINK:
+                            linkLogic.run(structuresToRun[structure]);
                             break;
                     }
                 }
