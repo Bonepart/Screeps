@@ -32,13 +32,6 @@ let processCreeps = {
 
         let zombieList = _.filter(Game.creeps, (creep) => creep.memory.role == ZOMBIE);
 
-        //let numRoads = spawner.room.find(FIND_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_ROAD}}).length;
-        //let numRamparts = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_RAMPART}}).length;
-        //let numTowers = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => {return structure.structureType == STRUCTURE_TOWER}}).length;
-
-        //if (Memory.roles.limit[ROLE_UPGRADER] < (1 + ((spawner.room.controller.level - 1) * 2))) {Memory.roles.limit[ROLE_UPGRADER] = (1 + ((spawner.room.controller.level - 1) * 2))};
-        //if (Memory.roles.limit[ROLE_MAINTENANCE] < (ceil(numRoads / 50) + ceil(numRamparts / 4)) - numTowers) {Memory.roles.limit[ROLE_MAINTENANCE] = (ceil(numRoads / 50) + ceil(numRamparts / 4)) - numTowers};
-
         if (zombieList == 0){
             if (builderList.length > Memory.roles.limit[ROLE_BUILDER]){ 
                 builderList[0].memory.role = ZOMBIE;
