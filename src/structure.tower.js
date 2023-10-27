@@ -62,7 +62,7 @@ function repairStructures (thisTower) {
     let containerRepairs = thisTower.pos.findInRange(FIND_STRUCTURES, 15, { 
         filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER}});
     let pendingRepairs = containerRepairs.concat(_.sortBy(thisTower.pos.findInRange(FIND_STRUCTURES, 15, { 
-        filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_CONTAINER}}), (struct) => struct.hits));
+        filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_ROAD}}), (struct) => struct.hits));
 
     if (pendingRepairs.length == 0) { return false }
     let result = thisTower.repair(pendingRepairs[0]);
