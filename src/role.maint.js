@@ -1,4 +1,5 @@
 let processRenewal = require('process.renewal');
+let common = require('common.logic');
 let helper = require('helper');
 let pathing = require('pathing');
 
@@ -6,7 +7,13 @@ let roleMaintenance = {
 
     /** @param {Creep} creep **/
     run: function(creep, offset) {
-        //if(processRenewal.renew(creep)){ return };
+        if (creep.memory.assignedRoom) {
+            if (creep.room.name != creep.memory.assignedRoom) {
+                common.moveToAssignedRoom(creep);
+                return;
+            }
+        }
+
         if(creep.memory.repairing && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.repairing = false;
             creep.memory.repairID = null
