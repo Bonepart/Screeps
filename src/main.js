@@ -75,7 +75,7 @@ module.exports.loop = function () {
 
                 break;
             case ROOM_HOSTILE_SAFE:
-                if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
+                if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 /*
                 if (thisRoom.controller.safeMode < 400) {
                     if (vikingList.length < 4) {
@@ -87,7 +87,7 @@ module.exports.loop = function () {
                 }*/
                 break;
             case ROOM_HOSTILE:
-                if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
+                if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 /*
                 if (vikingList.length < 4) {
                     processDefense.spawnViking(roomName);
