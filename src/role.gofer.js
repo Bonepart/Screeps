@@ -45,7 +45,7 @@ let roleGofer = {
             let storage = creep.room.find(FIND_STRUCTURES, {filter: (structure) => { 
                 return (structure.structureType == STRUCTURE_STORAGE ) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
             }})
-            if (storage > 0){
+            if (storage.length > 0){
                 if(creep.transfer(storage[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(storage[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
