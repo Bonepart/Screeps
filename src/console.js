@@ -14,15 +14,13 @@ let consoleCommands = {
     },
 
     countCreeps: function() {
-        let roleList = [];
+        let roleList = {};
         for (let i in Game.creeps){
             if(roleList[Game.creeps[i].memory.role] == undefined){ roleList[Game.creeps[i].memory.role] = {role: Game.creeps[i].memory.role, count: 1}}
             else { roleList[Game.creeps[i].memory.role].count++}
         }
-        //roleList.sort();
         for (let role in roleList){
-            console.log(`Role: ${roleList[role].role}`);
-            console.log(`-- ${roleList[role].count}`);
+            console.log(`${roleList[role].count.toString().padStart(2)} ${roleList[role].role}`);
         }
     },
 
