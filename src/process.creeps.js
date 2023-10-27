@@ -71,7 +71,6 @@ let processCreeps = {
                 spawnCreep(spawnIndex, ROLE_MAINTENANCE, body, creepTier);
             }
             else if(builderList.length < Memory.roles.limit[ROLE_BUILDER]){
-                console.log(`cT = ${creepTier}\tbt.b.l = ${bodytype.builder.length}`);
                 if (creepTier >= bodytype.builder.length) { creepTier = bodytype.builder.length - 1}
                 body = bodytype.builder[creepTier]
                 spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier);
