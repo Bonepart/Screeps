@@ -44,89 +44,47 @@ let processCreeps = {
         let creepTier = spawner.room.memory.spawnTier - 1;
 
         if (spawner.store[RESOURCE_ENERGY] >= 250){
-            let newName = '';
-            let result = null;
+            let body = null;
             if (harvesterList.length < Memory.roles.limit[ROLE_HARVESTER]){
                 //Spawn Tier 0 Harvester if there are zero Harvesters
-                if (harvesterList.length == 0 && creepTier > 0){creepTier = 0};
-                newName = ROLE_HARVESTER + Memory.roles.index[ROLE_HARVESTER];
-                result = spawner.spawnCreep(bodytype.harvester[creepTier], newName, { memory: {role: ROLE_HARVESTER, tier: creepTier + 1}});
-                while (result === -3){
-                    Memory.roles.index[ROLE_HARVESTER]++;
-                    newName = ROLE_HARVESTER + Memory.roles.index[ROLE_HARVESTER];
-                    result = spawner.spawnCreep(bodytype.harvester[creepTier], newName, { memory: {role: ROLE_HARVESTER, tier: creepTier + 1}});
-                }
-                if(result == OK){Memory.roles.index[ROLE_HARVESTER]++};
-                logSpawnResults(result, newName);
+                if (harvesterList.length == 0 && creepTier > 0){creepTier = 0}
+                else if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
+                body = bodytype.harvester[creepTier]
+                spawnCreep(spawnIndex, ROLE_HARVESTER, body, creepTier);
             }
             else if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
-                newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
-                result = spawner.spawnCreep(bodytype.gofer[creepTier], newName, { memory: {role: ROLE_GOFER, tier: creepTier + 1}});
-                while (result === -3){
-                    Memory.roles.index[ROLE_GOFER]++;
-                    newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
-                    result = spawner.spawnCreep(bodytype.gofer[creepTier], newName, { memory: {role: ROLE_GOFER, tier: creepTier + 1}});
-                }
-                if(result == OK){Memory.roles.index[ROLE_GOFER]++};
-                logSpawnResults(result, newName);
+                if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
+                body = bodytype.gofer[creepTier]
+                spawnCreep(spawnIndex, ROLE_GOFER, body, creepTier);
             }
             else if (defenderList.length < Memory.roles.limit[ARMY_DEFENDER]){
-                newName = ARMY_DEFENDER + Memory.roles.index[ARMY_DEFENDER];
-                result = spawner.spawnCreep(bodytype.defender[creepTier], newName, { memory: {role: ARMY_DEFENDER, tier: creepTier + 1}});
-                while (result === -3){
-                    Memory.roles.index[ARMY_DEFENDER]++;
-                    newName = ARMY_DEFENDER + Memory.roles.index[ARMY_DEFENDER];
-                    result = spawner.spawnCreep(bodytype.defender[creepTier], newName, { memory: {role: ARMY_DEFENDER, tier: creepTier + 1}});
-                }
-                if(result == OK){Memory.roles.index[ARMY_DEFENDER]++};
-                logSpawnResults(result, newName);
+                if (creepTier >= bodytype.defender.length) { creepTier = bodytype.defender.length - 1}
+                body = bodytype.defender[creepTier]
+                spawnCreep(spawnIndex, ARMY_DEFENDER, body, creepTier);
             }
             else if (healerList.length < Memory.roles.limit[ARMY_HEALER]){
-                newName = ARMY_HEALER + Memory.roles.index[ARMY_HEALER];
-                result = spawner.spawnCreep(bodytype.healer[creepTier], newName, { memory: {role: ARMY_HEALER, tier: creepTier + 1}});
-                while (result === -3){
-                    Memory.roles.index[ARMY_HEALER]++;
-                    newName = ARMY_HEALER + Memory.roles.index[ARMY_HEALER];
-                    result = spawner.spawnCreep(bodytype.healer[creepTier], newName, { memory: {role: ARMY_HEALER, tier: creepTier + 1}});
-                }
-                if(result == OK){Memory.roles.index[ARMY_HEALER]++};
-                logSpawnResults(result, newName);
+                if (creepTier >= bodytype.healer.length) { creepTier = bodytype.healer.length - 1}
+                body = bodytype.healer[creepTier]
+                spawnCreep(spawnIndex, ARMY_HEALER, body, creepTier);
             }
             else if(maintList.length < Memory.roles.limit[ROLE_MAINTENANCE]){
-                newName = ROLE_MAINTENANCE + Memory.roles.index[ROLE_MAINTENANCE];
-                result = spawner.spawnCreep(bodytype.maintenance[creepTier], newName, { memory: {role: ROLE_MAINTENANCE, tier: creepTier + 1}});
-                while (result === -3){
-                    Memory.roles.index[ROLE_MAINTENANCE]++;
-                    newName = ROLE_MAINTENANCE + Memory.roles.index[ROLE_MAINTENANCE];
-                    result = spawner.spawnCreep(bodytype.maintenance[creepTier], newName, { memory: {role: ROLE_MAINTENANCE, tier: creepTier + 1}});
-                }
-                if(result == OK){Memory.roles.index[ROLE_MAINTENANCE]++};
-                logSpawnResults(result, newName);
+                if (creepTier >= bodytype.maintenance.length) { creepTier = bodytype.maintenance.length - 1}
+                body = bodytype.maintenance[creepTier]
+                spawnCreep(spawnIndex, ROLE_MAINTENANCE, body, creepTier);
             }
             else if(upgraderList.length < Memory.roles.limit[ROLE_UPGRADER]){
-                newName = ROLE_UPGRADER + Memory.roles.index[ROLE_UPGRADER];
-                result = spawner.spawnCreep(bodytype.upgrader[creepTier], newName, { memory: {role: ROLE_UPGRADER, tier: creepTier + 1}});
-                while (result === -3){
-                    Memory.roles.index[ROLE_UPGRADER]++;
-                    newName = ROLE_UPGRADER + Memory.roles.index[ROLE_UPGRADER];
-                    result = spawner.spawnCreep(bodytype.upgrader[creepTier], newName, { memory: {role: ROLE_UPGRADER, tier: creepTier + 1}});
-                }
-                if(result == OK){Memory.roles.index[ROLE_UPGRADER]++};
-                logSpawnResults(result, newName);
+                if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
+                body = bodytype.upgrader[creepTier]
+                spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier);
             }    
             else if(builderList.length < Memory.roles.limit[ROLE_BUILDER]){
-                newName = ROLE_BUILDER + Memory.roles.index[ROLE_BUILDER];
-                result = spawner.spawnCreep(bodytype.builder[creepTier], newName, { memory: {role: ROLE_BUILDER, tier: creepTier + 1}});
-                while (result === -3){
-                    Memory.roles.index[ROLE_BUILDER]++;
-                    newName = ROLE_BUILDER + Memory.roles.index[ROLE_BUILDER];
-                    result = spawner.spawnCreep(bodytype.builder[creepTier], newName, { memory: {role: ROLE_BUILDER, tier: creepTier + 1}});
-                }
-                if(result == OK){Memory.roles.index[ROLE_BUILDER]++};
-                logSpawnResults(result, newName);
+                if (creepTier >= bodytype.builder.length) { creepTier = bodytype.builder.length - 1}
+                body = bodytype.builder[creepTier]
+                spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier);
             }
         }
     },
+
     clearMemory: function(){
         for(let name in Memory.creeps) {
             if(!Game.creeps[name]) {
@@ -147,11 +105,26 @@ let processCreeps = {
 };
 module.exports = processCreeps;
 
+function spawnCreep(spawnIndex, role, body, tier){
+    let spawner = Game.spawns[spawnIndex];
+    let newName = role + Memory.roles.index[role];
+
+    let result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, tier: creepTier + 1}});
+    while (result === -3){
+        Memory.roles.index[role]++;
+        newName = role + Memory.roles.index[role];
+        result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, tier: creepTier + 1}});
+    }
+    if (result == OK) {
+        spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1}});
+        Memory.roles.index[role]++;
+        console.log(`Spawning ${newName}`);
+    } else { logSpawnResults(result, newName) }
+}
+
 function logSpawnResults(result, newName) {
     switch(result){
         case OK:
-            console.log(`Spawning ${newName}`);
-            break;
         case ERR_NOT_ENOUGH_ENERGY:
             break;
         default:
