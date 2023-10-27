@@ -13,6 +13,15 @@ let consoleCommands = {
         return `${creepName} is now assigned to ${creep.memory.assignedRoom}`;
     },
 
+	configureLinks: function(fromID, toID, roomName){
+		let thisRoom = Game.rooms[roomName];
+		if (thisRoom == undefined) { return `Error: ${roomName} is an invalid room` }
+		if (thisRoom.memory.links == undefined) { thisRoom.memory.links = [] }
+		let newLink = { from: fromID, to: toID};
+		thisRoom.memory.links.push(newLink);
+		return 'Link added';
+	},
+
     countCreeps: function() {
         let roleList = {};
         for (let i in Game.creeps){
@@ -77,8 +86,9 @@ let consoleCommands = {
 
     setImportContainer: function(roomName, containerID) {
         let thisRoom = Game.rooms[roomName];
+		if (thisRoom == undefined) { return `Error: ${roomName} is an invalid room` }
         let container = Game.getObjectById(containerID);
-        if (container.structureType != STRUCTURE_CONTAINER || container.structureType != STRUCTURE_LINK) { return `Error: ${containerID} is not a valid Import Target`};
+        if (container.structureType != STRUCTURE_CONTAINER && container.structureType != STRUCTURE_LINK) { return `Error: ${containerID} is not a valid Import Target`};
         thisRoom.memory.importContainerID = containerID;
         return 'Comeplete';
     },
