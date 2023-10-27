@@ -17,10 +17,20 @@ let roleBuilder = {
 	    }
 
 	    if(creep.memory.building) {
-            let defensiveSites = creep.room.find(FIND_CONSTRUCTION_SITES, { filter: (site) => { 
-                return site.structureType == STRUCTURE_WALL || site.structureType == STRUCTURE_RAMPART}});
-	        let targets = defensiveSites.concat(creep.room.find(FIND_CONSTRUCTION_SITES, {filter: (site) => { 
-                return site.structureType != STRUCTURE_WALL && site.structureType != STRUCTURE_RAMPART}}));
+            let targets = [];
+            for (let i in Game.rooms){
+                targets = targets.concat(Game.rooms[i].find(FIND_CONSTRUCTION_SITES, { filter: (site) => { 
+                    return site.structureType == STRUCTURE_WALL || 
+                            site.structureType == STRUCTURE_RAMPART ||
+                            site.structureType == STRUCTURE_TOWER}}
+                ));
+            }
+            for (let i in Game.rooms){
+                targets = targets.concat(Game.rooms[i].find(FIND_CONSTRUCTION_SITES, {filter: (site) => { 
+                    return site.structureType != STRUCTURE_WALL && 
+                            site.structureType != STRUCTURE_RAMPART &&
+                            site.structureType != STRUCTURE_TOWER}}));
+            }
             if(targets.length > 0) {
                 if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#0000aa'}});
@@ -41,10 +51,13 @@ let roleBuilder = {
             }
 	    }
 	    else {
-            let energyStore = creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
-                    structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
-            );
+            let energyStore = [];
+            for (let i in Game.rooms){
+                energyStore = energyStore.concat(Game.rooms[i].find(FIND_STRUCTURES, {
+                    filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
+                        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
+                ));
+            }
             if (energyStore.length > 0){
                 let result = creep.withdraw(energyStore[0], RESOURCE_ENERGY);
                 if(result == ERR_NOT_IN_RANGE) {
