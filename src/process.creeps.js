@@ -111,11 +111,11 @@ function spawnCreep(spawnIndex, role, body, creepTier, assignRoom = undefined){
     let spawner = Game.spawns[spawnIndex];
     let newName = role + Memory.roles.index[role];
 
-    let result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, tier: creepTier + 1}});
+    let result = spawner.spawnCreep(body, newName, { dryRun: true});
     while (result === -3){
         Memory.roles.index[role]++;
         newName = role + Memory.roles.index[role];
-        result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, tier: creepTier + 1}});
+        result = spawner.spawnCreep(body, newName, { dryRun: true});
     }
     if (result == OK) {
         spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}});
