@@ -30,7 +30,7 @@ let processRenewal = {
                     default:
                         console.log(`renewCreep Failed: ${creep.name}  ${result}`);
                 }
-            } else {creep.memory.renewing = false}
+            }
         }
         return creep.memory.renewing;
     }
