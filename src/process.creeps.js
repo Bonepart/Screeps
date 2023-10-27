@@ -105,7 +105,7 @@ let processCreeps = {
 };
 module.exports = processCreeps;
 
-function spawnCreep(spawnIndex, role, body, tier){
+function spawnCreep(spawnIndex, role, body, creepTier){
     let spawner = Game.spawns[spawnIndex];
     let newName = role + Memory.roles.index[role];
 
@@ -118,16 +118,16 @@ function spawnCreep(spawnIndex, role, body, tier){
     if (result == OK) {
         spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1}});
         Memory.roles.index[role]++;
-        console.log(`Spawning ${newName}`);
-    } else { logSpawnResults(result, newName) }
+        console.log(`Spawning ${newName} at T${creepTier}`);
+    } else { logSpawnResults(result, newName, creepTier) }
 }
 
-function logSpawnResults(result, newName) {
+function logSpawnResults(result, newName, creepTier) {
     switch(result){
         case OK:
         case ERR_NOT_ENOUGH_ENERGY:
             break;
         default:
-            console.log(`Spawn of ${newName} failed: ${result}`);
+            console.log(`Spawn of ${newName} (T${creepTier}) failed: ${result}`);
     }
 }
