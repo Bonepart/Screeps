@@ -69,6 +69,11 @@ let consoleCommands = {
         return returnString;
     },
 
+    resetIndex: function() {
+        for (let i in Memory.roles.index) { Memory.roles.index[i] = 1 }
+        return 'Complete';
+    },
+
     setImportContainer: function(roomName, containerID) {
         let thisRoom = Game.rooms[roomName];
         let container = Game.getObjectById(containerID);
