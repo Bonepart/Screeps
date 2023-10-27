@@ -61,14 +61,20 @@ let roleLonghaul = {
                     } else if (result == OK) { return }
                 }
             }
-            else {
+
             let targets = originRoom.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return structure.structureType == STRUCTURE_STORAGE && 
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                }
+            });
+            targets = targets.concat(originRoom.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                             structure.structureType == STRUCTURE_SPAWN) && 
                             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 }
-            });
+            }));
             targets = targets.concat(originRoom.find(FIND_STRUCTURES, {
                 filter: (structure) => { return (structure.structureType == STRUCTURE_TOWER ) && 
                     structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}));
@@ -78,7 +84,7 @@ let roleLonghaul = {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
-            }
+            
         }
     }
 }
