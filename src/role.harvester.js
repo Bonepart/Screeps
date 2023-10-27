@@ -30,18 +30,21 @@ let roleHarvester = {
                     }
             });
             targets = targets.concat(creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}));
-            targets = targets.concat(creep.room.find(FIND_STRUCTURES, {
-                filter: (structure) => { return (structure.structureType == STRUCTURE_CONTAINER ) && 
-                    structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}));
+                filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ||
+												 structure.structureType == STRUCTURE_CONTAINER ) &&
+                    							 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}
+				})
+			);
             let parkingFlag = creep.room.find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Parking"}});
-            let buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
+            
             if(targets.length > 0) {
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
-            } else if(buildables.length > 0) {
+				return;
+            }
+			let buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
+			if(buildables.length > 0) {
                 if(creep.build(buildables[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(buildables[0], {visualizePathStyle: {stroke: '#0000ff'}});
                 }
