@@ -118,7 +118,7 @@ function spawnCreep(spawnIndex, role, body, creepTier, assignRoom){
     if (result == OK) {
         spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}});
         Memory.roles.index[role]++;
-        console.log(`Spawning ${newName} at T${creepTier}`);
+        console.log(`Spawning ${newName} at T${creepTier+1}`);
     } else { logSpawnResults(result, newName, creepTier) }
 }
 
@@ -128,6 +128,6 @@ function logSpawnResults(result, newName, creepTier) {
         case ERR_NOT_ENOUGH_ENERGY:
             break;
         default:
-            console.log(`Spawn of ${newName} (T${creepTier}) failed: ${result}`);
+            console.log(`Spawn of ${newName} (T${creepTier+1}) failed: ${result}`);
     }
 }
