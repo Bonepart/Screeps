@@ -105,7 +105,7 @@ let processCreeps = {
 };
 module.exports = processCreeps;
 
-function spawnCreep(spawnIndex, role, body, creepTier){
+function spawnCreep(spawnIndex, role, body, creepTier, assignRoom){
     let spawner = Game.spawns[spawnIndex];
     let newName = role + Memory.roles.index[role];
 
@@ -116,7 +116,7 @@ function spawnCreep(spawnIndex, role, body, creepTier){
         result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, tier: creepTier + 1}});
     }
     if (result == OK) {
-        spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1}});
+        spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}});
         Memory.roles.index[role]++;
         console.log(`Spawning ${newName} at T${creepTier}`);
     } else { logSpawnResults(result, newName, creepTier) }
