@@ -95,12 +95,10 @@ let processCreeps = {
             }
         }
         for(let name in Memory.rooms) {
-            for (let exit in Memory.rooms[name].exits){
-
-                if ( Memory.rooms[name].exits[exit].id != null && Game.getObjectById(Memory.rooms[name].exits[exit].id) === null) {
-                    Memory.rooms[name].exits[exit].id = null;
-                    console.log(`Clearing invalid ID from ${name}-E${exit}`);
-                }
+            if (Memory.rooms[name].sentryID == undefined) { continue }
+            if (Memory.rooms[name].sentryID != null && Game.getObjectById(Memory.rooms[name].sentryID) === null) {
+                Memory.rooms[name].sentryID = null;
+                console.log(`Clearing invalid Sentry ID from ${name}`);
             }
         }
     }
