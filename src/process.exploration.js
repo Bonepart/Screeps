@@ -17,7 +17,7 @@ let processExploration = {
         }
     },
 
-    checkExits: function (roomName) {
+    checkExits: function (roomName, sentryCheck=false) {
         thisRoom = Game.rooms[roomName];
         if (thisRoom.memory.exits === undefined){
             thisRoom.memory.exits = {};
@@ -25,6 +25,12 @@ let processExploration = {
             for (let i in exitInfo){
                 thisRoom.memory.exits[i] = exitInfo[i];
                 if (Memory.rooms[exitInfo[i]] == undefined) { Memory.rooms[exitInfo[i]] = { sentryID: null }}
+            }
+        }
+        if (sentryCheck){
+            for (let i in thisRoom.memory.exits){
+                if (Memory.rooms[thisRoom.memory.exits[i]] == undefined) {Memory.rooms[thisRoom.memory.exits[i]] = { sentryID: null }}
+                if (Memory.rooms[thisRoom.memory.exits[i]].sentryID == undefined) {Memory.rooms[thisRoom.memory.exits[i]].sentryID = null }
             }
         }
     },
