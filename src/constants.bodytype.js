@@ -12,7 +12,8 @@ exports.upgrader = [
 exports.builder = [
     [WORK, CARRY, MOVE, MOVE], //Cost 250
     [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], //Cost 500
-    [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE] //Cost 700
+    [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], //Cost 700
+    [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 1000
 ];
 exports.maintenance = [
     [WORK, CARRY, MOVE, MOVE], //Cost 250
