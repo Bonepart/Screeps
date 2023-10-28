@@ -62,7 +62,8 @@ let processCreeps = {
                 spawnCreep(spawnIndex, ARMY_HEALER, body, creepTier);
             }
             else {
-                for (let i in Game.rooms) {
+                for (let i in Memory.rooms) {
+                    if (Memory.rooms[i].roomState < ROOM_OWNED) { continue }
                     if (harvesterList[i] < Memory.roles.limit[ROLE_HARVESTER]){
                         if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
                         body = bodytype.harvester[creepTier]
