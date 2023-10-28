@@ -6,7 +6,7 @@ let processRenewal = {
         if (creep.memory.tier > 0 && creep.ticksToLive < 200 && !creep.memory.renewing){
             creep.memory.renewing = true;
             console.log(`Creep ${creep.name} returning to spawn to renew (${creep.ticksToLive})`);
-        } else if (creep.memory.renewing && creep.ticksToLive > 1400){
+        } else if (creep.memory.renewing && creep.ticksToLive > 1300){
             creep.memory.renewing = false;
             console.log(`Creep ${creep.name} renewed! (${creep.ticksToLive})`);
         }
