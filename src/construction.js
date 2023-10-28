@@ -55,13 +55,14 @@ let construction = {
 
     buildSourceRoads: function (spawnIndex) {
         let spawner = Game.spawns[spawnIndex];
+        memoryLoc = memoryLoc;
         let numConstructionSites = spawner.room.find(FIND_CONSTRUCTION_SITES).length;
         //console.log(`numConstructionSites = ${numConstructionSites}`)
-        for (let i in Memory.sourceList){
-            switch(Memory.sourceList[i].roadStatus){
+        for (let i in memoryLoc.sourceList){
+            switch(memoryLoc.sourceList[i].roadStatus){
                 case 0:
                     if (numConstructionSites == 0){
-                        let source = Game.getObjectById(Memory.sourceList[i].id);
+                        let source = Game.getObjectById(memoryLoc.sourceList[i].id);
                         let roadPath = pathing.calcPathForRoad(spawner.pos, {pos: source.pos, range: 1});
                         if (roadPath.incomplete){ 
                             console.log('------Unable to find path');
@@ -70,28 +71,28 @@ let construction = {
                         for (let j = 0; j < roadPath.path.length; j++){
                             let result = Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[j], STRUCTURE_ROAD);
                         }
-                        Memory.sourceList[i].roadStatus = 1;
+                        memoryLoc.sourceList[i].roadStatus = 1;
                     }
                     return;
                 case 1:
                     //console.log(`Case 1: ID = ${Memory.sourceList[i].id}`);
-                    if (numConstructionSites == 0){ Memory.sourceList[i].roadStatus = 2 }
+                    if (numConstructionSites == 0){ memoryLoc.sourceList[i].roadStatus = 2 }
                     return;
                 case 2:
                     //console.log(`Case 2: ID = ${Memory.sourceList[i].id}`);
-                    for (let j = 1; j <= Memory.sourceList[i].openSpaces[0]; j++){
-                        Game.spawns[spawnIndex].room.createConstructionSite(Memory.sourceList[i].openSpaces[j].x, Memory.sourceList[i].openSpaces[j].y, STRUCTURE_ROAD);
+                    for (let j = 1; j <= memoryLoc.sourceList[i].openSpaces[0]; j++){
+                        Game.spawns[spawnIndex].room.createConstructionSite(memoryLoc.sourceList[i].openSpaces[j].x, memoryLoc.sourceList[i].openSpaces[j].y, STRUCTURE_ROAD);
                     }
-                    let originPos = new RoomPosition(Memory.sourceList[i].openSpaces[1].x, Memory.sourceList[i].openSpaces[1].y, Game.spawns[spawnIndex].room.name);
-                    for (let j = 2; j <= Memory.sourceList[i].openSpaces[0]; j++){
-                        let destinationPos = new RoomPosition(Memory.sourceList[i].openSpaces[j].x, Memory.sourceList[i].openSpaces[j].y, Game.spawns[spawnIndex].room.name);
+                    let originPos = new RoomPosition(memoryLoc.sourceList[i].openSpaces[1].x, memoryLoc.sourceList[i].openSpaces[1].y, Game.spawns[spawnIndex].room.name);
+                    for (let j = 2; j <= memoryLoc.sourceList[i].openSpaces[0]; j++){
+                        let destinationPos = new RoomPosition(memoryLoc.sourceList[i].openSpaces[j].x, memoryLoc.sourceList[i].openSpaces[j].y, Game.spawns[spawnIndex].room.name);
                         let roadPath = pathing.calcPathForRoad(originPos, destinationPos);
                         if (roadPath.incomplete){ continue };
                         for (let h = 0; h < roadPath.path.length; h++){
                             Game.spawns[spawnIndex].room.createConstructionSite(roadPath.path[h], STRUCTURE_ROAD);
                         }
                     }
-                    Memory.sourceList[i].roadStatus = 3;
+                    memoryLoc.sourceList[i].roadStatus = 3;
                     this.checkSpawnRoads(spawnIndex);
                     return;
             }
