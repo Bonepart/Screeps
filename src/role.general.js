@@ -29,7 +29,11 @@ let roleGeneral = {
         } else {
             hostiles = vikingList[0].room.find(FIND_HOSTILE_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_TOWER}});
             hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_SPAWNS));
-            hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_STRUCTURES));
+            hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_STRUCTURES, { 
+                filter: (structure) => { return structure.structureType != STRUCTURE_TOWER &&
+                                                structure.structureType != STRUCTURE_CONTROLLER}
+                })
+            );
             hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_CONSTRUCTION_SITES));
             if (hostiles.length > 0){
                 for (let i in vikingList){
