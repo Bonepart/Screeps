@@ -41,7 +41,6 @@ module.exports.loop = function () {
         processRooms.checkRoomState(roomName);
         processDefense.checkForKeeperLair(roomName);
 
-        //let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         switch (thisRoom.memory.roomState){
             case ROOM_NEUTRAL:
                 break;
@@ -97,8 +96,8 @@ module.exports.loop = function () {
         if (Memory.rooms[roomName].spawns[0] === undefined) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
 
-        //if (isAvailable(i)) { explorer.spawnSentry(i) }
-        if (isAvailable(i)) { processCreeps.checkForSpawn(i) }
+        //if (helper.isAvailable(i)) { explorer.spawnSentry(i) }
+        if (helper.isAvailable(i)) { processCreeps.checkForSpawn(i) }
 
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
             if (Memory.rooms[roomName].spawns[0].hasRoads == 0) {construction.checkSpawnRoads(i)}
@@ -163,9 +162,7 @@ module.exports.loop = function () {
     
 };
 
-function isAvailable(index){
-    return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
-}
+
 
 function roomLogging(roomName){
     

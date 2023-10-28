@@ -5,6 +5,10 @@ let helper = {
         console.log(str);
     },
 
+    isAvailable: function (index){
+        return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
+    },
+
     possibleExtensions: function (conLevel) {
         switch (conLevel) {
             case 1:
