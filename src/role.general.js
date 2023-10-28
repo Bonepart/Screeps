@@ -3,7 +3,7 @@ let helper = require('helper');
 let roleGeneral = {
 
     run: function(roomName=null){
-        console.log(`Call to General for room ${roomName}`);
+        //console.log(`Call to General for room ${roomName}`);
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         let hostiles = vikingList[0].room.find(FIND_HOSTILE_CREEPS);
         
