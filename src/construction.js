@@ -5,8 +5,8 @@ let construction = {
 
     checkSpawnRoads: function (spawnIndex) {
         if (Memory.spawns[spawnIndex].hasRoads != -1){
-            this.buildSpawnRoads(spawnIndex, Memory.spawns[spawnIndex].hasRoads);
-            Memory.spawns[spawnIndex].hasRoads++;
+            this.buildSpawnRoads(spawnIndex, Memory.rooms[Game.spawns[spawnIndex].room.name].spawns[0].hasRoads);
+            Memory.rooms[Game.spawns[spawnIndex].room.name].spawns[0].hasRoads++;
         }
     },
 
