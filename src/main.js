@@ -44,7 +44,6 @@ module.exports.loop = function () {
         //let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         switch (thisRoom.memory.roomState){
             case ROOM_NEUTRAL:
-                break;
             case ROOM_RESERVED:         
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
                 explorer.checkExits(roomName);
