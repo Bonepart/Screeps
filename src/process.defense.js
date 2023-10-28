@@ -18,12 +18,15 @@ let processDefense = {
 
     checkKillList: function(){
         if (Memory.killList === undefined || Memory.killList.length === 0) { return }
-        if (Game.getObjectById(Memory.killList[-1]) === null) {
-            console.log(`Checking killList: ${Memory.killList[-1]} has been destroyed`);
-            Memory.killList.pop();
+        if (Game.getObjectById(Memory.killList[0]) === null) {
+            console.log(`Checking killList: ${Memory.killList[0]} has been destroyed`);
+            Memory.killList.shift();
         } else { 
             let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING).length;
-            if (vikingList.length > 0) {roleGeneral.killTarget(Memory.killList[-1])}
+            if (vikingList < Memory.roles.limit[ARMY_VIKING]) {
+                this.spawnViking();
+            }
+            if (vikingList.length > 0) {roleGeneral.killTarget(Memory.killList[0])}
         }
     },
 

@@ -69,6 +69,27 @@ let roleGeneral = {
         }
     },
 
+    killTarget: function(targetID){
+        let target = Game.getObjectById(targetID);
+        if (target === null) { return }
+        let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
+        for (let i in vikingList){
+            let creep = vikingList[i];
+            if (creep.spawning) {continue}
+            creep.rangedAttack(target);
+            let result = creep.attack(target);
+            switch(result){
+                case OK:
+                    break;
+                case ERR_NOT_IN_RANGE:
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                    break;
+                default:
+                    console.log(`${creep.name} tried to attck ${target.name}, got error ${result}`);
+            }
+        }
+    },
+
     defendPoint: function(){
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         let dFlag = Game.rooms[roomName].find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Defend Point"}});
