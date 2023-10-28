@@ -20,23 +20,25 @@ let roleBuilder = {
             let targets = [];
             for (let i in Game.rooms){
                 targets = targets.concat(Game.rooms[i].find(FIND_CONSTRUCTION_SITES, { filter: (site) => { 
-                    return site.structureType == STRUCTURE_WALL || 
+                    return (site.structureType == STRUCTURE_WALL || 
                             site.structureType == STRUCTURE_RAMPART ||
-                            site.structureType == STRUCTURE_TOWER}}
+                            site.structureType == STRUCTURE_TOWER) &&
+                            site.my}}
                 ));
             }
             for (let i in Game.rooms){
                 targets = targets.concat(Game.rooms[i].find(FIND_CONSTRUCTION_SITES, {filter: (site) => { 
-                    return site.structureType != STRUCTURE_WALL && 
+                    return (site.structureType != STRUCTURE_WALL && 
                             site.structureType != STRUCTURE_RAMPART &&
-                            site.structureType != STRUCTURE_TOWER}}));
+                            site.structureType != STRUCTURE_TOWER) &&
+                            site.my}}));
             }
             if(targets.length > 0) {
                 if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#0000aa'}});
                 }
             }else{
-                let targets = creep.room.find(FIND_STRUCTURES, {
+                let targets = creep.room.find(FIND_MY_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
                                 structure.structureType == STRUCTURE_SPAWN ||
