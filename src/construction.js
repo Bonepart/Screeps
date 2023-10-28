@@ -55,7 +55,7 @@ let construction = {
 
     buildSourceRoads: function (spawnIndex) {
         let spawner = Game.spawns[spawnIndex];
-        memoryLoc = memoryLoc;
+        let memoryLoc = Memory.rooms[spawner.room.name];
         let numConstructionSites = spawner.room.find(FIND_CONSTRUCTION_SITES).length;
         //console.log(`numConstructionSites = ${numConstructionSites}`)
         for (let i in memoryLoc.sourceList){
