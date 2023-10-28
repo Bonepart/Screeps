@@ -12,7 +12,7 @@ let processDefense = {
                 this.spawnViking();
             }
             if (vikingList.length > 0) {roleGeneral.run(roomName)}
-        }
+        } //else {roleGeneral.moveToFlag(roomName)}
     },
 
     checkForKeeperLair: function(roomName){

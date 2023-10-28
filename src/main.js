@@ -46,7 +46,8 @@ module.exports.loop = function () {
             case ROOM_NEUTRAL:
             case ROOM_RESERVED:         
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
-                explorer.checkExits(roomName);
+                if(Game.time % 20 == 0) { explorer.checkExits(roomName, true) }
+                else { explorer.checkExits(roomName) }
                 explorer.assignLongHauls(roomName);
                 processDefense.scanForHostiles(roomName);
                 break;
@@ -82,7 +83,7 @@ module.exports.loop = function () {
                 if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 break;
             case ROOM_HOSTILE:
-                if (thisRoom.memory.sentryID === undefined) { thisRoom.memory.sentryID = null }
+                //if (thisRoom.memory.sentryID === undefined) { thisRoom.memory.sentryID = null }
                 processDefense.scanForHostiles(roomName);
                 break;
         }
