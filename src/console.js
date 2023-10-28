@@ -109,6 +109,15 @@ let consoleCommands = {
         if (creep == undefined) {return `${creepName} is not a valid name`}
         creep.memory.role = ZOMBIE;
         return `${creepName} is now a zombie`;
+    },
+
+    massZombie: function(role) {
+        roleList = _.filter(Game.creeps, (creep) => creep.memory.role == role);
+        for (let i in roleList){
+            roleList[i].memory.role = ZOMBIE;
+            console.log(`${roleList[i].name} is now a zombie`);
+        }
+        return `Complete`;
     }    
 }
 module.exports = consoleCommands;
