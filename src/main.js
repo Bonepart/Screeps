@@ -49,7 +49,7 @@ module.exports.loop = function () {
                 if(Game.time % 20 == 0) { explorer.checkExits(roomName, true) }
                 else { explorer.checkExits(roomName) }
                 explorer.assignLongHauls(roomName);
-                processDefense.scanForHostiles(roomName);
+                //processDefense.scanForHostiles(roomName);
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
@@ -84,7 +84,7 @@ module.exports.loop = function () {
                 break;
             case ROOM_HOSTILE:
                 //if (thisRoom.memory.sentryID === undefined) { thisRoom.memory.sentryID = null }
-                processDefense.scanForHostiles(roomName);
+                //processDefense.scanForHostiles(roomName);
                 break;
         }
     }
@@ -96,7 +96,7 @@ module.exports.loop = function () {
         if (Memory.rooms[roomName].spawns[0] === undefined) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
 
-        if (isAvailable(i)) { explorer.spawnSentry(i) }
+        //if (isAvailable(i)) { explorer.spawnSentry(i) }
         if (isAvailable(i)) { processCreeps.checkForSpawn(i) }
 
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
