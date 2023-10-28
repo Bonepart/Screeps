@@ -1,11 +1,19 @@
 let processRenewal = require('process.renewal');
-let helper = require('helper');
 let pathing = require('pathing');
+let common = require('common.logic');
+let helper = require('helper');
 
 let roleHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+        if (creep.memory.assignedRoom) {
+            if (creep.room.name != creep.memory.assignedRoom) {
+                common.moveToAssignedRoom(creep);
+                return;
+            }
+        }
+        
 	    if(creep.memory.harvesting && creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.harvesting = false;
 	    }
