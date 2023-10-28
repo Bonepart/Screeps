@@ -7,13 +7,14 @@ let processCreeps = {
     checkForSpawn: function(spawnIndex){
         let spawner = Game.spawns[spawnIndex];
 
-        let builderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER);
+        let builderList = {};
         let harvesterList = {};
         let upgraderList = {};
         let maintList = {};
 
         for (let i in Game.rooms){
             if (Memory.rooms[i].roomState == ROOM_OWNED || Memory.rooms[i].roomState == ROOM_OWNED_SAFE){
+                builderList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER && creep.memory.assignedRoom == i).length;
                 harvesterList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER && creep.memory.assignedRoom == i).length;
                 upgraderList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER && creep.memory.assignedRoom == i).length;
                 maintList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == i).length;
@@ -45,14 +46,7 @@ let processCreeps = {
 
         if (spawner.store[RESOURCE_ENERGY] >= 250){
             let body = null;
-            if (harvesterList.length < Memory.roles.limit[ROLE_HARVESTER]){
-                //Spawn Tier 0 Harvester if there are zero Harvesters
-                if (harvesterList.length == 0 && creepTier > 0){creepTier = 0}
-                else if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
-                body = bodytype.harvester[creepTier]
-                spawnCreep(spawnIndex, ROLE_HARVESTER, body, creepTier);
-            }
-            else if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
+            if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
                 if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
                 body = bodytype.gofer[creepTier]
                 spawnCreep(spawnIndex, ROLE_GOFER, body, creepTier);
@@ -67,17 +61,22 @@ let processCreeps = {
                 body = bodytype.healer[creepTier]
                 spawnCreep(spawnIndex, ARMY_HEALER, body, creepTier);
             }
-            else if(builderList.length < Memory.roles.limit[ROLE_BUILDER]){
-                if (creepTier >= bodytype.builder.length) { creepTier = bodytype.builder.length - 1}
-                body = bodytype.builder[creepTier]
-                spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier);
-            }
             else {
                 for (let i in Game.rooms) {
-                    if(maintList[i] < Memory.roles.limit[ROLE_MAINTENANCE]){
+                    if (harvesterList[i] < Memory.roles.limit[ROLE_HARVESTER]){
+                        if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
+                        body = bodytype.harvester[creepTier]
+                        if (spawnCreep(spawnIndex, ROLE_HARVESTER, body, creepTier, i)) { return }
+                    }
+                    else if(maintList[i] < Memory.roles.limit[ROLE_MAINTENANCE]){
                         if (creepTier >= bodytype.maintenance.length) { creepTier = bodytype.maintenance.length - 1}
                         body = bodytype.maintenance[creepTier]
                         if (spawnCreep(spawnIndex, ROLE_MAINTENANCE, body, creepTier, i)) { return }
+                    }
+                    else if(builderList[i] < Memory.roles.limit[ROLE_BUILDER]){
+                        if (creepTier >= bodytype.builder.length) { creepTier = bodytype.builder.length - 1}
+                        body = bodytype.builder[creepTier]
+                        if (spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier, i)) { return }
                     }
                     else if(upgraderList[i] < Memory.roles.limit[ROLE_UPGRADER]){
                         if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
