@@ -44,12 +44,13 @@ module.exports.loop = function () {
         //let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         switch (thisRoom.memory.roomState){
             case ROOM_NEUTRAL:
+                break;
             case ROOM_RESERVED:         
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
                 if(Game.time % 20 == 0) { explorer.checkExits(roomName, true) }
                 else { explorer.checkExits(roomName) }
                 explorer.assignLongHauls(roomName);
-                //processDefense.scanForHostiles(roomName);
+                processDefense.scanForHostiles(roomName);
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
