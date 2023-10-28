@@ -33,7 +33,7 @@ exports.healer = [
 exports.viking = [ 
     [ ],
     [ ],
-    [ TOUGH, TOUGH, RANGED_ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 710
+    [ TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 770
 ];
 exports.gofer = [
     [ WORK, CARRY, MOVE, MOVE], //Cost 250
