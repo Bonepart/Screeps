@@ -89,7 +89,7 @@ let roleGeneral = {
             }
         }
         if(Game.time % 40 == 0) {
-            console.log(`killList Progress: ${target.id} (${target.hits}/${target.hitsMax})`);
+            console.log(`killList: ${target.id} (${target.hits})`);
         }
     },
 
