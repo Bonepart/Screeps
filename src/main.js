@@ -41,7 +41,7 @@ module.exports.loop = function () {
         processRooms.checkRoomState(roomName);
         processDefense.checkForKeeperLair(roomName);
 
-        let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
+        //let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         switch (thisRoom.memory.roomState){
             case ROOM_NEUTRAL:
                 break;
@@ -49,6 +49,7 @@ module.exports.loop = function () {
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
                 explorer.checkExits(roomName);
                 explorer.assignLongHauls(roomName);
+                processDefense.scanForHostiles(roomName);
                 break;
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
@@ -105,7 +106,7 @@ module.exports.loop = function () {
 
     for (let i in Game.spawns){
         let roomName = Game.spawns[i].room.name;
-        //roleGeneral.moveToFlag(roomName);
+        //roleGeneral.defend();
         if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
         if (Memory.rooms[roomName].spawns[0] === undefined) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];

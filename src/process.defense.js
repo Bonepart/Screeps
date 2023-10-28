@@ -8,7 +8,7 @@ let processDefense = {
         let hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
         if (hostiles.length > 0){
             let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
-            if (vikingList.length < 4) {
+            if (vikingList.length < Memory.roles.limit[ARMY_VIKING]) {
                 this.spawnViking();
             }
             if (vikingList.length > 0) {roleGeneral.run(roomName)}
