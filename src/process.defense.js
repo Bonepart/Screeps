@@ -26,7 +26,7 @@ let processDefense = {
             if (vikingList < Memory.roles.limit[ARMY_VIKING]) {
                 this.spawnViking();
             }
-            if (vikingList.length > 0) {roleGeneral.killTarget(Memory.killList[0])}
+            if (vikingList > 0) {roleGeneral.killTarget(Memory.killList[0])}
         }
     },
 
