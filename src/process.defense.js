@@ -6,6 +6,7 @@ let helper = require('helper');
 let processDefense = {
     scanForHostiles: function(roomName) {
         let hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
+        hostiles = hostiles.concat(Game.rooms[roomName].find(FIND_HOSTILE_STRUCTURES));
         if (hostiles.length > 0){
             let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
             if (vikingList.length < Memory.roles.limit[ARMY_VIKING]) {

@@ -6,7 +6,6 @@ let roleGeneral = {
         //console.log(`Call to General for room ${roomName}`);
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         let hostiles = vikingList[0].room.find(FIND_HOSTILE_CREEPS);
-        
         if (hostiles.length > 0){
             for (let i in vikingList){
                 let creep = vikingList[i];
@@ -28,28 +27,26 @@ let roleGeneral = {
                 } 
             }
         } else {
-            hostiles = vikingList[0].room.find(FIND_HOSTILE_SPAWNS);
+            hostiles = vikingList[0].room.find(FIND_HOSTILE_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_TOWER}});
+            hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_SPAWNS));
             hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_STRUCTURES));
             hostiles = hostiles.concat(vikingList[0].room.find(FIND_HOSTILE_CONSTRUCTION_SITES));
             if (hostiles.length > 0){
                 for (let i in vikingList){
                     let creep = vikingList[i];
                     if (creep.spawning) {continue}
-                    let target = creep.pos.findClosestByRange(FIND_HOSTILE_SPAWNS);
-                    if (target){
-                        let result = creep.attack(target);
-                        switch(result){
-                            case OK:
-                                console.log(`${creep.name} attacked ${target.name}! (${target.hits}/${target.hitsMax})`);
-                                break;
-                            case ERR_NOT_IN_RANGE:
-                                creep.rangedAttack(target);
-                                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-                                break;
-                            default:
-                                console.log(`${creep.name} tried to attck ${target.name}, got error ${result}`);
-                        }
-                    } 
+                    let result = creep.attack(hostiles[0]);
+                    switch(result){
+                        case OK:
+                            console.log(`${creep.name} attacked ${hostiles[0].id}! (${hostiles[0].hits}/${hostiles[0].hitsMax})`);
+                            break;
+                        case ERR_NOT_IN_RANGE:
+                            creep.rangedAttack(hostiles[0]);
+                            creep.moveTo(hostiles[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                            break;
+                        default:
+                            console.log(`${creep.name} tried to attck ${hostiles[0].id}, got error ${result}`);
+                    }
                 }
             }
         }
