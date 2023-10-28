@@ -55,30 +55,26 @@ let processExploration = {
 
     spawnSentry: function (spawnIndex) {
         let spawner = Game.spawns[spawnIndex];
-        if (spawner.room.energyAvailable < 800) { return }
         let role = ROLE_SENTRY;
         let body = bodytype.sentry;
 
-        for (let i in Game.rooms) {
-            let thisRoom = Game.rooms[i];
-            for (let j in thisRoom.memory.exits){
-                exitName = thisRoom.memory.exits[j]
-                if (Memory.rooms[exitName].sentryID === null){
+        for (let roomName in Memory.rooms) {
+            if ((Memory.rooms[roomName].sentryID != null && Game.creeps[Memory.rooms[roomName].sentryID] == undefined) || 
+                    Memory.rooms[roomName].sentryID === null){
+                newName = role + Memory.roles.index[role];
+                let result = spawner.spawnCreep(body, newName, { dryRun: true });
+                while (result === -3){
+                    Memory.roles.index[role]++;
                     newName = role + Memory.roles.index[role];
-                    let result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, assignedRoom: exitName}});
-                    while (result === -3){
-                        Memory.roles.index[role]++;
-                        newName = role + Memory.roles.index[role];
-                        result = spawner.spawnCreep(body, newName, { dryRun: true, memory: {role: role, assignedRoom: exitName}});
-                    }
-                    if (result == OK) {
-                        spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: exitName}});
-                        Memory.roles.index[role]++;
-                        Memory.rooms[exitName].sentryID = 'spawning';
-                        console.log(`Spawning ${newName} to surveil ${exitName}`);
-                        return true;
-                    }else {logSpawnResults(result, newName)}
+                    result = spawner.spawnCreep(body, newName, { dryRun: true });
                 }
+                if (result == OK) {
+                    spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName}});
+                    Memory.roles.index[role]++;
+                    Memory.rooms[roomName].sentryID = newName;
+                    console.log(`Spawning ${newName} to surveil ${roomName}`);
+                    return true;
+                }else {logSpawnResults(result, newName)}
             }
         }
     },

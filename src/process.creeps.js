@@ -8,12 +8,13 @@ let processCreeps = {
         let spawner = Game.spawns[spawnIndex];
 
         let builderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER);
-        let harvesterList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER);
+        let harvesterList = {};
         let upgraderList = {};
         let maintList = {};
 
         for (let i in Game.rooms){
             if (Memory.rooms[i].roomState == ROOM_OWNED || Memory.rooms[i].roomState == ROOM_OWNED_SAFE){
+                harvesterList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER && creep.memory.assignedRoom == i).length;
                 upgraderList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER && creep.memory.assignedRoom == i).length;
                 maintList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == i).length;
             }
@@ -96,8 +97,8 @@ let processCreeps = {
             }
         }
         for(let name in Memory.rooms) {
-            if (Memory.rooms[name].sentryID == undefined) { continue }
-            if (Memory.rooms[name].sentryID != null && Game.getObjectById(Memory.rooms[name].sentryID) === null) {
+            if (Memory.rooms[name].sentryID === undefined) { continue }
+            if (Memory.rooms[name].sentryID !== null && Game.creeps[Memory.rooms[name].sentryID] === undefined) {
                 Memory.rooms[name].sentryID = null;
                 console.log(`Clearing invalid Sentry ID from ${name}`);
             }
@@ -119,7 +120,8 @@ function spawnCreep(spawnIndex, role, body, creepTier, assignRoom = undefined){
     if (result == OK) {
         spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}});
         Memory.roles.index[role]++;
-        console.log(`Spawning ${newName} at T${creepTier+1}`);
+        if (assignRoom) { console.log(`Spawning T${creepTier+1} ${newName} assigned to ${assignRoom}`);}
+        else { console.log(`Spawning T${creepTier+1} ${newName}`) }
         return true;
     } else { logSpawnResults(result, newName, creepTier); return false }
 }

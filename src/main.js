@@ -37,7 +37,6 @@ module.exports.loop = function () {
 
         if (Memory.rooms === undefined) { Memory.rooms = {}};
         if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
-        explorer.checkExits(roomName)
         processRooms.sourceData(roomName);
         processRooms.checkRoomState(roomName);
         processDefense.checkForKeeperLair(roomName);
@@ -56,7 +55,8 @@ module.exports.loop = function () {
                 roomLogging(thisRoom.name);
 
                 explorer.checkExits(roomName)
-                if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
+                if (thisRoom.memory.sentryID !== undefined) { thisRoom.memory.sentryID = undefined}
+                if (thisRoom.memory.missionaryID !== undefined) { thisRoom.memory.missionaryID = undefined}
                 processDefense.scanForHostiles(roomName);
                 if (thisRoom.energyAvailable >= 1300) { explorer.checkForMissionary(roomName) }
                 
@@ -110,8 +110,8 @@ module.exports.loop = function () {
         if (Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
 
+        if (isAvailable(i)) { explorer.spawnSentry(i) }
         if (isAvailable(i)) { processCreeps.checkForSpawn(i) }
-        //if (isAvailable(i)) { explorer.spawnSentry(i) }
 
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
             if (spawner.memory.hasRoads == 0) {construction.checkSpawnRoads(i)}
