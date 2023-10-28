@@ -42,7 +42,6 @@ let roleGeneral = {
                     let result = creep.attack(hostiles[0]);
                     switch(result){
                         case OK:
-                            console.log(`${creep.name} attacked ${hostiles[0].id}! (${hostiles[0].hits}/${hostiles[0].hitsMax})`);
                             break;
                         case ERR_NOT_IN_RANGE:
                             creep.rangedAttack(hostiles[0]);
