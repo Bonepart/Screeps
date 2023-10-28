@@ -58,7 +58,7 @@ module.exports.loop = function () {
                 if (thisRoom.memory.sentryID !== undefined) { thisRoom.memory.sentryID = undefined}
                 if (thisRoom.memory.missionaryID !== undefined) { thisRoom.memory.missionaryID = undefined}
                 processDefense.scanForHostiles(roomName);
-                if (thisRoom.energyAvailable >= 1300) { explorer.checkForMissionary(roomName) }
+                explorer.checkForMissionary(roomName);
                 
                 if (thisRoom.energyCapacityAvailable >= 1300) { thisRoom.memory.spawnTier = 4 }
                 else if (thisRoom.energyCapacityAvailable >= 800) { thisRoom.memory.spawnTier = 3 }
@@ -107,14 +107,14 @@ module.exports.loop = function () {
         let roomName = Game.spawns[i].room.name;
         //roleGeneral.moveToFlag(roomName);
         if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
-        if (Memory.rooms[roomName].spawns[0 === undefined]) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
+        if (Memory.rooms[roomName].spawns[0] === undefined) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
 
         if (isAvailable(i)) { explorer.spawnSentry(i) }
         if (isAvailable(i)) { processCreeps.checkForSpawn(i) }
 
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
-            if (spawner.memory.hasRoads == 0) {construction.checkSpawnRoads(i)}
+            if (Memory.rooms[roomName].spawns[0].hasRoads == 0) {construction.checkSpawnRoads(i)}
             else { 
                 construction.checkExtensions(i);
                 if (construction.buildSourceRoads(i)) {

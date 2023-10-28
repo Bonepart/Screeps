@@ -9,7 +9,8 @@ let processExploration = {
             if (Memory.rooms[checkName].roomState == ROOM_NEUTRAL || Memory.rooms[checkName].roomState == ROOM_RESERVED){
                 if ((Memory.rooms[checkName].missionaryID != null && 
                         Game.creeps[Memory.rooms[checkName].missionaryID] == undefined) || 
-                        Memory.rooms[checkName].missionaryID == null) { 
+                        Memory.rooms[checkName].missionaryID === null ||
+                        Memory.rooms[checkName].missionaryID === undefined) { 
                     let missionaryName = this.spawnCreep(ROLE_CLAIMER, bodytype.claimer[1], checkName);
                     if (missionaryName != null) {Memory.rooms[checkName].missionaryID = missionaryName}
                 }
