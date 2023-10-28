@@ -104,6 +104,22 @@ let consoleCommands = {
         return 'Comeplete';
     },
 
+    suicide: function(creepName) {
+        creep = Game.creeps[creepName];
+        if (creep == undefined) {return `${creepName} is not a valid name`}
+        creep.suicide();
+        return `${creepName} goes to her dark embrace!`;
+    },
+
+    massSuicide: function(role) {
+        roleList = _.filter(Game.creeps, (creep) => creep.memory.role == role);
+        for (let i in roleList){
+            roleList[i].suicide();
+            console.log(`${roleList[i].name} goes to her dark embrace!`);
+        }
+        return `Complete`;
+    },
+
     zombie: function(creepName) {
         creep = Game.creeps[creepName];
         if (creep == undefined) {return `${creepName} is not a valid name`}
