@@ -80,25 +80,10 @@ module.exports.loop = function () {
                 break;
             case ROOM_HOSTILE_SAFE:
                 if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
-                /*
-                if (thisRoom.controller.safeMode < 400) {
-                    if (vikingList.length < 4) {
-                        processDefense.spawnViking(roomName);
-                    }
-                    if (vikingList.length > 0) {
-                        roleGeneral.run();
-                    }
-                }*/
                 break;
             case ROOM_HOSTILE:
-                if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
-                /*
-                if (vikingList.length < 4) {
-                    processDefense.spawnViking(roomName);
-                }
-                if (vikingList.length > 0) {
-                    roleGeneral.run(roomName);
-                }*/
+                if (thisRoom.memory.sentryID === undefined) { thisRoom.memory.sentryID = null }
+                processDefense.scanForHostiles(roomName);
                 break;
         }
     }
