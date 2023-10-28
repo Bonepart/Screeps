@@ -93,6 +93,37 @@ let consoleCommands = {
         return 'Comeplete';
     },
 
+    killList: function(action, id=undefined){
+        switch(action){
+            case 'add':
+                if (Memory.killList === undefined){ Memory.killList = [] }
+                if (Game.getObjectById(id) === null) { return `Error: Invalid ID (${id})`}
+                Memory.killList.push(id);
+                return `Added ${id} to killList`;
+            case 'del':
+                if (Memory.killList === undefined){ return `Error: Nothing in killList` }
+                if (Game.getObjectById(id) === null) { return `Error: Invalid ID (${id})`}
+                for (let i in Memory.killList){
+                    if (id == Memory.killList[i]){
+                        Memory.killList.splice(i, 1);
+                        return `Removed ${id} from killList`;
+                    }
+                }
+                return `${id} not found`;
+            case 'list':
+                console.log(`killList Length: ${Memory.killList.length}`);
+                for (let i in Memory.killList){
+                    console.log(`${i}: ${Memory.killList[i]}`);
+                }
+                return 'Complete';
+            case 'clear':
+                if (Memory.killList !== undefined) {Memory.killList = undefined }
+                return `killList cleared`;
+            default:
+                return `Error: Invalid action (${action})`;
+        }
+    },
+
     wipeRooms: function(){
         for (let i in Memory.rooms){
             let thisRoom = Game.rooms[i];
