@@ -3,13 +3,15 @@ let helper = require('helper');
 let roleGeneral = {
 
     run: function(roomName=null){
+        console.log(`Call to General for room ${roomName}`);
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         let hostiles = vikingList[0].room.find(FIND_HOSTILE_CREEPS);
-        let target = vikingList[0].pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        
         if (hostiles.length > 0){
             for (let i in vikingList){
                 let creep = vikingList[i];
                 if (creep.spawning) {continue}
+                let target = vikingList[i].pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 if (target){
                     creep.rangedAttack(target);
                     let result = creep.attack(target);
@@ -75,7 +77,7 @@ let roleGeneral = {
     moveToFlag: function(roomName){
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
         let dFlag = Game.rooms[roomName].find(FIND_FLAGS, {filter: (flag) => {return flag.name == "Defenders"}});
-        if (dFlag){
+        if (dFlag.length > 0){
             for (let i in vikingList){
                 let creep = vikingList[i];
                 if (creep.spawning) {continue}
