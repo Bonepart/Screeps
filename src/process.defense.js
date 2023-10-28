@@ -16,6 +16,17 @@ let processDefense = {
         } //else {roleGeneral.moveToFlag(roomName)}
     },
 
+    checkKillList: function(){
+        if (Memory.killList === undefined || Memory.killList.length === 0) { return }
+        if (Game.getObjectById(Memory.killList[-1]) === null) {
+            console.log(`Checking killList: ${Memory.killList[-1]} has been destroyed`);
+            Memory.killList.pop();
+        } else { 
+            let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING).length;
+            if (vikingList.length > 0) {roleGeneral.killTarget(Memory.killList[-1])}
+        }
+    },
+
     checkForKeeperLair: function(roomName){
         let room = Game.rooms[roomName];
         if (room.memory.keeperLair == -1) { return };
@@ -56,6 +67,7 @@ let processDefense = {
         newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
         body = bodytype.viking[2];
         for (let i in Game.spawns){
+            if (!helper.isAvailable(i)) { continue }
             let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
             while (result === -3){
                 Memory.roles.index[ARMY_VIKING]++;

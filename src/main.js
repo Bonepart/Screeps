@@ -109,6 +109,8 @@ module.exports.loop = function () {
             }
         };
     }
+
+    processDefense.checkKillList();
     
     let maintOffset = 0;
     for(let name in Game.creeps) {
