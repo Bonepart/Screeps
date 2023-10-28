@@ -1,6 +1,8 @@
 let processRenewal = require('process.renewal');
-let helper = require('helper');
 let pathing = require('pathing');
+let common = require('common.logic');
+let helper = require('helper');
+
 
 let roleBuilder = {
 
@@ -53,6 +55,13 @@ let roleBuilder = {
             }
 	    }
 	    else {
+            //Not building, go back to assigned room
+            if (creep.memory.assignedRoom) {
+                if (creep.room.name != creep.memory.assignedRoom) {
+                    common.moveToAssignedRoom(creep);
+                    return;
+                }
+            }
             let energyStore = [];
             for (let i in Game.rooms){
                 energyStore = energyStore.concat(Game.rooms[i].find(FIND_STRUCTURES, {
