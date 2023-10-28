@@ -88,6 +88,9 @@ let roleGeneral = {
                     console.log(`${creep.name} tried to attck ${target.name}, got error ${result}`);
             }
         }
+        if(Game.time % 40 == 0) {
+            console.log(`killList Progress: ${target.id} (${target.hits}/${target.hitsMax})`);
+        }
     },
 
     defendPoint: function(){
