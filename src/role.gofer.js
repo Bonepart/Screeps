@@ -1,10 +1,18 @@
-let helper = require('helper');
 let pathing = require('pathing');
+let common = require('common.logic');
+let helper = require('helper');
 
 let roleGofer = {
 
   /** @param {Creep} creep **/
     run: function(creep){
+        if (creep.memory.assignedRoom) {
+            if (creep.room.name != creep.memory.assignedRoom) {
+                common.moveToAssignedRoom(creep);
+                return;
+            }
+        }
+
         if(creep.memory.collecting && creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.collecting = false;
         }
@@ -30,12 +38,23 @@ let roleGofer = {
 
             if (creep.room.memory.importContainerID != undefined){
                 let importContainer = Game.getObjectById(creep.room.memory.importContainerID);
-                if (importContainer == undefined) { creep.room.memory.importContainerID = undefined }
-                else {
+                if (importContainer !== undefined && importContainer.structureType == STRUCTURE_CONTAINER){
                     if (importContainer.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
                         let result = creep.withdraw(importContainer, RESOURCE_ENERGY);
                         if(result == ERR_NOT_IN_RANGE) {
                             creep.moveTo(importContainer, {visualizePathStyle: {stroke: '#ffffff'}});
+                        }
+                    }
+                } else {
+                    //console.log('gofer in links');
+                    for (let i in creep.room.memory.links){
+                        let toLink = Game.getObjectById(creep.room.memory.links[i].to);
+                        if (toLink != null && toLink.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
+                            //console.log(`gofer trying to transfer from ${toLink.id}`);
+                            if(creep.withdraw(toLink, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(toLink, {visualizePathStyle: {stroke: '#ffffff'}});
+                            }
+                            return;
                         }
                     }
                 }
