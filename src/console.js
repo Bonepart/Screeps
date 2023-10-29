@@ -3,7 +3,7 @@ let helper = require('helper');
 
 let consoleCommands = {
     displayTickLimit: function() {
-        console.log(`tickLimit = ${Game.cpu.tickLimit}`);
+        return `tickLimit = ${Game.cpu.tickLimit}`;
     },
 
     assignRoomToCreep: function(creepName, roomName){
