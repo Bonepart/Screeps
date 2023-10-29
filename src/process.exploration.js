@@ -47,7 +47,7 @@ let processExploration = {
             if (result == OK) {
                 Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
                 Memory.roles.index[role]++;
-                console.log(`Spawning ${newName} assigned to ${roomName}`);
+                console.log(`${i}: Spawning ${newName} assigned to ${roomName}`);
                 return newName;
             } else { return null }
         }        
@@ -72,7 +72,7 @@ let processExploration = {
                     spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName}});
                     Memory.roles.index[role]++;
                     Memory.rooms[roomName].sentryID = newName;
-                    console.log(`Spawning ${newName} to surveil ${roomName}`);
+                    console.log(`${spawnIndex}: Spawning ${newName} to surveil ${roomName}`);
                     return true;
                 }else {logSpawnResults(result, newName)}
             }
