@@ -3,9 +3,9 @@ let processRenewal = {
     /** @param {Creep} creep **/
     renew: function(creep){
         
-        if (creep.memory.tier > 0 && creep.ticksToLive < 200 && !creep.memory.renewing){
+        if (creep.memory.tier >= Memory.rooms[creep.room.name].spawnTier && creep.ticksToLive < 200 && !creep.memory.renewing){
             creep.memory.renewing = true;
-            console.log(`Creep ${creep.name} returning to spawn to renew (${creep.ticksToLive})`);
+            console.log(`Creep ${creep.name} (T${creep.memory.tier}) returning to spawn to renew (${creep.ticksToLive})`);
         } else if (creep.memory.renewing && creep.ticksToLive > 1300){
             creep.memory.renewing = false;
             console.log(`Creep ${creep.name} renewed! (${creep.ticksToLive})`);
