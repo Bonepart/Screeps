@@ -34,6 +34,7 @@ module.exports.loop = function () {
     Game.c = require('console');
     processCreeps.clearMemory();
     
+    let buildList = common.getBuildList();
     for (let roomName in Game.rooms){
         let thisRoom = Game.rooms[roomName];
 
@@ -89,6 +90,13 @@ module.exports.loop = function () {
                 //processDefense.scanForHostiles(roomName);
                 break;
         }
+
+        let creepList = _.filter(Game.creeps, (creep) => creep.room.name == roomName);
+        if (creepList.length > 0) {
+            let hasDroppedResources = helper.checkDroppedEnergy(roomName);
+            let hasRuins = helper.checkRuins(roomName);
+            runCreeps(creepList, buildList, hasDroppedResources || hasRuins);
+        }
     }
 
     for (let i in Game.spawns){
@@ -111,14 +119,13 @@ module.exports.loop = function () {
             }
         };
     }
-
     processDefense.checkKillList();
-    
-    let maintOffset = 0;
-    let buildList = common.getBuildList();
+};
 
-    for(let name in Game.creeps) {
-        let creep = Game.creeps[name];
+function runCreeps(creepList, buildList, hasLooseEnergy) {
+    let maintOffset = 0;
+    for(let creepIndex in creepList) {
+        let creep = creepList[creepIndex];
         if (creep.spawning) { continue }
         switch(creep.memory.role){
             case ROLE_BUILDER:
@@ -128,7 +135,7 @@ module.exports.loop = function () {
                 roleDefender.run(creep);
                 break;
             case ROLE_HARVESTER:
-                roleHarvester.run(creep);
+                roleHarvester.run(creep, hasLooseEnergy);
                 break;
             case ARMY_HEALER:
                 roleHealer.run(creep);
@@ -167,11 +174,7 @@ module.exports.loop = function () {
                 console.log(`Unsupported role! (${creep.memory.role})`);
         }
     }
-
-    
-};
-
-
+}
 
 function roomLogging(roomName){
     
