@@ -5,6 +5,14 @@ let helper = {
         console.log(str);
     },
 
+    /** @param {Creep} creep **/
+    creepLog: function (creep) {
+        let assignedRoom = 'NA';
+        if (creep.memory.assignedRoom) { assignedRoom = creep.memory.assignedRoom }
+        console.log(`${creep.name} - ${assignedRoom}`);
+        this.stringify(creep.memory);
+    },
+
     isAvailable: function (index){
         return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
     },
