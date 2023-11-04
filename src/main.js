@@ -23,6 +23,7 @@ let processDefense = require('process.defense');
 let processRooms = require('process.rooms');
 let explorer = require('process.exploration');
 let construction = require('construction');
+let common = require('common.logic');
 let helper = require('helper');
 const roleSentry = require('./role.sentry');
 
@@ -113,12 +114,14 @@ module.exports.loop = function () {
     processDefense.checkKillList();
     
     let maintOffset = 0;
+    let buildList = common.getBuildList();
+
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
         if (creep.spawning) { continue }
         switch(creep.memory.role){
             case ROLE_BUILDER:
-                roleBuilder.run(creep);
+                roleBuilder.run(creep, buildList);
                 break;
             case ARMY_DEFENDER:
                 roleDefender.run(creep);
