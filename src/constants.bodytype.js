@@ -40,6 +40,7 @@ exports.gofer = [
     [ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], //Cost 400
     [ CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 600
 ];
+exports.storagebuddy = [ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE ]; //Cost 300
 
 //Explorer Bodytypes
 exports.longhauler = [
