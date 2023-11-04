@@ -80,8 +80,7 @@ let processCreeps = {
                         filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }}).length;
                     if (energyStorage > 0 && Memory.rooms[i].links > 0){
                         body = bodytype.storagebuddy;
-                        if (spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, -1
-                            , i)) { return }
+                        if (spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, -1, i)) { return }
                     }
                     
                 }
