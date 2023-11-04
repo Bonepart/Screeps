@@ -13,6 +13,7 @@ let roleZombie = require('role.zombie');
 let roleGeneral = require('role.general');
 let roleLonghaul = require('role.longhaul');
 let roleGofer = require('role.gofer');
+let roleStorageBud = require('role.storagebuddy');
 let roleClaimer = require('role.claimer');
 
 let towerLogic = require('structure.tower');
@@ -150,6 +151,9 @@ module.exports.loop = function () {
                 break;
             case ROLE_GOFER:
                 roleGofer.run(creep);
+                break;
+            case ROLE_STORAGEBUDDY:
+                roleStorageBud.run(creep);
                 break;
             case ROLE_CLAIMER:
                 roleClaimer.run(creep);
