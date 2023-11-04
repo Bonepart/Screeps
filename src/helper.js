@@ -17,6 +17,18 @@ let helper = {
         return Game.spawns[index].my && Game.spawns[index].isActive() && Game.spawns[index].spawning === null;
     },
 
+    checkDroppedEnergy: function(roomName) {
+        let searchTargets = Game.rooms[roomName].find(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}});
+        if (searchTargets > 0) { return true }
+        else { return false }
+    },
+
+    checkRuins: function(roomName) {
+        let searchTargets = Game.rooms[roomName].find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }});
+        if (searchTargets > 0) { return true }
+        else { return false }
+    },
+
     possibleExtensions: function (conLevel) {
         switch (conLevel) {
             case 1:
