@@ -12,6 +12,7 @@ const roleDefinitions = [
 
     [ROLE_LONGHAUL, 0],
     [ROLE_GOFER, 0],
+    [ROLE_STORAGEBUDDY, -1],
     [ROLE_CLAIMER, 0],
     [ROLE_SENTRY, 0]
 ];
@@ -21,7 +22,9 @@ let config = {
     loadRoles: function(){
         if (Memory.roles === undefined) { Memory.roles = { limit: {}, index: {} } }
         for (let role in roleDefinitions) {
-            if (Memory.roles.limit[roleDefinitions[role][0]] === undefined) { Memory.roles.limit[roleDefinitions[role][0]] = roleDefinitions[role][1] }
+            if (roleDefinitions[role][1] != -1){
+                if (Memory.roles.limit[roleDefinitions[role][0]] === undefined) { Memory.roles.limit[roleDefinitions[role][0]] = roleDefinitions[role][1] }
+            }
             if (Memory.roles.index[roleDefinitions[role][0]] === undefined) { Memory.roles.index[roleDefinitions[role][0]] = 1 }
         }
         if(Memory.roles.repairPersistance === undefined) { Memory.roles.repairPersistance = false }
