@@ -7,8 +7,9 @@ let helper = require('helper');
 let roleBuilder = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
-        //if(processRenewal.renew(creep)){ return };
+    run: function(creep, buildList) {
+        if(processRenewal.renew(creep)){ return };
+        //helper.creepLog(creep);
 	    if(creep.memory.building && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.building = false;
             creep.say('🔄 harvest');
@@ -19,56 +20,52 @@ let roleBuilder = {
 	    }
 
 	    if(creep.memory.building) {
-            let targets = [];
-            for (let i in Game.rooms){
-                targets = targets.concat(Game.rooms[i].find(FIND_CONSTRUCTION_SITES, { filter: (site) => { 
-                    return (site.structureType == STRUCTURE_WALL || 
-                            site.structureType == STRUCTURE_RAMPART ||
-                            site.structureType == STRUCTURE_TOWER) &&
-                            site.my}}
-                ));
-            }
-            for (let i in Game.rooms){
-                targets = targets.concat(Game.rooms[i].find(FIND_CONSTRUCTION_SITES, {filter: (site) => { 
-                    return (site.structureType != STRUCTURE_WALL && 
-                            site.structureType != STRUCTURE_RAMPART &&
-                            site.structureType != STRUCTURE_TOWER) &&
-                            site.my}}));
-            }
-            if(targets.length > 0) {
-                if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#0000aa'}});
+            if (buildList.length > 0) {
+                if(creep.build(buildList[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(buildList[0], {visualizePathStyle: {stroke: '#0000aa'}});
                 }
-            }else{
-                let targets = creep.room.find(FIND_MY_STRUCTURES, {
+            }
+            else {
+                //When there are NO construction sites to be built
+                let searchRoom = creep.memory.assignedRoom;
+                if (searchRoom == undefined) { searchRoom = creep.room.name }
+
+                let targets = Game.rooms[searchRoom].find(FIND_MY_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
                                 structure.structureType == STRUCTURE_SPAWN ||
                                 structure.structureType == STRUCTURE_TOWER) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                     }
                 });
+                targets = targets.concat(Game.rooms[searchRoom].find(FIND_STRUCTURES, {
+                    filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}
+                ));
                 if(targets.length > 0) {
                     if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                     }
                 }
+                else {
+                    if (creep.memory.assignedRoom) {
+                        if (creep.room.name != creep.memory.assignedRoom) {
+                            common.moveToAssignedRoom(creep);
+                            return;
+                        }
+                    }
+                }
             }
 	    }
 	    else {
-            //Not building, go back to assigned room
-            if (creep.memory.assignedRoom) {
-                if (creep.room.name != creep.memory.assignedRoom) {
-                    common.moveToAssignedRoom(creep);
-                    return;
-                }
-            }
+            // When building = false, need to collect energy
             let energyStore = [];
-            for (let i in Game.rooms){
-                energyStore = energyStore.concat(Game.rooms[i].find(FIND_STRUCTURES, {
+            if (creep.memory.assignedRoom) {
+                energyStore = Game.rooms[creep.memory.assignedRoom].find(FIND_STRUCTURES, {
                     filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
                         structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
-                ));
+                );
             }
+
             if (energyStore.length > 0){
                 let result = creep.withdraw(energyStore[0], RESOURCE_ENERGY);
                 if(result == ERR_NOT_IN_RANGE) {
