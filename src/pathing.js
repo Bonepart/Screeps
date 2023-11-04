@@ -8,6 +8,36 @@ let pathing = {
         }});
     },
 
+    findClosestEnergyConsumer: function(pos) {
+        let findResult = pos.findClosestByPath(FIND_MY_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_SPAWN) && 
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+            }
+        });
+        if (findResult) { return findResult }
+        findResult = pos.findClosestByPath(FIND_MY_STRUCTURES, {
+            filter: (structure) => { return structure.structureType == STRUCTURE_TOWER  &&
+                                            structure.store.getUsedCapacity(RESOURCE_ENERGY) < 700}
+            }
+        );
+        if (findResult) { return findResult }
+        findResult = pos.findClosestByPath(FIND_MY_STRUCTURES, {
+            filter: (structure) => { return structure.structureType == STRUCTURE_CONTAINER  &&
+                                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}
+            }
+        );
+        if (findResult) { return findResult }
+        findResult = pos.findClosestByPath(FIND_MY_STRUCTURES, {
+            filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE  &&
+                                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}
+            }
+        );
+        if (findResult) { return findResult }
+        return false;
+    },
+
     findClosestRuin: function (pos){
         if (Game.rooms[pos.roomName].find(FIND_HOSTILE_CREEPS).length > 0) { return false };
         let target = pos.findClosestByPath(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }});
