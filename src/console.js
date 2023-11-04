@@ -36,8 +36,10 @@ let consoleCommands = {
     listCreeps: function() {
         for (let i in Game.creeps){
             let tier = Game.creeps[i].memory.tier;
+            let room = Game.creeps[i].memory.assignedRoom;
             if (tier == undefined){ tier = 'NA'};
-            console.log(`${Game.creeps[i].name.padEnd(14)}T${tier}\t Body Size: ${Game.creeps[i].body.length}`);
+            if (room == undefined){ room = 'NA'};
+            console.log(`${Game.creeps[i].name.padEnd(16)}T${tier}\tAssigned Rooom: ${room}`);
         }
         return 'Complete';
     },
