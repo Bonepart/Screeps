@@ -1,3 +1,4 @@
+let pathing = require('pathing');
 
 let commonLogic = {
 
@@ -27,6 +28,25 @@ let commonLogic = {
                         site.my}}));
         }
         return targets;
+    },
+
+    /** @param {Creep} creep **/
+    getLooseEnergy: function(creep) {
+        let searchTarget = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}});
+        if (searchTarget) {
+            if(creep.pickup(searchTarget) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+            return true;
+        }
+        searchTarget = pathing.findClosestRuin(creep.pos);
+        if (searchTarget){
+            if(creep.withdraw(searchTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+            return true;
+        }
+        return false
     },
 
     /** @param {Creep} creep **/
