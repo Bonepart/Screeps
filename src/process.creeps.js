@@ -78,11 +78,10 @@ let processCreeps = {
                 else if (storageBuddyList[i] == 0){
                     let energyStorage = Game.rooms[i].find(FIND_STRUCTURES, {
                         filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }}).length;
-                    if (energyStorage > 0 && Memory.rooms[i].links > 0){
+                    if (energyStorage > 0 && Memory.rooms[i].links != undefined){
                         body = bodytype.storagebuddy;
                         if (spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, -1, i)) { return }
                     }
-                    
                 }
                 else if (goferList[i] < Memory.roles.limit[ROLE_GOFER]){
                     if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
