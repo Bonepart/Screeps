@@ -12,6 +12,7 @@ let processCreeps = {
         let upgraderList = {};
         let maintList = {};
         let goferList = {};
+        let storageBuddyList = {};
 
         for (let i in Game.rooms){
             if (Memory.rooms[i].roomState == ROOM_OWNED || Memory.rooms[i].roomState == ROOM_OWNED_SAFE){
@@ -20,6 +21,7 @@ let processCreeps = {
                 upgraderList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER && creep.memory.assignedRoom == i).length;
                 maintList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == i).length;
                 goferList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == i).length;
+                storageBuddyList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_STORAGEBUDDY && creep.memory.assignedRoom == i).length;
             }
         }
         
@@ -73,6 +75,15 @@ let processCreeps = {
                     body = bodytype.builder[creepTier]
                     if (spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier, i)) { return }
                 }
+                else if (storageBuddyList[i] == 0){
+                    let energyStorage = Game.rooms[i].find(FIND_STRUCTURES, {
+                        filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }}).length;
+                    if (energyStorage > 0){
+                        body = bodytype.storagebuddy;
+                        if (spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, -1, i)) { return }
+                    }
+                    
+                }
                 else if (goferList[i] < Memory.roles.limit[ROLE_GOFER]){
                     if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
                     body = bodytype.gofer[creepTier]
@@ -117,7 +128,8 @@ function spawnCreep(spawnIndex, role, body, creepTier, assignRoom = undefined){
         result = spawner.spawnCreep(body, newName, { dryRun: true});
     }
     if (result == OK) {
-        spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}});
+        if (creepTier == -1){ spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: assignRoom}}) }
+        else { spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}}) }
         Memory.roles.index[role]++;
         if (assignRoom) { console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName} assigned to ${assignRoom}`);}
         else { console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName}`) }
