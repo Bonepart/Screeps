@@ -1,6 +1,6 @@
 let helper = {
 
-    stringifyToLog: function (object) {
+    stringify: function (object) {
         let str = JSON.stringify(object, null, 4);
         console.log(str);
     },
