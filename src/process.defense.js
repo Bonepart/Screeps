@@ -7,13 +7,7 @@ let processDefense = {
     scanForHostiles: function(roomName) {
         let hostiles = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
         hostiles = hostiles.concat(Game.rooms[roomName].find(FIND_HOSTILE_STRUCTURES));
-        if (hostiles.length > 0){
-            let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
-            if (vikingList.length < Memory.roles.limit[ARMY_VIKING]) {
-                this.spawnViking(vikingList.length);
-            }
-            if (vikingList.length > 0) {roleGeneral.run(roomName)}
-        } //else {roleGeneral.moveToFlag(roomName)}
+        if (hostiles.length > 0){ roleGeneral.run(hostiles[0].pos) }
     },
 
     checkKillList: function(){
@@ -21,13 +15,8 @@ let processDefense = {
         if (Game.getObjectById(Memory.killList[0]) === null) {
             console.log(`Checking killList: ${Memory.killList[0]} has been destroyed`);
             Memory.killList.shift();
-        } else { 
-            let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING).length;
-            if (vikingList < Memory.roles.limit[ARMY_VIKING]) {
-                this.spawnViking(vikingList.length);
-            }
-            if (vikingList > 0) {roleGeneral.killTarget(Memory.killList[0])}
-        }
+        } 
+        else { roleGeneral.killTarget(Memory.killList[0]) }
     },
 
     checkForKeeperLair: function(roomName){
