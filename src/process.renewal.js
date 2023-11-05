@@ -11,24 +11,24 @@ let processRenewal = {
             console.log(`Creep ${creep.name} renewed! (${creep.ticksToLive})`);
         }
         if (creep.memory.renewing){
-            let spawner = creep.room.find(FIND_STRUCTURES, {
+            let spawner = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_SPAWN && structure.isActive() && structure.spawning == null);
                 }
             });
-            if (spawner.length > 0){
-                let result = spawner[0].renewCreep(creep);
+            if (spawner){
+                let result = spawner.renewCreep(creep);
                 switch(result){
                     case OK:
                         break;
                     case ERR_NOT_IN_RANGE:
-                        creep.moveTo(spawner[0], {visualizePathStyle: {stroke: '#000000'}});
+                        creep.moveTo(spawner, {visualizePathStyle: {stroke: '#000000'}});
                         break;
                     case ERR_NOT_ENOUGH_ENERGY:
                         creep.memory.renewing = false;
                         break;
                     default:
-                        console.log(`renewCreep Failed: ${creep.name}  ${result}`);
+                        console.log(`renewCreep Failed: ${creep.name}/${spawner.name}  ${result}`);
                 }
             }
         }
