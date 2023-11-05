@@ -28,6 +28,7 @@ let config = {
             if (Memory.roles.index[roleDefinitions[role][0]] === undefined) { Memory.roles.index[roleDefinitions[role][0]] = 1 }
         }
         if(Memory.roles.repairPersistance === undefined) { Memory.roles.repairPersistance = false }
+        if(Memory.flags === undefined) { Memory.flags = {} }
     },
 };
 module.exports = config;

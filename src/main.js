@@ -98,6 +98,7 @@ module.exports.loop = function () {
             runCreeps(creepList, buildList, hasDroppedResources || hasRuins);
         }
     }
+    if (Memory.flags.listCreeps) { Memory.flags.listCreeps = false }
 
     for (let i in Game.spawns){
         let roomName = Game.spawns[i].room.name;
@@ -123,6 +124,7 @@ module.exports.loop = function () {
 };
 
 function runCreeps(creepList, buildList, hasLooseEnergy) {
+    if (Memory.flags.listCreeps) { helper.listCreeps(_.sortBy(creepList, (creep) => creep.name)) }
     let maintOffset = 0;
     for(let creepIndex in creepList) {
         let creep = creepList[creepIndex];

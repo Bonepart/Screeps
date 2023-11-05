@@ -89,6 +89,17 @@ let helper = {
         siteList.push(new RoomPosition(spawner.pos.x, spawner.pos.y-3, spawner.room.name));
 
         return siteList;
+    },
+
+    listCreeps: function (creepList) {
+        console.log(`**** Room ${creepList[0].room.name} ****`);
+        for (let i in creepList){
+            let tier = creepList[i].memory.tier;
+            let room = creepList[i].memory.assignedRoom;
+            if (tier == undefined){ tier = 'NA'};
+            if (room == undefined){ room = 'NA'};
+            console.log(`  ${creepList[i].name.padEnd(16)}T${tier}\tAssigned Rooom: ${room}`);
+        }
     }
 }
 module.exports = helper;
