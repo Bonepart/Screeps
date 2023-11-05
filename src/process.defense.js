@@ -10,7 +10,7 @@ let processDefense = {
         if (hostiles.length > 0){
             let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
             if (vikingList.length < Memory.roles.limit[ARMY_VIKING]) {
-                this.spawnViking();
+                this.spawnViking(vikingList.length);
             }
             if (vikingList.length > 0) {roleGeneral.run(roomName)}
         } //else {roleGeneral.moveToFlag(roomName)}
@@ -24,7 +24,7 @@ let processDefense = {
         } else { 
             let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING).length;
             if (vikingList < Memory.roles.limit[ARMY_VIKING]) {
-                this.spawnViking();
+                this.spawnViking(vikingList.length);
             }
             if (vikingList > 0) {roleGeneral.killTarget(Memory.killList[0])}
         }
@@ -66,10 +66,11 @@ let processDefense = {
         room.memory.keeperLair.threatActive = keeperCreeperFound;
     },
 
-    spawnViking: function(){
+    spawnViking: function(vikingCount){
         newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
         body = bodytype.viking[2];
         for (let i in Game.spawns){
+            if (vikingCount >= Memory.roles.limit[ARMY_VIKING]) { return }
             if (!helper.isAvailable(i)) { continue }
             let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
             while (result === -3){
@@ -80,9 +81,9 @@ let processDefense = {
             if (result == OK) {
                 Game.spawns[i].spawnCreep(body, newName, { memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
                 Memory.roles.index[ARMY_VIKING]++;
+                vikingCount++;
                 console.log(`${i}: Spawning ${newName}`);
-                return true;
-            } else { return false }
+            }
         }
     }
 }
