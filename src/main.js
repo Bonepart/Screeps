@@ -49,7 +49,7 @@ module.exports.loop = function () {
                 break;
             case ROOM_RESERVED:         
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
-                if(Game.time % 20 == 0) { explorer.checkExits(roomName, true) }
+                if(Game.time % 100 == 0) { explorer.checkExits(roomName, true) }
                 else { explorer.checkExits(roomName) }
                 explorer.assignLongHauls(roomName);
                 processDefense.scanForHostiles(roomName);
