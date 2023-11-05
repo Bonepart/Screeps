@@ -25,10 +25,7 @@ let roleMaintenance = {
 	    }
 
         if(creep.memory.repairing) {
-            if (creep.memory.repairID == null){
-                if(pendingRepairs.length > offset) { creep.memory.repairID = pendingRepairs[offset].id }
-                else if (pendingRepairs.length > 0) { creep.memory.repairID = pendingRepairs[0].id }
-            } 
+            if (creep.memory.repairID == null){ setRepairID(creep, pendingRepairs, offset) } 
             if (creep.memory.repairID != null) {
                 let repairTarget = Game.getObjectById(creep.memory.repairID);
                 if (repairTarget == null) { 
@@ -36,11 +33,9 @@ let roleMaintenance = {
                     console.log(`${creep.name} => Error, repairID = null`);
                     return;
                 }
-                if (repairTarget.hits == repairTarget.hitsMax) { creep.memory.repairID = null }
-                else {
-                    if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
-                    }
+                if (repairTarget.hits == repairTarget.hitsMax) { setRepairID(creep, pendingRepairs, offset) }
+                if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
                 if (!Memory.roles.repairPersistance) { creep.memory.repairID = null }
             }
@@ -64,3 +59,9 @@ let roleMaintenance = {
     }
 }
 module.exports = roleMaintenance;
+
+/** @param {Creep} creep **/
+function setRepairID(creep, pendingRepairs, offset){
+    if(pendingRepairs.length > offset) { creep.memory.repairID = pendingRepairs[offset].id }
+    else if (pendingRepairs.length > 0) { creep.memory.repairID = pendingRepairs[0].id }
+}
