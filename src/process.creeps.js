@@ -6,24 +6,14 @@ let processCreeps = {
 
     checkForSpawn: function(spawnIndex){
         let spawner = Game.spawns[spawnIndex];
+        let i = spawner.room.name;
 
-        let builderList = {};
-        let harvesterList = {};
-        let upgraderList = {};
-        let maintList = {};
-        let goferList = {};
-        let storageBuddyList = {};
-
-        for (let i in Game.rooms){
-            if (Memory.rooms[i].roomState == ROOM_OWNED || Memory.rooms[i].roomState == ROOM_OWNED_SAFE){
-                builderList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER && creep.memory.assignedRoom == i).length;
-                harvesterList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER && creep.memory.assignedRoom == i).length;
-                upgraderList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER && creep.memory.assignedRoom == i).length;
-                maintList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == i).length;
-                goferList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == i).length;
-                storageBuddyList[i] = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_STORAGEBUDDY && creep.memory.assignedRoom == i).length;
-            }
-        }
+        let builderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER && creep.memory.assignedRoom == i);
+        let harvesterList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER && creep.memory.assignedRoom == i);
+        let upgraderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER && creep.memory.assignedRoom == i);
+        let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == i);
+        let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == i);
+        let storageBuddyList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_STORAGEBUDDY && creep.memory.assignedRoom == i);
         
         let defenderList = 0;
         let vikingList = 0;
@@ -42,6 +32,10 @@ let processCreeps = {
                 builderList[0].memory.role = ZOMBIE;
                 console.log(`Too many Builders: ${builderList.length}/${Memory.roles.limit[ROLE_BUILDER]}, ${builderList[0].name} is now a zombie`);
             }
+            else if (goferList.length > Memory.roles.limit[ROLE_GOFER]){ 
+                goferList[0].memory.role = ZOMBIE;
+                console.log(`Too many Gofers: ${goferList.length}/${Memory.roles.limit[ROLE_GOFER]}, ${goferList[0].name} is now a zombie`);
+            }
         }
 
         let creepTier = spawner.room.memory.spawnTier - 1;
@@ -59,23 +53,22 @@ let processCreeps = {
                 spawnCreep(spawnIndex, ARMY_HEALER, body, creepTier);
             }
             else {
-                let i = spawner.room.name;
-                if (harvesterList[i] < Memory.roles.limit[ROLE_HARVESTER]){
+                if (harvesterList.length < Memory.roles.limit[ROLE_HARVESTER]){
                     if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
                     body = bodytype.harvester[creepTier]
                     if (spawnCreep(spawnIndex, ROLE_HARVESTER, body, creepTier, i)) { return }
                 }
-                else if(maintList[i] < Memory.roles.limit[ROLE_MAINTENANCE]){
+                else if(maintList.length < Memory.roles.limit[ROLE_MAINTENANCE]){
                     if (creepTier >= bodytype.maintenance.length) { creepTier = bodytype.maintenance.length - 1}
                     body = bodytype.maintenance[creepTier]
                     if (spawnCreep(spawnIndex, ROLE_MAINTENANCE, body, creepTier, i)) { return }
                 }
-                else if(builderList[i] < Memory.roles.limit[ROLE_BUILDER]){
+                else if(builderList.length < Memory.roles.limit[ROLE_BUILDER]){
                     if (creepTier >= bodytype.builder.length) { creepTier = bodytype.builder.length - 1}
                     body = bodytype.builder[creepTier]
                     if (spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier, i)) { return }
                 }
-                else if (storageBuddyList[i] == 0){
+                else if (storageBuddyList.length == 0){
                     let energyStorage = Game.rooms[i].find(FIND_STRUCTURES, {
                         filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }}).length;
                     if (energyStorage > 0 && Memory.rooms[i].links != undefined){
@@ -83,12 +76,12 @@ let processCreeps = {
                         if (spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, -1, i)) { return }
                     }
                 }
-                else if (goferList[i] < Memory.roles.limit[ROLE_GOFER]){
+                else if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
                     if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
                     body = bodytype.gofer[creepTier]
                     if (spawnCreep(spawnIndex, ROLE_GOFER, body, creepTier, i)) { return }
                 }
-                else if(upgraderList[i] < Memory.roles.limit[ROLE_UPGRADER]){
+                else if(upgraderList.length < Memory.roles.limit[ROLE_UPGRADER]){
                     if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
                     body = bodytype.upgrader[creepTier]
                     if (spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier, i)) { return }
