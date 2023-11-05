@@ -18,7 +18,8 @@ exports.builder = [
 exports.maintenance = [
     [WORK, CARRY, MOVE, MOVE], //Cost 250
     [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], //Cost 500
-    [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE] //Cost 700
+    [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], //Cost 700
+    [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 850
 ];
 exports.defender = [
     [TOUGH, TOUGH, ATTACK, MOVE, MOVE, MOVE], //Cost 250
