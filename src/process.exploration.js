@@ -38,11 +38,12 @@ let processExploration = {
     spawnCreep: function(role, body, roomName){
         newName = role + Memory.roles.index[role];
         for (let i in Game.spawns){
-            let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
+            if (!helper.isAvailable(i)) { continue }
+            let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
             while (result === -3){
                 Memory.roles.index[role]++;
                 newName = role + Memory.roles.index[role];
-                result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
+                result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
             }
             if (result == OK) {
                 Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
@@ -86,7 +87,7 @@ let processExploration = {
             this.spawnCreep(ROLE_LONGHAUL, bodytype.longhauler[0], roomName);
         }
 
-        longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_LONGHAUL && !creep.spawning && creep.memory.assignedRoom == roomName);
+        //longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_LONGHAUL && !creep.spawning && creep.memory.assignedRoom == roomName);
         //console.log(`Longhauls assigned to ${roomName}: ${longhaulList.length}`);
     }
 }
