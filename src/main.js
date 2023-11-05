@@ -63,7 +63,7 @@ module.exports.loop = function () {
                 if (thisRoom.memory.missionaryID !== undefined) { thisRoom.memory.missionaryID = undefined}
                 processDefense.scanForHostiles(roomName);
                 explorer.checkForMissionary(roomName);
-                
+
                 if (thisRoom.energyCapacityAvailable >= 1300) { thisRoom.memory.spawnTier = 4 }
                 else if (thisRoom.energyCapacityAvailable >= 800) { thisRoom.memory.spawnTier = 3 }
                 else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 2 }
