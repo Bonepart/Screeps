@@ -71,16 +71,16 @@ let processDefense = {
         body = bodytype.viking[2];
         for (let i in Game.spawns){
             if (!helper.isAvailable(i)) { continue }
-            let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
+            let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
             while (result === -3){
                 Memory.roles.index[ARMY_VIKING]++;
                 newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
-                result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true, memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
+                result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
             }
             if (result == OK) {
                 Game.spawns[i].spawnCreep(body, newName, { memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
                 Memory.roles.index[ARMY_VIKING]++;
-                console.log(`Spawning ${newName}`);
+                console.log(`${i}: Spawning ${newName}`);
                 return true;
             } else { return false }
         }
