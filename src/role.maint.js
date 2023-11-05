@@ -6,7 +6,7 @@ let pathing = require('pathing');
 let roleMaintenance = {
 
     /** @param {Creep} creep **/
-    run: function(creep, offset) {
+    run: function(creep, pendingRepairs, offset) {
         if (creep.memory.assignedRoom) {
             if (creep.room.name != creep.memory.assignedRoom) {
                 common.moveToAssignedRoom(creep);
@@ -26,10 +26,6 @@ let roleMaintenance = {
 
         if(creep.memory.repairing) {
             if (creep.memory.repairID == null){
-                let containerRepairs = creep.room.find(FIND_STRUCTURES, { 
-                    filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER}});
-                let pendingRepairs = containerRepairs.concat(_.sortBy(creep.room.find(FIND_STRUCTURES, { 
-                    filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_CONTAINER}}), (struct) => struct.hits));
                 if(pendingRepairs.length > offset) { creep.memory.repairID = pendingRepairs[offset].id }
                 else if (pendingRepairs.length > 0) { creep.memory.repairID = pendingRepairs[0].id }
             } 
@@ -46,27 +42,7 @@ let roleMaintenance = {
                         creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
                     }
                 }
-                if (!Memory.repairPersistance) { creep.memory.repairID = null }
-            } else {
-                let buildables = creep.room.find(FIND_CONSTRUCTION_SITES);
-                if (buildables.length > 0) {
-                    if (creep.build(buildables[0]) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(buildables[0], {visualizePathStyle: {stroke: '#0000aa'}});
-                    }
-                } else {
-                    let targets = creep.room.find(FIND_STRUCTURES, {
-                        filter: (structure) => {
-                            return (structure.structureType == STRUCTURE_EXTENSION ||
-                                    structure.structureType == STRUCTURE_SPAWN ||
-                                    structure.structureType == STRUCTURE_TOWER) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                        }
-                    });
-                    if(targets.length > 0) {
-                        if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                        }
-                    }
-                }
+                if (!Memory.roles.repairPersistance) { creep.memory.repairID = null }
             }
         } else {
             let energyStore = creep.room.find(FIND_STRUCTURES, {

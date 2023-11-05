@@ -91,11 +91,12 @@ module.exports.loop = function () {
                 break;
         }
 
+        let repairList = common.getRepairList(roomName);
         let creepList = _.filter(Game.creeps, (creep) => creep.room.name == roomName);
         if (creepList.length > 0) {
             let hasDroppedResources = helper.checkDroppedEnergy(roomName);
             let hasRuins = helper.checkRuins(roomName);
-            runCreeps(creepList, buildList, hasDroppedResources || hasRuins);
+            runCreeps(creepList, buildList, repairList, hasDroppedResources || hasRuins);
         }
     }
     if (Memory.flags.listCreeps) { Memory.flags.listCreeps = false }
@@ -123,7 +124,7 @@ module.exports.loop = function () {
     processDefense.checkKillList();
 };
 
-function runCreeps(creepList, buildList, hasLooseEnergy) {
+function runCreeps(creepList, buildList, repairList, hasLooseEnergy) {
     if (Memory.flags.listCreeps) { helper.listCreeps(_.sortBy(creepList, (creep) => creep.name)) }
     let maintOffset = 0;
     for(let creepIndex in creepList) {
@@ -143,7 +144,7 @@ function runCreeps(creepList, buildList, hasLooseEnergy) {
                 roleHealer.run(creep);
                 break;
             case ROLE_MAINTENANCE:
-                roleMaint.run(creep, maintOffset);
+                roleMaint.run(creep, repairList, maintOffset);
                 maintOffset++;
                 break;
             case ARMY_RANGED:
