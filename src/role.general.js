@@ -138,6 +138,9 @@ let roleGeneral = {
                 if (creep.spawning) {continue}
                 creep.moveTo(roomPos, {visualizePathStyle: {stroke: '#ff0000'}});
             }
+            if (Memory.flags.crusade.roomName != undefined) {
+                if (Memory.flags.crusade.roomName == roomPos.roomName) { Memory.flags.crusade = {} }
+            }
         }
     },
 
