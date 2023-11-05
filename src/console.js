@@ -89,6 +89,21 @@ let consoleCommands = {
         return 'Comeplete';
     },
 
+    setCrusade: function(x=undefined, y=undefined, roomName=undefined){
+        if (Memory.flags.crusade == undefined){ Memory.flags.crusade = {} }
+        if (roomName == undefined) { 
+            if (Memory.flags.crusade.roomName) {
+                Memory.flags.crusade = {};
+                return 'Complete - cleared crusade';
+            }
+            else { return 'Complete - no crusade set' }
+        }
+        try { new RoomPosition(x, y, roomName) } catch (error) { return error }
+
+        Memory.flags.crusade = {x: x, y: y, roomName: roomName};
+        return 'Complete - set crusade';
+    },
+
     killList: function(action, id=undefined){
         switch(action){
             case 'add':
