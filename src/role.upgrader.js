@@ -31,8 +31,7 @@ let roleUpgrader = {
         }
         else {
             let container = creep.room.controller.pos.findClosestByRange(FIND_STRUCTURES, { 
-                filter: (struct) => {return (struct.structureType == STRUCTURE_CONTAINER || 
-                                            struct.structureType == STRUCTURE_STORAGE) &&
+                filter: (struct) => {return struct.structureType == STRUCTURE_STORAGE &&
                                             struct.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
             );
             if (container){
