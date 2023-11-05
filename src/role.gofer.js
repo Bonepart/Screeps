@@ -21,21 +21,6 @@ let roleGofer = {
         }
         
         if(creep.memory.collecting) {
-            let searchTarget = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}});
-            if (searchTarget) {
-                if(creep.pickup(searchTarget) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
-                }
-                return;
-            }
-            searchTarget = pathing.findClosestRuin(creep.pos);
-            if (searchTarget){
-                if(creep.withdraw(searchTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
-                }
-                return;
-            }
-
             if (creep.room.memory.importContainerID != undefined){
                 let importContainer = Game.getObjectById(creep.room.memory.importContainerID);
                 if (importContainer !== undefined && importContainer.structureType == STRUCTURE_CONTAINER){
@@ -43,18 +28,6 @@ let roleGofer = {
                         let result = creep.withdraw(importContainer, RESOURCE_ENERGY);
                         if(result == ERR_NOT_IN_RANGE) {
                             creep.moveTo(importContainer, {visualizePathStyle: {stroke: '#ffffff'}});
-                        }
-                    }
-                } else {
-                    //console.log('gofer in links');
-                    for (let i in creep.room.memory.links){
-                        let toLink = Game.getObjectById(creep.room.memory.links[i].to);
-                        if (toLink != null && toLink.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
-                            //console.log(`gofer trying to transfer from ${toLink.id}`);
-                            if(creep.withdraw(toLink, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                                creep.moveTo(toLink, {visualizePathStyle: {stroke: '#ffffff'}});
-                            }
-                            return;
                         }
                     }
                 }
