@@ -8,8 +8,8 @@ let structureTower = {
         let numHostiles = thisTower.room.find(FIND_HOSTILE_CREEPS).length;
         if (numHostiles > 0) { if (attackHostile(thisTower)) { return } }
 
-        let numWounded = thisTower.room.find(FIND_MY_CREEPS, { filter: (creep) => {return creep.hits < creep.hitsMax}});
-        if (numWounded > 0) { if (healWounded(thisTower)) { return } }
+        let woundedList = thisTower.room.find(FIND_MY_CREEPS, { filter: (creep) => {return creep.hits < creep.hitsMax}});
+        if (woundedList.length > 0) { if (healWounded(thisTower, woundedList)) { return } }
 
         if (thisTower.store.getUsedCapacity(RESOURCE_ENERGY) > 800) { repairStructures(thisTower) }
     }
@@ -37,19 +37,18 @@ function attackHostile(thisTower){
 }
 
 /** @param {StructureTower} thisTower **/
-function healWounded(thisTower){
+function healWounded(thisTower, woundedList){
     console.log('Tower trying to heal');
-    let target = thisTower.pos.findClosestByRange(FIND_MY_CREEPS, { filter: (creep) => {return creep.hits < creep.hitsMax}});
-    let result = thisTower.heal(target);
+    let result = thisTower.heal(woundedList[0]);
     switch (result){
         case OK:
-            console.log(`Tower ${thisTower.id} healed ${target.name} (${target.hits}/${target.hitsMax})`);
+            console.log(`Tower ${thisTower.id} healed ${woundedList[0].name} (${woundedList[0].hits}/${woundedList[0].hitsMax})`);
             return true;
         case ERR_NOT_ENOUGH_ENERGY:
             console.log(`Tower ${thisTower.id} does not have enough energy to heal`);
             break;
         case ERR_INVALID_TARGET:
-            console.log(`Tower ${thisTower.id} was passed an Invalid Target: ${target.id}`);
+            console.log(`Tower ${thisTower.id} was passed an Invalid Target: ${woundedList[0].id}`);
             break;
         default:
             console.log(`Tower ${thisTower.id}: Error ${result}`);
