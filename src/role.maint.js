@@ -13,6 +13,7 @@ let roleMaintenance = {
                 return;
             }
         }
+        if(processRenewal.renew(creep)){ return };
 
         if(creep.memory.repairing && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.repairing = false;
