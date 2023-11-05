@@ -34,6 +34,7 @@ module.exports.loop = function () {
     Game.c = require('console');
     processCreeps.clearMemory();
     
+
     let buildList = common.getBuildList();
     for (let roomName in Game.rooms){
         let thisRoom = Game.rooms[roomName];
@@ -80,10 +81,9 @@ module.exports.loop = function () {
                             break;
                     }
                 }
-
                 break;
             case ROOM_HOSTILE_SAFE:
-                if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
+                //if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
                 break;
             case ROOM_HOSTILE:
                 //if (thisRoom.memory.sentryID === undefined) { thisRoom.memory.sentryID = null }
@@ -101,9 +101,10 @@ module.exports.loop = function () {
     }
     if (Memory.flags.listCreeps) { Memory.flags.listCreeps = false }
 
+    processDefense.checkForCrusade();
+
     for (let i in Game.spawns){
         let roomName = Game.spawns[i].room.name;
-        //roleGeneral.defend();
         if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
         if (Memory.rooms[roomName].spawns[0] === undefined) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];

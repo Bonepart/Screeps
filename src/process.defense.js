@@ -1,4 +1,3 @@
-let bodytype = require('constants.bodytype');
 let roleGeneral = require('role.general');
 let helper = require('helper');
 
@@ -17,6 +16,13 @@ let processDefense = {
             Memory.killList.shift();
         } 
         else { roleGeneral.killTarget(Memory.killList[0]) }
+    },
+
+    checkForCrusade: function(){
+        if (Memory.flags.crusade.roomName != undefined) {
+            roomPos = new RoomPosition(Memory.flags.crusade.x, Memory.flags.crusade.y, Memory.flags.crusade.roomName);
+            roleGeneral.run(roomPos);
+        }
     },
 
     checkForKeeperLair: function(roomName){
@@ -46,8 +52,6 @@ let processDefense = {
                     case "Source Keeper":
                         keeperCreeperFound = true;
                         break;
-                    default:
-                        console.log(`Hostile Found!!  Owned by ${hostiles[i].owner.username}`);
                 }
                 
             }
@@ -55,25 +59,6 @@ let processDefense = {
         room.memory.keeperLair.threatActive = keeperCreeperFound;
     },
 
-    spawnViking: function(vikingCount){
-        newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
-        body = bodytype.viking[2];
-        for (let i in Game.spawns){
-            if (vikingCount >= Memory.roles.limit[ARMY_VIKING]) { return }
-            if (!helper.isAvailable(i)) { continue }
-            let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
-            while (result === -3){
-                Memory.roles.index[ARMY_VIKING]++;
-                newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
-                result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
-            }
-            if (result == OK) {
-                Game.spawns[i].spawnCreep(body, newName, { memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
-                Memory.roles.index[ARMY_VIKING]++;
-                vikingCount++;
-                console.log(`${i}: Spawning ${newName}`);
-            }
-        }
-    }
+
 }
 module.exports = processDefense;
