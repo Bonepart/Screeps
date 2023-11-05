@@ -40,7 +40,7 @@ let processCreeps = {
 
         let creepTier = spawner.room.memory.spawnTier - 1;
 
-        if (spawner.store[RESOURCE_ENERGY] >= 250){
+        if (spawner.store.getUsedCapacity(RESOURCE_ENERGY) >= 250){
             let body = null;
             if (defenderList.length < Memory.roles.limit[ARMY_DEFENDER]){
                 if (creepTier >= bodytype.defender.length) { creepTier = bodytype.defender.length - 1}
@@ -68,6 +68,16 @@ let processCreeps = {
                     body = bodytype.builder[creepTier]
                     if (spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier, i)) { return }
                 }
+                else if(upgraderList.length < Memory.roles.limit[ROLE_UPGRADER]){
+                    if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
+                    body = bodytype.upgrader[creepTier]
+                    if (spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier, i)) { return }
+                }
+                else if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
+                    if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
+                    body = bodytype.gofer[creepTier]
+                    if (spawnCreep(spawnIndex, ROLE_GOFER, body, creepTier, i)) { return }
+                }
                 else if (storageBuddyList.length == 0){
                     let energyStorage = Game.rooms[i].find(FIND_STRUCTURES, {
                         filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }}).length;
@@ -76,17 +86,6 @@ let processCreeps = {
                         if (spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, -1, i)) { return }
                     }
                 }
-                else if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
-                    if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
-                    body = bodytype.gofer[creepTier]
-                    if (spawnCreep(spawnIndex, ROLE_GOFER, body, creepTier, i)) { return }
-                }
-                else if(upgraderList.length < Memory.roles.limit[ROLE_UPGRADER]){
-                    if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
-                    body = bodytype.upgrader[creepTier]
-                    if (spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier, i)) { return }
-                }
-                
             }
         }
     },
