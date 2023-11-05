@@ -7,14 +7,14 @@ const roleDefinitions = [
 
     [ARMY_DEFENDER, 0],
     [ARMY_VIKING, 0],
-    [ARMY_RANGED, 0],
-    [ARMY_HEALER, 0],
+    [ARMY_RANGED, -1],
+    [ARMY_HEALER, -1],
 
     [ROLE_LONGHAUL, 0],
     [ROLE_GOFER, 0],
     [ROLE_STORAGEBUDDY, -1],
-    [ROLE_CLAIMER, 0],
-    [ROLE_SENTRY, 0]
+    [ROLE_CLAIMER, -1],
+    [ROLE_SENTRY, -1]
 ];
 
 let config = {
