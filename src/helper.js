@@ -18,14 +18,12 @@ let helper = {
     },
 
     checkDroppedEnergy: function(roomName) {
-        let searchTargets = Game.rooms[roomName].find(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}});
-        if (searchTargets > 0) { return true }
+        if (Game.rooms[roomName].find(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}}).length > 0) { return true }
         else { return false }
     },
 
     checkRuins: function(roomName) {
-        let searchTargets = Game.rooms[roomName].find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }});
-        if (searchTargets > 0) { return true }
+        if (Game.rooms[roomName].find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }}).length > 0) { return true }
         else { return false }
     },
 

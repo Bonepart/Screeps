@@ -24,7 +24,7 @@ let roleHarvester = {
 	    if(creep.memory.harvesting) {
             if(processRenewal.renew(creep)){ return };
 
-            if (hasLooseEnergy && common.getLooseEnergy) { return }
+            if (hasLooseEnergy && common.getLooseEnergy(creep)) { return }
             let searchTarget = pathing.findClosestSource(creep.pos)
             if(creep.harvest(searchTarget) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
