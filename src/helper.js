@@ -24,7 +24,8 @@ let helper = {
 
     checkRuins: function(roomName) {
         if (Game.rooms[roomName].find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }}).length > 0) { return true }
-        else { return false }
+        if (Game.rooms[roomName].find(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }}).length > 0) { return true }
+        return false;
     },
 
     possibleExtensions: function (conLevel) {
