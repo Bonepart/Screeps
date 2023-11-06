@@ -6,11 +6,12 @@ let roleDefender = require('role.defender');
 let roleHarvester = require('role.harvester');
 let roleHealer = require('role.healer');
 let roleMaint = require('role.maint');
+let roleMiner = require('role.miner');
 let roleRanged = require('role.ranged');
 let roleUpgrader = require('role.upgrader');
 let roleZombie = require('role.zombie');
 
-let roleGeneral = require('role.general');
+//let roleGeneral = require('role.general');
 let roleLonghaul = require('role.longhaul');
 let roleGofer = require('role.gofer');
 let roleStorageBud = require('role.storagebuddy');
@@ -18,7 +19,7 @@ let roleClaimer = require('role.claimer');
 
 let towerLogic = require('structure.tower');
 let linkLogic = require('structure.link');
-let bodytype = require('constants.bodytype');
+//let bodytype = require('constants.bodytype');
 let processCreeps = require('process.creeps');
 let processDefense = require('process.defense');
 let processRooms = require('process.rooms');
@@ -147,6 +148,9 @@ function runCreeps(creepList, buildList, repairList, hasLooseEnergy) {
             case ROLE_MAINTENANCE:
                 roleMaint.run(creep, repairList, maintOffset);
                 maintOffset++;
+                break;
+            case ROLE_MINER:
+                roleMiner.run(creep);
                 break;
             case ARMY_RANGED:
                 roleRanged.run(creep);

@@ -4,6 +4,7 @@ const roleDefinitions = [
     [ROLE_HARVESTER, 2],
     [ROLE_UPGRADER, 1],
     [ROLE_MAINTENANCE, 1],
+    [ROLE_MINER, -1],
 
     [ARMY_DEFENDER, 0],
     [ARMY_VIKING, 0],

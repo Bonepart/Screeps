@@ -5,6 +5,7 @@ global.ROLE_BUILDER = 'builder';
 global.ROLE_HARVESTER = 'harvester';
 global.ROLE_UPGRADER = 'upgrader';
 global.ROLE_MAINTENANCE = 'maintenance';
+global.ROLE_MINER = 'miner';
 
 //Army Creeps
 global.ARMY_DEFENDER = 'defender';
