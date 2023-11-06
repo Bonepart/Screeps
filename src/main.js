@@ -71,6 +71,10 @@ module.exports.loop = function () {
                 else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 2 }
                 else { thisRoom.memory.spawnTier = 1 };
 
+                if (thisRoom.controller.level >= 6) {
+                    
+                }
+
                 let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
                 for (let structure in structuresToRun){
                     switch (structuresToRun[structure].structureType){
