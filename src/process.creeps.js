@@ -1,4 +1,5 @@
 let helper = require('helper');
+let spawnLogic = require('logic.spawning');
 let bodytype = require('constants.bodytype');
 const { ceil } = require("lodash");
 
@@ -45,45 +46,45 @@ let processCreeps = {
             if (defenderList.length < Memory.roles.limit[ARMY_DEFENDER]){
                 if (creepTier >= bodytype.defender.length) { creepTier = bodytype.defender.length - 1}
                 body = bodytype.defender[creepTier]
-                spawnCreep(spawnIndex, ARMY_DEFENDER, body, creepTier);
+                spawnLogic.spawnCreep(spawnIndex, ARMY_DEFENDER, body, creepTier);
             }
             else if (healerList.length < Memory.roles.limit[ARMY_HEALER]){
                 if (creepTier >= bodytype.healer.length) { creepTier = bodytype.healer.length - 1}
                 body = bodytype.healer[creepTier]
-                spawnCreep(spawnIndex, ARMY_HEALER, body, creepTier);
+                spawnLogic.spawnCreep(spawnIndex, ARMY_HEALER, body, creepTier);
             }
             else {
                 if (harvesterList.length < Memory.roles.limit[ROLE_HARVESTER]){
                     if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
                     body = bodytype.harvester[creepTier]
-                    if (spawnCreep(spawnIndex, ROLE_HARVESTER, body, creepTier, i)) { return }
+                    if (spawnLogic.spawnCreep(spawnIndex, ROLE_HARVESTER, body, creepTier, i)) { return }
                 }
                 else if(maintList.length < Memory.roles.limit[ROLE_MAINTENANCE]){
                     if (creepTier >= bodytype.maintenance.length) { creepTier = bodytype.maintenance.length - 1}
                     body = bodytype.maintenance[creepTier]
-                    if (spawnCreep(spawnIndex, ROLE_MAINTENANCE, body, creepTier, i)) { return }
+                    if (spawnLogic.spawnCreep(spawnIndex, ROLE_MAINTENANCE, body, creepTier, i)) { return }
                 }
                 else if(builderList.length < Memory.roles.limit[ROLE_BUILDER]){
                     if (creepTier >= bodytype.builder.length) { creepTier = bodytype.builder.length - 1}
                     body = bodytype.builder[creepTier]
-                    if (spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier, i)) { return }
+                    if (spawnLogic.spawnCreep(spawnIndex, ROLE_BUILDER, body, creepTier, i)) { return }
                 }
                 else if(upgraderList.length < Memory.roles.limit[ROLE_UPGRADER]){
                     if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
                     body = bodytype.upgrader[creepTier]
-                    if (spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier, i)) { return }
+                    if (spawnLogic.spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier, i)) { return }
                 }
                 else if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
                     if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
                     body = bodytype.gofer[creepTier]
-                    if (spawnCreep(spawnIndex, ROLE_GOFER, body, creepTier, i)) { return }
+                    if (spawnLogic.spawnCreep(spawnIndex, ROLE_GOFER, body, creepTier, i)) { return }
                 }
                 else if (storageBuddyList.length == 0){
                     let energyStorage = Game.rooms[i].find(FIND_STRUCTURES, {
                         filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }}).length;
                     if (energyStorage > 0 && Memory.rooms[i].links != undefined){
                         body = bodytype.storagebuddy;
-                        if (spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, -1, i)) { return }
+                        if (spawnLogic.spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, -1, i)) { return }
                     }
                 }
             }
@@ -109,33 +110,3 @@ let processCreeps = {
     }
 };
 module.exports = processCreeps;
-
-function spawnCreep(spawnIndex, role, body, creepTier, assignRoom = undefined){
-    let spawner = Game.spawns[spawnIndex];
-    let newName = role + Memory.roles.index[role];
-
-    let result = spawner.spawnCreep(body, newName, { dryRun: true});
-    while (result === -3){
-        Memory.roles.index[role]++;
-        newName = role + Memory.roles.index[role];
-        result = spawner.spawnCreep(body, newName, { dryRun: true});
-    }
-    if (result == OK) {
-        if (creepTier == -1){ spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: assignRoom}}) }
-        else { spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}}) }
-        Memory.roles.index[role]++;
-        if (assignRoom) { console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName} assigned to ${assignRoom}`);}
-        else { console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName}`) }
-        return true;
-    } else { logSpawnResults(result, newName, creepTier); return false }
-}
-
-function logSpawnResults(result, newName, creepTier) {
-    switch(result){
-        case OK:
-        case ERR_NOT_ENOUGH_ENERGY:
-            break;
-        default:
-            console.log(`Spawn of ${newName} (T${creepTier+1}) failed: ${result}`);
-    }
-}

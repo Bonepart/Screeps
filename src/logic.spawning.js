@@ -3,7 +3,27 @@ let bodytype = require('constants.bodytype');
 
 let spawningLogic = {
 
-    spawnExCreep: function(role, body, roomName){
+    spawnCreep: function (spawnIndex, role, body, creepTier, assignRoom = undefined) {
+        let spawner = Game.spawns[spawnIndex];
+        let newName = role + Memory.roles.index[role];
+    
+        let result = spawner.spawnCreep(body, newName, { dryRun: true});
+        while (result === -3){
+            Memory.roles.index[role]++;
+            newName = role + Memory.roles.index[role];
+            result = spawner.spawnCreep(body, newName, { dryRun: true});
+        }
+        if (result == OK) {
+            if (creepTier == -1){ spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: assignRoom}}) }
+            else { spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}}) }
+            Memory.roles.index[role]++;
+            if (assignRoom) { console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName} assigned to ${assignRoom}`);}
+            else { console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName}`) }
+            return true;
+        } else { logSpawnResults(spawnIndex, result, newName); return false }
+    },
+
+    spawnExCreep: function (role, body, roomName) {
         newName = role + Memory.roles.index[role];
         for (let i in Game.spawns){
             if (!helper.isAvailable(i)) { continue }
@@ -43,11 +63,11 @@ let spawningLogic = {
                     Memory.rooms[roomName].sentryID = newName;
                     console.log(`${spawnIndex}: Spawning ${newName} to surveil ${roomName}`);
                     return true;
-                }else {logSpawnResults(result, newName)}
+                }else {logSpawnResults(spawnIndex, result, newName)}
             }
         }
     },
-    
+
     spawnViking: function (vikingCount) {
         newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
         body = bodytype.viking[2];
@@ -71,3 +91,13 @@ let spawningLogic = {
 
 }
 module.exports = spawningLogic;
+
+function logSpawnResults(spawnName, result, newName) {
+    switch(result){
+        case OK:
+        case ERR_NOT_ENOUGH_ENERGY:
+            break;
+        default:
+            console.log(`${spawnName}: Spawn of ${newName} failed: ${result}`);
+    }
+}

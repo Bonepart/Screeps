@@ -48,13 +48,3 @@ let processExploration = {
     }
 }
 module.exports = processExploration;
-
-function logSpawnResults(result, newName) {
-    switch(result){
-        //case ERR_BUSY:
-        //case ERR_NOT_ENOUGH_ENERGY:
-           // break;
-        default:
-            console.log(`Spawn of ${newName} failed: ${result}`);
-    }
-}
