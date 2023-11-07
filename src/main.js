@@ -19,7 +19,7 @@ let roleClaimer = require('role.claimer');
 
 let towerLogic = require('structure.tower');
 let linkLogic = require('structure.link');
-//let bodytype = require('constants.bodytype');
+let bodytype = require('constants.bodytype');
 let processCreeps = require('process.creeps');
 let processDefense = require('process.defense');
 let processRooms = require('process.rooms');
@@ -72,12 +72,6 @@ module.exports.loop = function () {
                 else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 2 }
                 else { thisRoom.memory.spawnTier = 1 };
 
-                if (thisRoom.controller.level >= 6) {
-                    let minerList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MINER && creep.memory.assignedRoom == thisRoom);
-                    let extractorCount = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_EXTRACTOR}}).length;
-                    if (minerList.length < extractorCount) { }
-                }
-
                 let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
                 for (let structure in structuresToRun){
                     switch (structuresToRun[structure].structureType){
@@ -112,10 +106,17 @@ module.exports.loop = function () {
     processDefense.checkForCrusade();
 
     for (let i in Game.spawns){
-        let roomName = Game.spawns[i].room.name;
+        let spawner = Game.spawns[i];
+        let roomName = spawner.room.name;
         if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
         if (Memory.rooms[roomName].spawns[0] === undefined) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
-        let spawner = Game.spawns[i];
+        
+
+        if (spawner.room.controller.level >= 6) {
+            let minerList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MINER && creep.memory.assignedRoom == roomName);
+            let extractorCount = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_EXTRACTOR}}).length;
+            if (minerList.length < extractorCount) { spawnLogic.spawnCreep(i, ROLE_MINER, bodytype.miner[0], -1, roomName)}
+        }
 
         //if (helper.isAvailable(i)) { spawnLogic.spawnSentry(i) }
         if (helper.isAvailable(i)) { processCreeps.checkForSpawn(i) }
