@@ -1,3 +1,4 @@
+let spawnLogic = require('logic.spawning');
 let bodytype = require('constants.bodytype');
 let helper = require('helper');
 
@@ -6,7 +7,7 @@ let roleGeneral = {
     /** @param {RoomPosition} roomPos **/
     run: function(roomPos){
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
-        if (vikingList.length < Memory.roles.limit[ARMY_VIKING]) { spawnViking(vikingList.length) }
+        if (vikingList.length < Memory.roles.limit[ARMY_VIKING]) { spawnLogic.spawnViking(vikingList.length) }
         if (vikingList.length == 0) { return }
 
         let targetRoom = Game.rooms[roomPos.roomName];
@@ -146,7 +147,7 @@ let roleGeneral = {
 
     killTarget: function(targetID){
         let vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING);
-        if (vikingList.length < Memory.roles.limit[ARMY_VIKING]) { spawnViking(vikingList.length) }
+        if (vikingList.length < Memory.roles.limit[ARMY_VIKING]) { spawnLogic.spawnViking(vikingList.length) }
 
         let target = Game.getObjectById(targetID);
         if (target === null) { return }
@@ -191,24 +192,3 @@ let roleGeneral = {
 
 }
 module.exports = roleGeneral;
-
-function spawnViking(vikingCount){
-    newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
-    body = bodytype.viking[2];
-    for (let i in Game.spawns){
-        if (vikingCount >= Memory.roles.limit[ARMY_VIKING]) { return }
-        if (!helper.isAvailable(i)) { continue }
-        let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
-        while (result === -3){
-            Memory.roles.index[ARMY_VIKING]++;
-            newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
-            result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
-        }
-        if (result == OK) {
-            Game.spawns[i].spawnCreep(body, newName, { memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
-            Memory.roles.index[ARMY_VIKING]++;
-            vikingCount++;
-            console.log(`${i}: Spawning ${newName}`);
-        }
-    }
-}
