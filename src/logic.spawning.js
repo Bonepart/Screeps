@@ -1,5 +1,5 @@
 let bodytype = require('constants.bodytype');
-
+let helper = require('helper');
 
 let spawningLogic = {
 
@@ -34,7 +34,10 @@ let spawningLogic = {
                 result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
             }
             if (result == OK) {
-                Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
+                result = Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
+                if (result != OK) {
+                    console.log(`${i}: Error, dry run said OK, real spawn failed: ${result}`);
+                }
                 Memory.roles.index[role]++;
                 console.log(`${i}: Spawning ${newName} assigned to ${roomName}`);
                 return newName;
