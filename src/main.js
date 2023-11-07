@@ -25,6 +25,7 @@ let processDefense = require('process.defense');
 let processRooms = require('process.rooms');
 let explorer = require('process.exploration');
 let construction = require('construction');
+let spawnLogic = require('logic.spawning');
 let common = require('logic.common');
 let helper = require('helper');
 const roleSentry = require('./role.sentry');
@@ -116,7 +117,7 @@ module.exports.loop = function () {
         if (Memory.rooms[roomName].spawns[0] === undefined) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         let spawner = Game.spawns[i];
 
-        //if (helper.isAvailable(i)) { explorer.spawnSentry(i) }
+        //if (helper.isAvailable(i)) { spawnLogic.spawnSentry(i) }
         if (helper.isAvailable(i)) { processCreeps.checkForSpawn(i) }
 
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
