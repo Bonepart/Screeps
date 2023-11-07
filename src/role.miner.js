@@ -5,6 +5,8 @@ let roleMiner = {
     /** @param {Creep} creep **/
     run: function(creep) {
         if (creep.memory.mineral == undefined) { init(creep) }
+        let container = Game.getObjectById(creep.memory.containerID);
+        if (container.store.getFreeCapacity(creep.memory.mineral.type) == 0) { return }
 
         if(creep.memory.mining && creep.store.getFreeCapacity(creep.memory.mineral.type) === 0) {
             creep.memory.mining = false;
@@ -28,7 +30,7 @@ let roleMiner = {
             }
         }
         else {
-            let container = Game.getObjectById(creep.memory.containerID);
+            
             let result = creep.transfer(container, creep.memory.mineral.type);
             switch (result){
                 case OK:
