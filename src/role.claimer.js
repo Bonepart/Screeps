@@ -1,4 +1,4 @@
-let common = require('common.logic');
+let common = require('logic.common');
 let helper = require('helper');
 
 let roleClaimer = {

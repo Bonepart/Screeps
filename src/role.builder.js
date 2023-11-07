@@ -1,6 +1,6 @@
 let processRenewal = require('process.renewal');
 let pathing = require('pathing');
-let common = require('common.logic');
+let common = require('logic.common');
 let helper = require('helper');
 
 

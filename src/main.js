@@ -25,7 +25,7 @@ let processDefense = require('process.defense');
 let processRooms = require('process.rooms');
 let explorer = require('process.exploration');
 let construction = require('construction');
-let common = require('common.logic');
+let common = require('logic.common');
 let helper = require('helper');
 const roleSentry = require('./role.sentry');
 
@@ -72,7 +72,9 @@ module.exports.loop = function () {
                 else { thisRoom.memory.spawnTier = 1 };
 
                 if (thisRoom.controller.level >= 6) {
-                    
+                    let minerList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MINER && creep.memory.assignedRoom == thisRoom);
+                    let extractorCount = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_EXTRACTOR}}).length;
+                    if (minerList.length < extractorCount) { }
                 }
 
                 let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
