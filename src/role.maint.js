@@ -6,7 +6,7 @@ let pathing = require('pathing');
 let roleMaintenance = {
 
     /** @param {Creep} creep **/
-    run: function(creep, pendingRepairs, offset) {
+    run: function(creep, pendingRepairs) {
         if (creep.memory.assignedRoom) {
             if (creep.room.name != creep.memory.assignedRoom) {
                 common.moveToAssignedRoom(creep);
@@ -26,7 +26,7 @@ let roleMaintenance = {
 	    }
 
         if(creep.memory.repairing) {
-            if (creep.memory.repairID == null){ setRepairID(creep, pendingRepairs, offset) } 
+            if (creep.memory.repairID == null){ setRepairID(creep, pendingRepairs) } 
             if (creep.memory.repairID != null) {
                 let repairTarget = Game.getObjectById(creep.memory.repairID);
                 if (repairTarget == null) { 
@@ -34,7 +34,7 @@ let roleMaintenance = {
                     console.log(`${creep.name} => Error, repairID = null`);
                     return;
                 }
-                if (repairTarget.hits == repairTarget.hitsMax) { setRepairID(creep, pendingRepairs, offset) }
+                if (repairTarget.hits == repairTarget.hitsMax) { setRepairID(creep, pendingRepairs) }
                 if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
@@ -62,7 +62,10 @@ let roleMaintenance = {
 module.exports = roleMaintenance;
 
 /** @param {Creep} creep **/
-function setRepairID(creep, pendingRepairs, offset){
-    if(pendingRepairs.length > offset) { creep.memory.repairID = pendingRepairs[offset].id }
-    else if (pendingRepairs.length > 0) { creep.memory.repairID = pendingRepairs[0].id }
+function setRepairID(creep, pendingRepairs){
+    let nextRepair = pendingRepairs.next();
+    if (!nextRepair.done) { 
+        creep.memory.repairID = nextRepair.value.id;
+        console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_MAINTENANCE.length + 3)} repairing ${nextRepair.value.id}`);
+    }
 }

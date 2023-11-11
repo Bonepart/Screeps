@@ -1,13 +1,25 @@
 let pathing = require('pathing');
+let helper = require('helper');
 
 let commonLogic = {
 
-    getRepairList: function(roomName) {
+    getRepairList: function*(roomName, creepList) {
+        let excludeList = buildRepairExcludeList(creepList);
         let containerRepairs = Game.rooms[roomName].find(FIND_STRUCTURES, { 
-            filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER}});
+            filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER}}
+        );
         let pendingRepairs = containerRepairs.concat(_.sortBy(Game.rooms[roomName].find(FIND_STRUCTURES, { 
-            filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_CONTAINER}}), (struct) => struct.hits));
-        return pendingRepairs;
+            filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_CONTAINER}}), (struct) => struct.hits)
+        );
+        if (excludeList.length > 0){
+            for (let i in pendingRepairs){
+                if (excludeList.includes(pendingRepairs[i].id)) { delete pendingRepairs[i] }
+            }
+        }
+        for (let i in pendingRepairs){
+            yield pendingRepairs[i];
+        }
+        return;
     },
 
     getBuildList: function() {
@@ -57,3 +69,13 @@ let commonLogic = {
 
 }
 module.exports = commonLogic;
+
+function buildRepairExcludeList(creepList){
+    let excludeList = [];
+    for (let creep of creepList){
+        if (creep.memory.role == ROLE_MAINTENANCE && creep.memory.repairID != undefined){
+            excludeList.push(creep.memory.repairID);
+        }
+    }
+    return excludeList;
+}

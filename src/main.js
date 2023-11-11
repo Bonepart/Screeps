@@ -93,8 +93,8 @@ module.exports.loop = function () {
                 break;
         }
 
-        let repairList = common.getRepairList(roomName);
         let creepList = _.filter(Game.creeps, (creep) => creep.room.name == roomName);
+        let repairList = common.getRepairList(roomName, creepList);
         if (creepList.length > 0) {
             let hasDroppedResources = helper.checkDroppedEnergy(roomName);
             let hasRuins = helper.checkRuins(roomName);
@@ -136,7 +136,6 @@ module.exports.loop = function () {
 
 function runCreeps(creepList, buildList, repairList, hasLooseEnergy) {
     if (Memory.flags.listCreeps) { helper.listCreeps(_.sortBy(creepList, (creep) => creep.name)) }
-    let maintOffset = 0;
     for(let creepIndex in creepList) {
         let creep = creepList[creepIndex];
         if (creep.spawning) { continue }
@@ -154,8 +153,7 @@ function runCreeps(creepList, buildList, repairList, hasLooseEnergy) {
                 roleHealer.run(creep);
                 break;
             case ROLE_MAINTENANCE:
-                roleMaint.run(creep, repairList, maintOffset);
-                maintOffset++;
+                roleMaint.run(creep, repairList);
                 break;
             case ROLE_MINER:
                 roleMiner.run(creep);
