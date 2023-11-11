@@ -33,7 +33,8 @@ exports.defender = [
 exports.healer = [
     [ HEAL, MOVE], //Cost 300
     [ RANGED_ATTACK, HEAL, MOVE, MOVE], //Cost 500
-    [ TOUGH, TOUGH, HEAL, HEAL, MOVE, MOVE, MOVE, MOVE] //Cost 720
+    [ TOUGH, TOUGH, HEAL, HEAL, MOVE, MOVE, MOVE, MOVE], //Cost 720
+    [ TOUGH, TOUGH, HEAL, HEAL, HEAL, HEAL, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 1320
 ]; 
 exports.viking = [ 
     [ ],
