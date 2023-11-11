@@ -38,6 +38,12 @@ let consoleCommands = {
         return 'Complete';
     },
 
+    checkID: function(id) {
+        let checkObject = Game.getObjectById(id);
+        helper.stringify(checkObject);
+        return 'Complete';
+    },
+
     toggleRP: function() {
         if (Memory.roles.repairPersistance) { Memory.roles.repairPersistance = false }
         else { Memory.roles.repairPersistance = true }
