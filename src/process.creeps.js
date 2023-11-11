@@ -115,7 +115,7 @@ function checkGofers(spawnIndex, creepTier) {
             let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == TASK_STORE_MINERALS);
             if (goferList.length < 1){
                 let depositContainer = mineral.pos.findInRange(FIND_STRUCTURES, 10, {filter: (structure) => { return structure.structureType == STRUCTURE_CONTAINER}});
-                if (depositContainer.length > 0){
+                if (depositContainer.length > 0 && depositContainer[0].store.getUsedCapacity(mineral.mineralType) > 0){
                     if (spawnLogic.spawnGofer(spawnIndex, creepTier, { 
                         assignedRoom: thisRoom.name, 
                         task: TASK_STORE_MINERALS, 
