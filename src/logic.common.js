@@ -25,7 +25,11 @@ let commonLogic = {
         ));
         for (let result of findResults){
             if (excludeList.includes(result.id)) { continue }
-            yield result;
+            if (result.structureType == STRUCTURE_STORAGE){
+                while (result.store.getUsedCapacity(RESOURCE_ENERGY) <= 500000){
+                    yield result;
+                }
+            } else { yield result }
         }
         return;
     },
