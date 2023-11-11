@@ -1,4 +1,3 @@
-let pathing = require('logic.pathing');
 let common = require('logic.common');
 let helper = require('helper');
 
@@ -94,6 +93,11 @@ function storeMinerals(creep){
         if (mineralContainer == null) {
             console.log(`${TASK_STORE_MINERALS} ${creep.name} can not find container with minerals`);
             creep.memory.role = ZOMBIE;
+            return;
+        }
+        if (creep.store.getUsedCapacity(creep.memory.mineralType) == 0 && creep.ticksToLive < 50) { creep.memory.role = ZOMBIE; return }
+        if (mineralContainer.store.getUsedCapacity(creep.memory.mineralType) == 0 && creep.store.getUsedCapacity(creep.memory.mineralType) > 0){
+            creep.memory.collecting = false;
             return;
         }
         if(creep.withdraw(mineralContainer, creep.memory.mineralType) == ERR_NOT_IN_RANGE) {
