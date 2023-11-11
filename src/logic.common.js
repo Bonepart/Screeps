@@ -11,13 +11,9 @@ let commonLogic = {
         let pendingRepairs = containerRepairs.concat(_.sortBy(Game.rooms[roomName].find(FIND_STRUCTURES, { 
             filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_CONTAINER}}), (struct) => struct.hits)
         );
-        if (excludeList.length > 0){
-            for (let i in pendingRepairs){
-                if (excludeList.includes(pendingRepairs[i].id)) { delete pendingRepairs[i] }
-            }
-        }
-        for (let i in pendingRepairs){
-            yield pendingRepairs[i];
+        for (let pendingRepair of pendingRepairs){
+            if (excludeList.includes(pendingRepair.id)) { continue }
+            yield pendingRepair;
         }
         return;
     },
