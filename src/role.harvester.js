@@ -19,6 +19,7 @@ let roleHarvester = {
 	    }
 	    if(!creep.memory.harvesting && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
 	        creep.memory.harvesting = true;
+            creep.memory.depositID = null;
 	    }
 
 	    if(creep.memory.harvesting) {
@@ -48,13 +49,14 @@ function setDepositID(creep, energyList){
     let nextBucket = energyList.next();
     if (!nextBucket.done) { 
         creep.memory.depositID = nextBucket.value.id;
-        //console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_HARVESTER.length + 3)} depositing in ${nextBucket.value.id}`);
+        console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_HARVESTER.length + 3)} depositing in ${nextBucket.value.id}`);
     }
 }
 
 /** @param {Creep} creep **/
 function depositInBucket(creep, energyList){
     if (creep.memory.depositID == undefined || creep.memory.depositID == null){ setDepositID(creep, energyList) } 
+    if (creep.memory.depositID == null) { return false }
     let depositTarget = Game.getObjectById(creep.memory.depositID);
     if (depositTarget == null) { 
         creep.memory.depositID = null;
