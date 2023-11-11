@@ -94,12 +94,7 @@ module.exports.loop = function () {
         }
 
         let creepList = _.filter(Game.creeps, (creep) => creep.room.name == roomName);
-        let repairList = common.getRepairList(roomName, creepList);
-        if (creepList.length > 0) {
-            let hasDroppedResources = helper.checkDroppedEnergy(roomName);
-            let hasRuins = helper.checkRuins(roomName);
-            runCreeps(creepList, buildList, repairList, hasDroppedResources || hasRuins);
-        }
+        if (creepList.length > 0) { runCreeps(roomName, creepList, buildList) }
     }
     if (Memory.flags.listCreeps) { Memory.flags.listCreeps = false }
 
@@ -134,7 +129,11 @@ module.exports.loop = function () {
     processDefense.checkKillList();
 };
 
-function runCreeps(creepList, buildList, repairList, hasLooseEnergy) {
+function runCreeps(roomName, creepList, buildList) {
+    let energyList = common.getEnergyConsumerList(roomName, creepList);
+    let repairList = common.getRepairList(roomName, creepList);
+    let hasLooseEnergy = helper.checkDroppedEnergy(roomName) || helper.checkRuins(roomName);
+
     if (Memory.flags.listCreeps) { helper.listCreeps(_.sortBy(creepList, (creep) => creep.name)) }
     for(let creepIndex in creepList) {
         let creep = creepList[creepIndex];
@@ -147,7 +146,7 @@ function runCreeps(creepList, buildList, repairList, hasLooseEnergy) {
                 roleDefender.run(creep);
                 break;
             case ROLE_HARVESTER:
-                roleHarvester.run(creep, hasLooseEnergy);
+                roleHarvester.run(creep, energyList, hasLooseEnergy);
                 break;
             case ARMY_HEALER:
                 roleHealer.run(creep);
@@ -171,7 +170,7 @@ function runCreeps(creepList, buildList, repairList, hasLooseEnergy) {
                 roleLonghaul.run(creep);
                 break;
             case ROLE_GOFER:
-                roleGofer.run(creep);
+                roleGofer.run(creep, energyList);
                 break;
             case ROLE_STORAGEBUDDY:
                 roleStorageBud.run(creep);
