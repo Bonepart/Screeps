@@ -35,6 +35,7 @@ let roleMaintenance = {
                     return;
                 }
                 if (repairTarget.hits == repairTarget.hitsMax) { setRepairID(creep, pendingRepairs) }
+                repairTarget = Game.getObjectById(creep.memory.repairID);
                 if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
