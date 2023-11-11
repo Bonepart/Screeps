@@ -58,16 +58,14 @@ function healWounded(thisTower, woundedList){
 
 /** @param {StructureTower} thisTower **/
 function repairStructures (thisTower) {
-    let containerRepairs = thisTower.pos.findInRange(FIND_STRUCTURES, 15, { 
-        filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER}});
-    let pendingRepairs = containerRepairs.concat(_.sortBy(thisTower.pos.findInRange(FIND_STRUCTURES, 15, { 
-        filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_ROAD}}), (struct) => struct.hits));
+    let pendingRepairs = _.sortBy(thisTower.pos.findInRange(FIND_STRUCTURES, 15, { 
+        filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_ROAD}}), (struct) => struct.hits);
 
     if (pendingRepairs.length == 0) { return false }
     let result = thisTower.repair(pendingRepairs[0]);
     switch (result){
         case OK:
-            //console.log(`Tower ${thisTower.id} repaired ${pendingRepairs[0].id} (${pendingRepairs[0].hits}/${pendingRepairs[0].hitsMax})`);
+            console.log(`Tower ${thisTower.id} repaired ${pendingRepairs[0].id} (${pendingRepairs[0].hits}/${pendingRepairs[0].hitsMax})`);
             return true;
         case ERR_NOT_ENOUGH_ENERGY:
             console.log(`Tower ${thisTower.id} does not have enough energy to do repairs`);
