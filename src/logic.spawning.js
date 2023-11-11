@@ -61,6 +61,17 @@ let spawningLogic = {
         }
         if (result == OK) {
             switch (optionsObject.task){
+                case TASK_STORE_MINERALS:
+                    spawner.spawnCreep(body, newName, { memory: {
+                        role: ROLE_GOFER, 
+                        tier: creepTier + 1, 
+                        assignedRoom: optionsObject.assignedRoom,
+                        task: optionsObject.task,
+                        containerID: optionsObject.containerID,
+                        storageID: optionsObject.storageID,
+                        mineralType: optionsObject.mineralType
+                    }});
+                    break;
                 case TASK_TOWER_SUPPLY:
                     spawner.spawnCreep(body, newName, { memory: {
                         role: ROLE_GOFER, 

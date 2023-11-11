@@ -24,9 +24,15 @@ let roleGofer = {
             case TASK_IMPORTER:
                 containerImporter(creep);
                 break;
+            case TASK_STORE_MINERALS:
+                storeMinerals(creep);
+                break;
             case TASK_TOWER_SUPPLY:
                 towerSupply(creep);
                 break;
+            default:
+                console.log(`${creep.name} run Error: unhandled task ${creep.memory.task}`);
+                return;
         }
     } 
 }
@@ -82,6 +88,32 @@ function containerImporter(creep){
 }
 
 /** @param {Creep} creep **/
+function storeMinerals(creep){
+    if(creep.memory.collecting) {
+        let mineralContainer = Game.getObjectById(creep.memory.containerID);
+        if (mineralContainer == null) {
+            console.log(`${TASK_STORE_MINERALS} ${creep.name} can not find container with minerals`);
+            creep.memory.role = ZOMBIE;
+            return;
+        }
+        if(creep.withdraw(mineralContainer, creep.memory.mineralType) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(mineralContainer, {visualizePathStyle: {stroke: '#ffffff'}});
+        }
+    }
+    else {
+        let myStorage = Game.getObjectById(creep.memory.storageID);
+        if (myStorage == null) {
+            console.log(`${TASK_STORE_MINERALS} ${creep.name} can not find storage`);
+            creep.memory.role = ZOMBIE;
+            return;
+        }
+        if(creep.transfer(myStorage, creep.memory.mineralType) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(myStorage, {visualizePathStyle: {stroke: '#ffffff'}});
+        }
+    }
+}
+
+/** @param {Creep} creep **/
 function towerSupply(creep){
     if(creep.memory.collecting) {
         let myStorage = Game.getObjectById(creep.memory.storageID);
@@ -90,8 +122,10 @@ function towerSupply(creep){
             creep.memory.role = ZOMBIE;
             return;
         }
-        if(creep.withdraw(myStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(myStorage, {visualizePathStyle: {stroke: '#ffffff'}});
+        if (myStorage.store.getUsedCapacity(RESOURCE_ENERGY) >= 100000){
+            if(creep.withdraw(myStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(myStorage, {visualizePathStyle: {stroke: '#ffffff'}});
+            }
         }
     }
     else {

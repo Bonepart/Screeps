@@ -13,7 +13,6 @@ let processCreeps = {
         let harvesterList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER && creep.memory.assignedRoom == i);
         let upgraderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER && creep.memory.assignedRoom == i);
         let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == i);
-        let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == i);
         let storageBuddyList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_STORAGEBUDDY && creep.memory.assignedRoom == i);
         
         let defenderList = 0;
@@ -70,11 +69,6 @@ let processCreeps = {
                     body = bodytype.upgrader[creepTier]
                     if (spawnLogic.spawnCreep(spawnIndex, ROLE_UPGRADER, body, creepTier, i)) { return }
                 }
-                else if (goferList.length < Memory.roles.limit[ROLE_GOFER]){
-                    if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
-                    body = bodytype.gofer[creepTier]
-                    if (spawnLogic.spawnCreep(spawnIndex, ROLE_GOFER, body, creepTier, i)) { return }
-                }
                 else if (storageBuddyList.length == 0){
                     let energyStorage = Game.rooms[i].find(FIND_STRUCTURES, {
                         filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }}).length;
@@ -119,9 +113,20 @@ function checkGofers(spawnIndex, creepTier) {
         if (myExtractor.length > 0){
             let mineral = thisRoom.find(FIND_MINERALS)[0];
             let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == TASK_STORE_MINERALS);
+            if (goferList.length < 1){
+                let depositContainer = mineral.pos.findInRange(FIND_STRUCTURES, 10, {filter: (structure) => { return structure.structureType == STRUCTURE_CONTAINER}});
+                if (depositContainer.length > 0){
+                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, { 
+                        assignedRoom: thisRoom.name, 
+                        task: TASK_STORE_MINERALS, 
+                        containerID: depositContainer[0].id,
+                        storageID: roomStorage[0].id,
+                        mineralType: mineral.mineralType
+                    })) { return }
+                }
+            }
         }
     }
-
     if (thisRoom.memory.importContainerID) {
         let container = Game.getObjectById(thisRoom.memory.importContainerID);
         if (container != null && container.structureType == STRUCTURE_CONTAINER) {
@@ -130,7 +135,7 @@ function checkGofers(spawnIndex, creepTier) {
     }
     if (roomStorage.length > 0 && roomTowers.length > 0){
         let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == TASK_TOWER_SUPPLY);
-        if (goferList.length < roomTowers.length && roomStorage[0].store.getUsedCapacity(RESOURCE_ENERGY) >= 10000){
+        if (goferList.length < roomTowers.length && roomStorage[0].store.getUsedCapacity(RESOURCE_ENERGY) >= 100000){
             for (let tower of roomTowers){
                 let hasGofer = false;
                 for (let gofer of goferList){ if (gofer.memory.towerID == tower.id) { hasGofer = true; break } }
