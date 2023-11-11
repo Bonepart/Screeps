@@ -5,7 +5,7 @@ let helper = require('helper');
 let roleGofer = {
 
     /** @param {Creep} creep **/
-    run: function(creep){
+    run: function(creep, energyList){
         if (creep.memory.assignedRoom) {
             if (creep.room.name != creep.memory.assignedRoom) {
                 common.moveToAssignedRoom(creep);
