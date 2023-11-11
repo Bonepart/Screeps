@@ -32,3 +32,7 @@ global.ROOM_NEUTRAL = 0;
 global.ROOM_RESERVED = 1;
 global.ROOM_OWNED = 2;
 global.ROOM_OWNED_SAFE = 3;
+
+//Gofer Tasks
+global.TASK_TOWERSUPPLY = 'TowerSupply';
+global.TASK_IMPORTER = 'Importer';
