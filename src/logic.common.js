@@ -3,6 +3,33 @@ let helper = require('helper');
 
 let commonLogic = {
 
+    getEnergyConsumerList: function*(roomName, creepList) {
+        let searchRoom = Game.rooms[roomName];
+        let excludeList = buildEnergyExcludeList(creepList);
+        let findResults = searchRoom.find(FIND_MY_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_SPAWN) && 
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+            }
+        });
+        findResults = findResults.concat(searchRoom.find(FIND_MY_STRUCTURES, {
+            filter: (structure) => { return structure.structureType == STRUCTURE_TOWER  &&
+                                            structure.store.getUsedCapacity(RESOURCE_ENERGY) < 700}
+            }
+        ));
+        findResults = findResults.concat(searchRoom.find(FIND_MY_STRUCTURES, {
+            filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE  &&
+                                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}
+            }
+        ));
+        for (let result of findResults){
+            if (excludeList.includes(result.id)) { continue }
+            yield result;
+        }
+        return;
+    },
+
     getRepairList: function*(roomName, creepList) {
         let excludeList = buildRepairExcludeList(creepList);
         let containerRepairs = Game.rooms[roomName].find(FIND_STRUCTURES, { 
@@ -71,6 +98,23 @@ function buildRepairExcludeList(creepList){
     for (let creep of creepList){
         if (creep.memory.role == ROLE_MAINTENANCE && creep.memory.repairID != undefined){
             excludeList.push(creep.memory.repairID);
+        }
+    }
+    return excludeList;
+}
+
+function buildEnergyExcludeList(creepList){
+    let excludeList = [];
+    for (let creep of creepList){
+        if (creep.memory.role == ROLE_HARVESTER && creep.memory.targetID != undefined){
+            excludeList.push(creep.memory.targetID);
+        }
+        else if (creep.memory.role == ROLE_GOFER){
+            switch(creep.memory.function){
+                case 'ContainerImporter':
+                    if (creep.memory.targetID != undefined){ excludeList.push(creep.memory.targetID) }
+                    break;
+            }
         }
     }
     return excludeList;
