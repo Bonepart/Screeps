@@ -66,6 +66,6 @@ function setRepairID(creep, pendingRepairs){
     let nextRepair = pendingRepairs.next();
     if (!nextRepair.done) { 
         creep.memory.repairID = nextRepair.value.id;
-        console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_MAINTENANCE.length + 3)} repairing ${nextRepair.value.id}`);
+        //console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_MAINTENANCE.length + 3)} repairing ${nextRepair.value.id}`);
     }
 }
