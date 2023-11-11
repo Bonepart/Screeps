@@ -12,7 +12,7 @@ const roleDefinitions = [
     [ARMY_HEALER, -1],
 
     [ROLE_LONGHAUL, 0],
-    [ROLE_GOFER, 0],
+    [ROLE_GOFER, -1],
     [ROLE_STORAGEBUDDY, -1],
     [ROLE_CLAIMER, -1],
     [ROLE_SENTRY, -1]
