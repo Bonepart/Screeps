@@ -106,8 +106,8 @@ function buildRepairExcludeList(creepList){
 function buildEnergyExcludeList(creepList){
     let excludeList = [];
     for (let creep of creepList){
-        if (creep.memory.role == ROLE_HARVESTER && creep.memory.targetID != undefined){
-            excludeList.push(creep.memory.targetID);
+        if (creep.memory.role == ROLE_HARVESTER && creep.memory.depositID != undefined){
+            excludeList.push(creep.memory.depositID);
         }
         else if (creep.memory.role == ROLE_GOFER){
             switch(creep.memory.function){
