@@ -1,4 +1,4 @@
-let pathing = require('pathing');
+let pathing = require('logic.pathing');
 let helper = require('helper');
 
 let commonLogic = {

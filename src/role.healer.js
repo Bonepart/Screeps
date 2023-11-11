@@ -1,6 +1,6 @@
 let processRenewal = require('process.renewal');
 let helper = require('helper');
-let pathing = require('pathing');
+let pathing = require('logic.pathing');
 
 let roleHealer = {
 

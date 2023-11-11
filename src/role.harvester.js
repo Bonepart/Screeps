@@ -1,5 +1,5 @@
 let processRenewal = require('process.renewal');
-let pathing = require('pathing');
+let pathing = require('logic.pathing');
 let common = require('logic.common');
 let helper = require('helper');
 
