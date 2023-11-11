@@ -61,7 +61,7 @@ let spawningLogic = {
         }
         if (result == OK) {
             switch (optionsObject.task){
-                case TASK_TOWERSUPPLY:
+                case TASK_TOWER_SUPPLY:
                     spawner.spawnCreep(body, newName, { memory: {
                         role: ROLE_GOFER, 
                         tier: creepTier + 1, 

@@ -114,6 +114,14 @@ function checkGofers(spawnIndex, creepTier) {
     let roomStorage = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE}});
     let roomTowers = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_TOWER}});
 
+    if (thisRoom.controller.level >= 6){
+        let myExtractor = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_EXTRACTOR}});
+        if (myExtractor.length > 0){
+            let mineral = thisRoom.find(FIND_MINERALS)[0];
+            let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == TASK_STORE_MINERALS);
+        }
+    }
+
     if (thisRoom.memory.importContainerID) {
         let container = Game.getObjectById(thisRoom.memory.importContainerID);
         if (container != null && container.structureType == STRUCTURE_CONTAINER) {
@@ -121,15 +129,16 @@ function checkGofers(spawnIndex, creepTier) {
         }
     }
     if (roomStorage.length > 0 && roomTowers.length > 0){
-        let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == 'TowerSupply');
+        let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == TASK_TOWER_SUPPLY);
         if (goferList.length < roomTowers.length && roomStorage[0].store.getUsedCapacity(RESOURCE_ENERGY) >= 10000){
             for (let tower of roomTowers){
                 let hasGofer = false;
                 for (let gofer of goferList){ if (gofer.memory.towerID == tower.id) { hasGofer = true; break } }
                 if (!hasGofer){
-                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, { assignedRoom: thisRoom.name, task: TASK_TOWERSUPPLY, towerID: tower.id, storageID: roomStorage[0].id })) { return }
+                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, { assignedRoom: thisRoom.name, task: TASK_TOWER_SUPPLY, towerID: tower.id, storageID: roomStorage[0].id })) { return }
                 }
             }
         }
     }
+
 }

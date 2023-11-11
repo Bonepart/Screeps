@@ -24,7 +24,7 @@ let roleGofer = {
             case TASK_IMPORTER:
                 containerImporter(creep);
                 break;
-            case TASK_TOWERSUPPLY:
+            case TASK_TOWER_SUPPLY:
                 towerSupply(creep);
                 break;
         }
@@ -86,7 +86,7 @@ function towerSupply(creep){
     if(creep.memory.collecting) {
         let myStorage = Game.getObjectById(creep.memory.storageID);
         if (myStorage == null) {
-            console.log(`${TASK_TOWERSUPPLY} ${creep.name} can not find storage`);
+            console.log(`${TASK_TOWER_SUPPLY} ${creep.name} can not find storage`);
             creep.memory.role = ZOMBIE;
             return;
         }
@@ -97,7 +97,7 @@ function towerSupply(creep){
     else {
         let myTower = Game.getObjectById(creep.memory.towerID);
         if (myTower == null) {
-            console.log(`${TASK_TOWERSUPPLY} ${creep.name} can not find tower`);
+            console.log(`${TASK_TOWER_SUPPLY} ${creep.name} can not find tower`);
             creep.memory.role = ZOMBIE;
             return;
         }
