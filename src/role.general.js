@@ -121,7 +121,7 @@ let roleGeneral = {
                         let result = creep.attack(target);
                         switch(result){
                             case OK:
-                                console.log(`${creep.name} attacked ${target.id}! (${target.hits}/${target.hitsMax})`);
+                                //console.log(`${creep.name} attacked ${target.id}! (${target.hits}/${target.hitsMax})`);
                                 continue;
                             case ERR_NOT_IN_RANGE:
                                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
@@ -140,7 +140,10 @@ let roleGeneral = {
                 creep.moveTo(roomPos, {visualizePathStyle: {stroke: '#ff0000'}});
             }
             if (Memory.flags.crusade.roomName != undefined) {
-                if (Memory.flags.crusade.roomName == roomPos.roomName) { Memory.flags.crusade = {} }
+                if (Memory.flags.crusade.roomName == roomPos.roomName) { 
+                    Memory.flags.crusade = {};
+                    console.log('No hotiles found. Crusade complete!');
+                }
             }
         }
     },
