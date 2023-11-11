@@ -20,15 +20,19 @@ let roleGofer = {
             creep.memory.collecting = true;
         }
 
-        switch(creep.memory.function){
-            case 'ContainerImporter':
+        switch(creep.memory.task){
+            case TASK_IMPORTER:
                 containerImporter(creep);
+                break;
+            case TASK_TOWERSUPPLY:
+                towerSupply(creep);
                 break;
         }
     } 
 }
 module.exports = roleGofer;
 
+/** @param {Creep} creep **/
 function containerImporter(creep){
     if (creep.room.memory.importContainerID == undefined) { creep.memory.role = ZOMBIE; return; }
     if(creep.memory.collecting) {
@@ -73,6 +77,32 @@ function containerImporter(creep){
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
+        }
+    }
+}
+
+/** @param {Creep} creep **/
+function towerSupply(creep){
+    if(creep.memory.collecting) {
+        let myStorage = Game.getObjectById(creep.memory.storageID);
+        if (myStorage == null) {
+            console.log(`${TASK_TOWERSUPPLY} ${creep.name} can not find storage`);
+            creep.memory.role = ZOMBIE;
+            return;
+        }
+        if(creep.withdraw(myStorage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(myStorage, {visualizePathStyle: {stroke: '#ffffff'}});
+        }
+    }
+    else {
+        let myTower = Game.getObjectById(creep.memory.towerID);
+        if (myTower == null) {
+            console.log(`${TASK_TOWERSUPPLY} ${creep.name} can not find tower`);
+            creep.memory.role = ZOMBIE;
+            return;
+        }
+        if(creep.transfer(myTower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(myTower, {visualizePathStyle: {stroke: '#ffffff'}});
         }
     }
 }

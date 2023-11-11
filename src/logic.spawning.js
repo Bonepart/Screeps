@@ -45,6 +45,42 @@ let spawningLogic = {
         }        
     },
 
+    spawnGofer: function (spawnIndex, creepTier, optionsObject) {
+        let spawner = Game.spawns[spawnIndex];
+        let newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
+
+        let body = undefined;
+        if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
+        body = bodytype.gofer[creepTier]
+
+        let result = spawner.spawnCreep(body, newName, { dryRun: true});
+        while (result === -3){
+            Memory.roles.index[ROLE_GOFER]++;
+            newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
+            result = spawner.spawnCreep(body, newName, { dryRun: true});
+        }
+        if (result == OK) {
+            switch (optionsObject.task){
+                case TASK_TOWERSUPPLY:
+                    spawner.spawnCreep(body, newName, { memory: {
+                        role: ROLE_GOFER, 
+                        tier: creepTier + 1, 
+                        assignedRoom: optionsObject.assignedRoom,
+                        task: optionsObject.task,
+                        towerID: optionsObject.towerID,
+                        storageID: optionsObject.storageID
+                    }});
+                    break;
+                default:
+                    console.log(`${spawner.name} ERROR: spawnGofer unhandled task ${optionsObject.task}`);
+                    return false;
+            }
+            Memory.roles.index[ROLE_GOFER]++;
+            console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName} assigned to ${optionsObject.assignedRoom} for task ${optionsObject.task}`);
+            return true;
+        } else { logSpawnResults(spawnIndex, result, newName); return false }
+    },
+
     spawnSentry: function (spawnIndex) {
         let spawner = Game.spawns[spawnIndex];
         let role = ROLE_SENTRY;

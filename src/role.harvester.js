@@ -49,7 +49,7 @@ function setDepositID(creep, energyList){
     let nextBucket = energyList.next();
     if (!nextBucket.done) { 
         creep.memory.depositID = nextBucket.value.id;
-        console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_HARVESTER.length + 3)} depositing in ${nextBucket.value.id}`);
+        //console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_HARVESTER.length + 3)} depositing in ${nextBucket.value.id}`);
     }
 }
 

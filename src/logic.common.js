@@ -114,7 +114,7 @@ function buildEnergyExcludeList(creepList){
             excludeList.push(creep.memory.depositID);
         }
         else if (creep.memory.role == ROLE_GOFER){
-            switch(creep.memory.function){
+            switch(creep.memory.task){
                 case 'ContainerImporter':
                     if (creep.memory.targetID != undefined){ excludeList.push(creep.memory.targetID) }
                     break;
