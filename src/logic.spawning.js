@@ -121,6 +121,10 @@ let spawningLogic = {
     spawnViking: function (vikingCount) {
         body = bodytype.viking[2];
         for (let i in Game.spawns){
+            let creepTier = Memory.rooms[Game.spawns[i].room.name].spawnTier - 1;
+            if (creepTier < 2) { continue }
+            if (creepTier >= bodytype.viking.length) { creepTier = bodytype.viking.length - 1}
+            body = bodytype.viking[creepTier]
             newName = ARMY_VIKING + Memory.roles.index[ARMY_VIKING];
             if (vikingCount >= Memory.roles.limit[ARMY_VIKING]) { return }
             if (!helper.isAvailable(i)) { continue }
@@ -131,7 +135,7 @@ let spawningLogic = {
                 result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
             }
             if (result == OK) {
-                Game.spawns[i].spawnCreep(body, newName, { memory: {role: ARMY_VIKING, originRoom: Game.spawns[i].room.name}});
+                Game.spawns[i].spawnCreep(body, newName, { memory: { role: ARMY_VIKING, tier: creepTier + 1 }});
                 Memory.roles.index[ARMY_VIKING]++;
                 vikingCount++;
                 console.log(`${i}: Spawning ${newName}`);
