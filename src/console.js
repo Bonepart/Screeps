@@ -86,13 +86,33 @@ let consoleCommands = {
         return 'Complete';
     },
 
-    setImportContainer: function(roomName, containerID) {
-        let thisRoom = Game.rooms[roomName];
-		if (thisRoom == undefined) { return `Error: ${roomName} is an invalid room` }
-        let container = Game.getObjectById(containerID);
-        if (container.structureType != STRUCTURE_CONTAINER && container.structureType != STRUCTURE_LINK) { return `Error: ${containerID} is not a valid Import Target`};
-        thisRoom.memory.importContainerID = containerID;
-        return 'Comeplete';
+    setImportContainer: function(action, containerID=null) {
+        switch(action){
+            case 'add':
+                let container = Game.getObjectById(containerID);
+                if (container == null) { return `Error: ${containerID} is not a valid Object`}
+                if (container.structureType != STRUCTURE_CONTAINER && container.structureType != STRUCTURE_LINK) { return `Error: ${containerID} is not a valid Import Target`};
+                if (Memory.importContainers == undefined) { Memory.importContainers = [] }
+                if (!Memory.importContainers.includes(containerID)) { Memory.importContainers.push(containerID) }
+                return `Added ${containerID} to Import Container List`;
+            case 'del':
+                if (Memory.importContainers === undefined){ return `Error: Nothing in Import Container List` }
+                for (let i in Memory.importContainers){
+                    if (containerID == Memory.importContainers[i]){
+                        Memory.importContainers.splice(i, 1);
+                        return `Removed ${containerID} from Import Container List`;
+                    }
+                }
+                return `${containerID} not found`;
+            case 'list':
+                console.log(`Import Containers: ${Memory.importContainers.length}`);
+                for (let i in Memory.importContainers){
+                    console.log(`${i}: ${Memory.importContainers[i]}`);
+                }
+                return 'Complete';
+            default:
+                return `Error: Invalid action (${action})`;
+        }
     },
 
     setCrusade: function(x=undefined, y=undefined, roomName=undefined){
