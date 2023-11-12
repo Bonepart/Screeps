@@ -28,12 +28,12 @@ let roleStorageBuddy = {
 
         if (creep.store.getUsedCapacity() > 0) {
             for (let resource in creep.store){
-                let result = creep.transfer(myStorage[0], resource);
+                let result = creep.transfer(myStorage, resource);
                 switch(result){
                     case OK:
                         break;
                     case ERR_NOT_IN_RANGE:
-                        creep.moveTo(myStorage[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                        creep.moveTo(myStorage, {visualizePathStyle: {stroke: '#ffffff'}});
                         break;
                     default:
                         console.log(`${creep.name} storage transfer result: ${result}`);

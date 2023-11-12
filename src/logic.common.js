@@ -71,8 +71,7 @@ let commonLogic = {
 
     /** @param {Creep} creep **/
     getLooseEnergy: function(creep) {
-        if (!roomName || Game.rooms[roomName] == undefined) { roomName = creep.room.name }
-        let searchTarget = creep.pos.findClosestByRange(Game.rooms[roomName].find(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}}));
+        let searchTarget = creep.pos.findClosestByRange(creep.room.find(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}}));
         if (searchTarget) {
             if(creep.pickup(searchTarget) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
