@@ -105,15 +105,17 @@ let commonLogic = {
         }
         searchTarget = pathing.findClosestRuinX(creep);
         if (searchTarget){
-            let result = creep.withdraw(searchTarget, searchTarget.store[-1]);
-            switch (result){
-                case ERR_NOT_IN_RANGE:
-                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
-                case OK:
-                    return true;
-                default:
-                    console.log(`${creep.name} withdraw ${searchTarget.store[-1]} from ${searchTarget.id} failed (${result})`);
-                    return false;
+            for (let resource of searchTarget.store){
+                let result = creep.withdraw(searchTarget, searchTarget.store[resource]);
+                switch (result){
+                    case ERR_NOT_IN_RANGE:
+                        creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+                    case OK:
+                        return true;
+                    default:
+                        console.log(`${creep.name} withdraw ${searchTarget.store[resource]} from ${searchTarget.id} failed (${result})`);
+                        return false;
+                }
             }
         }
         return false;

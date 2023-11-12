@@ -33,10 +33,10 @@ let roleLonghaul = {
             if(depositTarget) {
                 let result = creep.transfer(depositTarget, RESOURCE_ENERGY);
                 switch(result){
-                    case OK:
-                        break;
                     case ERR_NOT_IN_RANGE:
                         creep.moveTo(depositTarget, {visualizePathStyle: {stroke: '#ffffff'}});
+                    case OK:
+                    case ERR_FULL:
                         break;
                     default:
                         console.log(`${creep.name} transfer result: ${result}`);

@@ -17,10 +17,18 @@ let processExploration = {
         for (let i in Memory.rooms[roomName].exits){
             let checkName = Memory.rooms[roomName].exits[i];
             if (Memory.rooms[checkName] == undefined) { continue }
-            if (Memory.rooms[checkName].roomState == ROOM_NEUTRAL || Memory.rooms[checkName].roomState == ROOM_RESERVED){
+            if (Memory.rooms[checkName].roomState == ROOM_NEUTRAL){
                 if ((Memory.rooms[checkName].missionaryID != null && 
                         Game.creeps[Memory.rooms[checkName].missionaryID] == undefined) || 
                         Memory.rooms[checkName].missionaryID === null) { 
+                    let missionaryName = spawnLogic.spawnExCreep(ROLE_CLAIMER, checkName);
+                    if (missionaryName != null) {Memory.rooms[checkName].missionaryID = missionaryName}
+                }
+            }
+            else if (Memory.rooms[checkName].roomState == ROOM_RESERVED){
+                if (Memory.rooms[checkName].missionaryID != null && Game.creeps[Memory.rooms[checkName].missionaryID] == undefined) {Memory.rooms[checkName].missionaryID == null}
+                if (Game.rooms[checkName].controller.reservation.ticksToEnd >= 3000) { continue }
+                if (Memory.rooms[checkName].missionaryID === null) { 
                     let missionaryName = spawnLogic.spawnExCreep(ROLE_CLAIMER, checkName);
                     if (missionaryName != null) {Memory.rooms[checkName].missionaryID = missionaryName}
                 }
