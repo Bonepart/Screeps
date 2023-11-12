@@ -61,7 +61,7 @@ let consoleCommands = {
         return `${role} limit = ${Memory.roles.limit[role]}`;
     },
 
-    buildRoad: function(flagStart, flagEnd, deleteFlags=false){
+    buildRoad: function(flagStart='Flag1', flagEnd='Flag2', deleteFlags=true){
         let returnValue = construction.buildRoad(Game.flags[flagStart].pos, Game.flags[flagEnd].pos);
         if (deleteFlags){
             Game.flags[flagStart].remove();
