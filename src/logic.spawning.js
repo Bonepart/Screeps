@@ -8,7 +8,7 @@ let spawningLogic = {
         let newName = role + Memory.roles.index[role];
     
         let result = spawner.spawnCreep(body, newName, { dryRun: true});
-        while (result === -3){
+        while (result == ERR_NAME_EXISTS){
             Memory.roles.index[role]++;
             newName = role + Memory.roles.index[role];
             result = spawner.spawnCreep(body, newName, { dryRun: true});
