@@ -237,8 +237,8 @@ function monitorBucket(){
     if(Game.time % 100 == 0){
         if (Memory.flags.bucket == undefined) { Memory.flags.bucket = Game.cpu.bucket }
         if (Game.cpu.bucket < Memory.flags.bucket){
-            console.log(`***WARNING*** Bucket is being emptied! (${Game.cpu.bucket})`);
-            Game.notify(`***WARNING*** Bucket is being emptied! (${Game.cpu.bucket})`);
+            console.log(`***WARNING*** Bucket is being emptied! (${Memory.flags.bucket} => ${Game.cpu.bucket})`);
+            Game.notify(`***WARNING*** Bucket is being emptied! (${Memory.flags.bucket} => ${Game.cpu.bucket})`);
         }
         else if (Game.cpu.bucket > Memory.flags.bucket){
             let tickGain = Game.cpu.bucket - Memory.flags.bucket;
