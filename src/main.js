@@ -29,7 +29,6 @@ const spawnLogic = require('logic.spawning');
 const common = require('logic.common');
 const helper = require('helper');
 
-
 config.loadRoles();
 
 module.exports.loop = function () {
