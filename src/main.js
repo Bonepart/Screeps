@@ -16,6 +16,7 @@ const roleStorageBud = require('role.storagebuddy');
 const roleClaimer = require('role.claimer');
 const roleSentry = require('role.sentry');
 
+const terminalLogic = require('structure.terminal');
 const towerLogic = require('structure.tower');
 const linkLogic = require('structure.link');
 const bodytype = require('constants.bodytype');
@@ -84,6 +85,9 @@ module.exports.loop = function () {
                 });
                 for (let structure of structuresToRun){
                     switch (structure.structureType){
+                        case STRUCTURE_TERMINAL:
+                            terminalLogic.run(structure);
+                            break;
                         case STRUCTURE_TOWER:
                             towerLogic.run(structure);
                             break;
