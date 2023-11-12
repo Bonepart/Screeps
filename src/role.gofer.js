@@ -5,13 +5,6 @@ let roleGofer = {
 
     /** @param {Creep} creep **/
     run: function(creep, energyList){
-        if (creep.memory.assignedRoom) {
-            if (creep.room.name != creep.memory.assignedRoom) {
-                common.moveToAssignedRoom(creep);
-                return;
-            }
-        }
-
         if(creep.memory.collecting && creep.store.getFreeCapacity() === 0) {
             creep.memory.collecting = false;
         }
@@ -28,6 +21,9 @@ let roleGofer = {
                 break;
             case TASK_TOWER_SUPPLY:
                 towerSupply(creep);
+                break;
+            case TASK_TERMINAL_GOFER:
+                terminalGofer(creep);
                 break;
             default:
                 console.log(`${creep.name} run Error: unhandled task ${creep.memory.task}`);
@@ -141,6 +137,61 @@ function towerSupply(creep){
         }
         if(creep.transfer(myTower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(myTower, {visualizePathStyle: {stroke: '#ffffff'}});
+        }
+    }
+}
+
+/** @param {Creep} creep **/
+function terminalGofer(creep){
+    if (creep.memory.collecting){
+        if (creep.memory.moveTarget){
+            let targetStorage = Game.getObjectById(creep.memory.moveTarget);
+            let result = creep.moveTo(targetStorage, { visualizePathStyle: {stroke: '#ffffff'}});
+            switch(result){
+                case OK:
+                    break;
+                default:
+                    console.log(`${creep.name} move result: ${result}`);
+            }
+            if (creep.room.name == targetStorage.room.name && creep.pos.getRangeTo(targetStorage) < 2){ creep.memory.moveTarget = null }
+        }
+        else {
+            for (let i in Game.rooms){
+                if (Game.rooms[i].memory.roomState >= ROOM_OWNED){
+                    let roomStorage = Game.rooms[i].find(FIND_MY_STRUCTURES, {filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }});
+                    if (roomStorage.length > 0){
+                        for (let resource in roomStorage[0].store){
+                            if (resource == RESOURCE_OXYGEN || resource == RESOURCE_HYDROGEN || resource == RESOURCE_ENERGY) { continue }
+                            if (creep.room.name != roomStorage[0].room.name) { creep.memory.moveTarget = roomStorage[0].id; return }
+                            let result = creep.withdraw(roomStorage[0], resource);
+                            console.log(`${creep.name} resource = ${resource}, result = ${result}`);
+                            switch(result){
+                                case ERR_NOT_IN_RANGE:
+                                    console.log(creep.moveTo(roomStorage[0], {reusePath: 0, visualizePathStyle: {stroke: '#ffffff'}}));
+                                case OK:
+                                    return;
+                                default:
+                                    console.log(`${creep.name} storage transfer result: ${result}`);
+                            }
+                        }
+                    }
+                }
+            }
+            creep.memory.collecting = false;
+        }
+    }
+    else {
+        let myTerminal = Game.getObjectById(creep.memory.terminalID);
+        for (let resource in creep.store){
+            let result = creep.transfer(myTerminal, resource);
+            switch(result){
+                case ERR_NOT_IN_RANGE:
+                    creep.moveTo(myTerminal, {visualizePathStyle: {stroke: '#ffffff'}});
+                case OK:
+                    return
+                default:
+                    console.log(`${creep.name} terminal transfer result: ${result}`);
+            }
         }
     }
 }

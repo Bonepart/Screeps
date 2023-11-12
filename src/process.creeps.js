@@ -119,6 +119,7 @@ function checkGofers(spawnIndex, creepTier) {
     let thisRoom = Game.rooms[thisSpawn.room.name];
     let roomStorage = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE}});
     let roomTowers = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_TOWER}});
+    let roomTerminal = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_TERMINAL}});
 
     if (thisRoom.controller.level >= 6){
         let myExtractor = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_EXTRACTOR}});
@@ -155,6 +156,13 @@ function checkGofers(spawnIndex, creepTier) {
                     if (spawnLogic.spawnGofer(spawnIndex, creepTier, { assignedRoom: thisRoom.name, task: TASK_TOWER_SUPPLY, towerID: tower.id, storageID: roomStorage[0].id })) { return }
                 }
             }
+        }
+    }
+    if (roomTerminal.length > 0){
+        let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == TASK_TERMINAL_GOFER);
+        if (goferList.length == 0){
+            let memoryObject = { assignedRoom: thisRoom.name, task: TASK_TERMINAL_GOFER, terminalID: roomTerminal[0].id };
+            if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
         }
     }
 
