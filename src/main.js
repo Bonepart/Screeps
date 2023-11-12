@@ -89,6 +89,9 @@ module.exports.loop = function () {
                     }
                 }
                 break;
+            case ROOM_HOSTILE_RESERVED:
+                processDefense.scanForHostiles(roomName);
+                break;
             case ROOM_HOSTILE_SAFE: 
             case ROOM_HOSTILE:
                 if (thisRoom.memory.sentryID !== 'NA') { thisRoom.memory.sentryID = 'NA' }
