@@ -104,7 +104,8 @@ let processCreeps = {
                     let creepTier = spawner.room.memory.spawnTier - 1;
                     if (creepTier >= bodytype.maintenance.length) { creepTier = bodytype.maintenance.length - 1}
                     let body = bodytype.maintenance[creepTier]
-                    if (spawnLogic.spawnCreep(i, ROLE_MAINTENANCE, body, creepTier, roomName)) { return }
+                    let memoryObject = { role: ROLE_MAINTENANCE, tier: creepTier + 1, assignedRoom: roomName };
+                    if (spawnLogic.spawnCreep(i, ROLE_MAINTENANCE, body, memoryObject)) { return }
                 }
 
             }
