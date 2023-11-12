@@ -3,7 +3,7 @@ let helper = require('helper');
 
 let spawningLogic = {
 
-    spawnCreep: function (spawnIndex, role, body, creepTier, assignRoom = undefined) {
+    spawnCreep: function (spawnIndex, role, body, memoryObject) {
         let spawner = Game.spawns[spawnIndex];
         let newName = role + Memory.roles.index[role];
     
@@ -14,11 +14,9 @@ let spawningLogic = {
             result = spawner.spawnCreep(body, newName, { dryRun: true});
         }
         if (result == OK) {
-            if (creepTier == -1){ spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: assignRoom}}) }
-            else { spawner.spawnCreep(body, newName, { memory: {role: role, tier: creepTier + 1, assignedRoom: assignRoom}}) }
+            spawner.spawnCreep(body, newName, { memory: memoryObject});
             Memory.roles.index[role]++;
-            if (assignRoom) { console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName} assigned to ${assignRoom}`);}
-            else { console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName}`) }
+            console.log(`${spawnIndex}: Spawning T${memoryObject.tier} ${newName} assigned to ${memoryObject.assignedRoom}`);
             return true;
         } else { logSpawnResults(spawnIndex, result, newName); return false }
     },
