@@ -34,7 +34,7 @@ let spawningLogic = {
                 result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
             }
             if (result == OK) {
-                result = Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName, originRoom: Game.spawns[i].room.name}});
+                result = Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName}});
                 if (result != OK) {
                     console.log(`${i}: Error, dry run said OK, real spawn failed: ${result}`);
                 }
