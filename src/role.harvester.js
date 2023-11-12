@@ -26,9 +26,24 @@ let roleHarvester = {
             if(processRenewal.renew(creep)){ return };
 
             if (hasLooseEnergy && common.getLooseEnergy(creep)) { return }
-            let searchTarget = pathing.findClosestSource(creep.pos);
-            if(creep.harvest(searchTarget) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+            if (creep.memory.sourceID != undefined) {
+                let source = Game.getObjectById(creep.memory.sourceID);
+                let result = creep.harvest(source);
+                switch(result){
+                    case ERR_NOT_IN_RANGE:
+                        creep.moveTo(source, {visualizePathStyle: {stroke: '#ffffff'}});
+                    case OK:
+                    case ERR_NOT_ENOUGH_RESOURCES:
+                        return;
+                    default:
+                        console.log(`${creep.name} harvest result: ${result}`);
+                }
+            }
+            else {
+                let searchTarget = pathing.findClosestSource(creep.pos);
+                if(creep.harvest(searchTarget) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
         }
         else {
