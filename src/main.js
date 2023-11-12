@@ -34,8 +34,7 @@ module.exports.loop = function () {
     Game.c = require('console');
     clearMemory();
     resetIndex();
-    monitorBucket();
-
+    
     let buildList = common.getBuildList();
     for (let roomName in Game.rooms){
         let thisRoom = Game.rooms[roomName];
@@ -46,7 +45,7 @@ module.exports.loop = function () {
         processRooms.checkRoomState(roomName);
         processDefense.checkForKeeperLair(roomName);
 
-        if(Memory.flags.runReport){ helper.runMineralReport(roomName);  Memory.flags.runReport = false }
+        if(Memory.flags.runReport){ helper.runMineralReport(roomName) }
         if(Game.time % 100 == 0){ if (thisRoom.find(FIND_NUKES).length > 0){ Game.notify(`***WARNING NUKE DETECTED IN ${thisRoom.name}***`)} }
 
         switch (thisRoom.memory.roomState){
@@ -136,6 +135,7 @@ module.exports.loop = function () {
         };
     }
     processDefense.checkKillList();
+    monitorBucket();
 };
 
 function runCreeps(roomName, creepList, buildList) {
@@ -237,6 +237,7 @@ function resetIndex(){
 }
 
 function monitorBucket(){
+    if (Memory.flags.runReport) { Memory.flags.runReport = false }
     if(Game.time % 100 == 0){
         if (Memory.flags.bucket == undefined) { Memory.flags.bucket = Game.cpu.bucket }
         if (Game.cpu.bucket < Memory.flags.bucket){

@@ -114,11 +114,8 @@ let helper = {
 
     runMineralReport: function (roomName) {
         let thisRoom = Game.rooms[roomName];
-        if (thisRoom.memory.roomState >= ROOM_OWNED) {console.log(`*** Room ${roomName} OWNED ***`)}
-        else { console.log(`*** Room ${roomName} ***`) }
         let foundObjects = thisRoom.find(FIND_MINERALS);
         if (foundObjects.length > 0){
-            console.log('--Minerals');
             for (let mineral of foundObjects){
                 let density = '';
                 switch (mineral.density){
@@ -135,14 +132,13 @@ let helper = {
                         density = 'Ultra';
                         break;
                 }
-                console.log(`${mineral.mineralType.padEnd(4)}${mineral.mineralAmount.toString().padStart(6)}\t${density}`);
+                console.log(`${roomName}  ${mineral.mineralType.padEnd(4)}${mineral.mineralAmount.toString().padStart(6)}\t${density}`);
             }
         }
         foundObjects = thisRoom.find(FIND_DEPOSITS);
         if (foundObjects.length > 0){
-            console.log('--Deposits');
             for (let deposit of foundObjects){
-                console.log(`${deposit.mineralType}\t${deposit.mineralAmount}\t${deposit.density}`);
+                console.log(`** ${roomName}  ${deposit.depositType}\t${deposit.ticksToDecay} **`);
             }
         }
 
