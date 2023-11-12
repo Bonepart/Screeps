@@ -113,7 +113,7 @@ module.exports.loop = function () {
         if (spawner.room.controller.level >= 6) {
             let minerList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MINER && creep.memory.assignedRoom == roomName);
             let extractorCount = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_EXTRACTOR}}).length;
-            if (minerList.length < extractorCount) { spawnLogic.spawnCreep(i, ROLE_MINER, bodytype.miner[0], -1, roomName)}
+            if (minerList.length < extractorCount && helper.isAvailable(i)) { spawnLogic.spawnCreep(i, ROLE_MINER, bodytype.miner[0], -1, roomName)}
         }
 
         if (helper.isAvailable(i)) { spawnLogic.spawnSentry(i) }
