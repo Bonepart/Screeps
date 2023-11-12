@@ -11,7 +11,7 @@ let roleSentry = {
         let result = creep.moveTo(newRoom, {visualizePathStyle: {stroke: '#ffffff'}});
         switch(result){
             case OK:
-                if (_.isEqual(creep.pos, newRoom)) { creep.memory.EOP = true }
+                if (atDestination(creep.pos, newRoom)) { creep.memory.EOP = true }
                 break;
             case ERR_NO_PATH:
                 if (creep.pos.x == 0) {newRoom.x = 1; newRoom.y = creep.pos.y}
@@ -19,7 +19,7 @@ let roleSentry = {
                 else if (creep.pos.x == 49) {newRoom.x = 48; newRoom.y = creep.pos.y}
                 else if (creep.pos.y == 49) {newRoom.x = creep.pos.x; newRoom.y = 48}
                 creep.moveTo(newRoom, {visualizePathStyle: {stroke: '#ffffff'}});
-                creep.memory.EOP = true;
+                if (atDestination(creep.pos, newRoom)) { creep.memory.EOP = true }
                 break;
             default:
                 console.log(`${creep.name} tried to move, got error ${result}`);
@@ -34,4 +34,8 @@ function scoutRoom(creep){
         creep.room.memory.missionaryID = null;
     }
     creep.memory.scouted = true;
+}
+
+function atDestination(pos, roomPos){
+    return pos.x == roomPos.x && pos.y == roomPos.y && pos.roomName == roomPos.roomName;
 }
