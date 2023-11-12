@@ -1,7 +1,6 @@
-let helper = require('helper');
 let spawnLogic = require('logic.spawning');
 let bodytype = require('constants.bodytype');
-const { ceil } = require("lodash");
+let helper = require('helper');
 
 let processCreeps = {
 
@@ -81,6 +80,28 @@ let processCreeps = {
             checkGofers(spawnIndex, creepTier);
         }
     },
+
+    checkForMaintenance: function (roomName){
+        let thisRoom = Game.rooms[roomName];
+        if (thisRoom == undefined) { return }
+
+        let roadCount = thisRoom.find(FIND_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_ROAD}}).length;
+        if (roadCount > 0){
+            let desiredMaintCreeps = Math.ceil(roadCount / 50);
+            let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == roomName);
+            if (maintList.length < desiredMaintCreeps){
+                for (let i in Game.spawns){
+                    let spawner = Game.spawns[i];
+                    if (!helper.isAvailable(i)) { continue }
+                    let creepTier = spawner.room.memory.spawnTier - 1;
+                    if (creepTier >= bodytype.maintenance.length) { creepTier = bodytype.maintenance.length - 1}
+                    let body = bodytype.maintenance[creepTier]
+                    if (spawnLogic.spawnCreep(i, ROLE_MAINTENANCE, body, creepTier, roomName)) { return }
+                }
+
+            }
+        }
+    }
 };
 module.exports = processCreeps;
 

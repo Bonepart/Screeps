@@ -56,6 +56,7 @@ module.exports.loop = function () {
                 if (thisRoom.memory.sentryID == undefined) { thisRoom.memory.sentryID = null}
                 if(Game.time % 100 == 0) { explorer.checkExits(roomName, true) }
                 else { explorer.checkExits(roomName) }
+                processCreeps.checkForMaintenance(roomName);
                 explorer.assignLongHauls(roomName);
                 processDefense.scanForHostiles(roomName);
                 break;
