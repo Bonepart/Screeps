@@ -51,10 +51,13 @@ exports.storagebuddy = [ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE ]; //Cost 300
 
 //Explorer Bodytypes
 exports.longhauler = [
-    [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE] //Cost 800
+    [],
+    [],
+    [ WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE ], //Cost 800
+    [ WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE ] //Cost 1000
 ];
 exports.claimer = [
-    [CLAIM, MOVE, MOVE, MOVE, MOVE], //Cost 800
-    [CLAIM, CLAIM, MOVE, MOVE], //Cost 1300
+    [ CLAIM, MOVE, MOVE, MOVE, MOVE ], //Cost 800
+    [ CLAIM, CLAIM, MOVE, MOVE ], //Cost 1300
 ];
 exports.sentry = [ MOVE ]; //Cost 50
