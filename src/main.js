@@ -42,10 +42,12 @@ module.exports.loop = function () {
         let thisRoom = Game.rooms[roomName];
 
         if (Memory.rooms === undefined) { Memory.rooms = {}};
-        if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = { spawnTier: 0, controllerRoad: 0} }
+        if (Memory.rooms[roomName] === undefined) { Memory.rooms[roomName] = {} }
         processRooms.sourceData(roomName);
         processRooms.checkRoomState(roomName);
         processDefense.checkForKeeperLair(roomName);
+
+        if(Game.time % 100 == 0){ if (thisRoom.find(FIND_NUKES).length > 0){ Game.notify(`***WARNING NUKE DETECTED IN ${thisRoom.name}***`)} }
 
         switch (thisRoom.memory.roomState){
             case ROOM_NEUTRAL:
@@ -60,9 +62,11 @@ module.exports.loop = function () {
             case ROOM_OWNED:
             case ROOM_OWNED_SAFE:
                 roomLogging(thisRoom.name);
-
-                explorer.checkExits(roomName)
-                if (thisRoom.memory.sentryID !== undefined) { thisRoom.memory.sentryID = undefined}
+                if (thisRoom.memory.spawnTier == undefined) { thisRoom.memory.spawnTier = 0 }
+                if (thisRoom.memory.controllerRoad == undefined) { thisRoom.memory.controllerRoad = 0 }
+                if(Game.time % 100 == 0) { explorer.checkExits(roomName, true) }
+                else { explorer.checkExits(roomName) }
+                if (thisRoom.memory.sentryID !== 'NA') { thisRoom.memory.sentryID = 'NA' }
                 if (thisRoom.memory.missionaryID !== undefined) { thisRoom.memory.missionaryID = undefined}
                 processDefense.scanForHostiles(roomName);
                 explorer.checkForMissionary(roomName);
@@ -84,12 +88,10 @@ module.exports.loop = function () {
                     }
                 }
                 break;
-            case ROOM_HOSTILE_SAFE:
-                //if (thisRoom.memory.sentryID != undefined) { thisRoom.memory.sentryID = undefined}
-                break;
+            case ROOM_HOSTILE_SAFE: 
             case ROOM_HOSTILE:
-                //if (thisRoom.memory.sentryID === undefined) { thisRoom.memory.sentryID = null }
-                //processDefense.scanForHostiles(roomName);
+                if (thisRoom.memory.sentryID !== 'NA') { thisRoom.memory.sentryID = 'NA' }
+                if (thisRoom.memory.missionaryID !== 'NA') { thisRoom.memory.missionaryID = 'NA'}
                 break;
         }
 
@@ -113,7 +115,7 @@ module.exports.loop = function () {
             if (minerList.length < extractorCount) { spawnLogic.spawnCreep(i, ROLE_MINER, bodytype.miner[0], -1, roomName)}
         }
 
-        //if (helper.isAvailable(i)) { spawnLogic.spawnSentry(i) }
+        if (helper.isAvailable(i)) { spawnLogic.spawnSentry(i) }
         if (helper.isAvailable(i)) { processCreeps.checkForSpawn(i) }
 
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
@@ -210,7 +212,7 @@ function clearMemory(){
             }
         }
         for(let name in Memory.rooms) {
-            if (Memory.rooms[name].sentryID === undefined) { continue }
+            if (Memory.rooms[name].sentryID === undefined || Memory.rooms[name].sentryID == 'NA') { continue }
             if (Memory.rooms[name].sentryID !== null && Game.creeps[Memory.rooms[name].sentryID] === undefined) {
                 Memory.rooms[name].sentryID = null;
                 console.log(`Clearing invalid Sentry ID from ${name}`);
@@ -237,7 +239,7 @@ function monitorBucket(){
             console.log(`***WARNING*** Bucket is being emptied! (${Game.cpu.bucket})`);
             Game.notify(`***WARNING*** Bucket is being emptied! (${Game.cpu.bucket})`);
         }
-        if (Game.cpu.bucket > Memory.flags.bucket){
+        else if (Game.cpu.bucket > Memory.flags.bucket){
             let tickGain = Game.cpu.bucket - Memory.flags.bucket;
             console.log(`CPU Bucket: ${Game.cpu.bucket} (Gained ${tickGain})`);
         }

@@ -98,6 +98,7 @@ let spawningLogic = {
         let body = bodytype.sentry;
 
         for (let roomName in Memory.rooms) {
+            if (Memory.rooms[roomName].sentryID == 'NA') { continue }
             if ((Memory.rooms[roomName].sentryID != null && Game.creeps[Memory.rooms[roomName].sentryID] == undefined) || 
                     Memory.rooms[roomName].sentryID === null){
                 newName = role + Memory.roles.index[role];

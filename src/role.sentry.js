@@ -5,11 +5,13 @@ let roleSentry = {
     
     /** @param {Creep} creep **/
     run: function (creep) {
+        if (creep.room.name == creep.memory.assignedRoom && !creep.memory.scouted) { scoutRoom(creep) }
         if (creep.memory.EOP) { return }
         let newRoom = new RoomPosition(24, 24, creep.memory.assignedRoom);
         let result = creep.moveTo(newRoom, {visualizePathStyle: {stroke: '#ffffff'}});
         switch(result){
             case OK:
+                if (_.isEqual(creep.pos, newRoom)) { creep.memory.EOP = true }
                 break;
             case ERR_NO_PATH:
                 if (creep.pos.x == 0) {newRoom.x = 1; newRoom.y = creep.pos.y}
@@ -25,4 +27,11 @@ let roleSentry = {
     }
 }
 module.exports = roleSentry;
-    
+
+/** @param {Creep} creep **/
+function scoutRoom(creep){
+    if (creep.room.controller != undefined) {
+        creep.room.memory.missionaryID = null;
+    }
+    creep.memory.scouted = true;
+}
