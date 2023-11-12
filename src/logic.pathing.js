@@ -2,10 +2,13 @@ let helper = require('helper');
 
 let pathing = {
 
-    findClosestSource: function (pos){
-        return pos.findClosestByPath(FIND_SOURCES_ACTIVE, {filter: (source) => {
-            return !Memory.rooms[pos.roomName].keeperLair.threatActive || (Memory.rooms[pos.roomName].keeperLair.threatActive && source.id != Memory.rooms[pos.roomName].keeperLair.sourceID);
+    findClosestSource: function (pos, roomName=false){
+        if (!roomName) { roomName = pos.roomName }
+        let searchRoom = Game.rooms[roomName];
+        let roomSources = searchRoom.find(FIND_SOURCES_ACTIVE, {filter: (source) => {
+            return !searchRoom.memory.keeperLair.threatActive || (searchRoom.memory.keeperLair.threatActive && source.id != searchRoom.memory.keeperLair.sourceID);
         }});
+        return pos.findClosestByPath(roomSources);
     },
 
     findClosestEnergyConsumer: function(pos) {
