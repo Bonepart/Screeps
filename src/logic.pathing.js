@@ -40,7 +40,7 @@ let pathing = {
         let targets = creep.room.find(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }});
         targets = targets.concat(creep.room.find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }}))
         if (targets.length > 0) {
-            let target = pos.findClosestByPath(targets);
+            let target = creep.pos.findClosestByPath(targets);
             return target;
         }
         return false;
@@ -51,7 +51,7 @@ let pathing = {
         let targets = creep.room.find(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity() > 0 }});
         targets = targets.concat(creep.room.find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity() > 0 }}))
         if (targets.length > 0) {
-            let target = pos.findClosestByPath(targets);
+            let target = creep.pos.findClosestByPath(targets);
             return target;
         }
         return false;
