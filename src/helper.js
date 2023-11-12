@@ -22,9 +22,20 @@ let helper = {
         else { return false }
     },
 
+    checkDroppedResources: function(roomName) {
+        if (Game.rooms[roomName].find(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType != RESOURCE_ENERGY}}).length > 0) { return true }
+        else { return false }
+    },
+
     checkRuins: function(roomName) {
         if (Game.rooms[roomName].find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }}).length > 0) { return true }
         if (Game.rooms[roomName].find(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }}).length > 0) { return true }
+        return false;
+    },
+
+    checkRuinsX: function(roomName) {
+        if (Game.rooms[roomName].find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity() > 0 }}).length > 0) { return true }
+        if (Game.rooms[roomName].find(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity() > 0 }}).length > 0) { return true }
         return false;
     },
 
