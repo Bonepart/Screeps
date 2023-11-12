@@ -110,6 +110,42 @@ let helper = {
             if (room == undefined){ room = 'NA'};
             console.log(`  ${creepList[i].name.padEnd(16)}T${tier}\tAssigned Rooom: ${room}`);
         }
+    },
+
+    runMineralReport: function (roomName) {
+        let thisRoom = Game.rooms[roomName];
+        if (thisRoom.memory.roomState >= ROOM_OWNED) {console.log(`*** Room ${roomName} OWNED ***`)}
+        else { console.log(`*** Room ${roomName} ***`) }
+        let foundObjects = thisRoom.find(FIND_MINERALS);
+        if (foundObjects.length > 0){
+            console.log('--Minerals');
+            for (let mineral of foundObjects){
+                let density = '';
+                switch (mineral.density){
+                    case DENSITY_LOW:
+                        density = 'Low';
+                        break;
+                    case DENSITY_MODERATE:
+                        density = 'Moderate';
+                        break;
+                    case DENSITY_HIGH:
+                        density = 'High';
+                        break;
+                    case DENSITY_ULTRA:
+                        density = 'Ultra';
+                        break;
+                }
+                console.log(`${mineral.mineralType.padEnd(4)}${mineral.mineralAmount.toString().padStart(6)}\t${density}`);
+            }
+        }
+        foundObjects = thisRoom.find(FIND_DEPOSITS);
+        if (foundObjects.length > 0){
+            console.log('--Deposits');
+            for (let deposit of foundObjects){
+                console.log(`${deposit.mineralType}\t${deposit.mineralAmount}\t${deposit.density}`);
+            }
+        }
+
     }
 }
 module.exports = helper;
