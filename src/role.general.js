@@ -15,7 +15,8 @@ let roleGeneral = {
             for (let i in vikingList){
                 let creep = vikingList[i];
                 if (creep.spawning) {continue}
-                creep.moveTo(roomPos, {visualizePathStyle: {stroke: '#ff0000'}});
+                if (i > 0){ creep.moveTo(vikingList[i-1], {visualizePathStyle: {stroke: '#ffffff'}}) }
+                else { creep.moveTo(roomPos, {visualizePathStyle: {stroke: '#ff0000'}}) }
             }
             return;
         }
@@ -44,7 +45,8 @@ let roleGeneral = {
                 if (creep.spawning) {continue}
 
                 if (creep.room.name != roomPos.roomName) { 
-                    creep.moveTo(roomPos, {visualizePathStyle: {stroke: '#ff0000'}});
+                    if (i > 0){ creep.moveTo(vikingList[i-1], {visualizePathStyle: {stroke: '#ffffff'}}) }
+                    else { creep.moveTo(roomPos, {visualizePathStyle: {stroke: '#ff0000'}}) }
                     continue;
                 }
 
@@ -137,7 +139,8 @@ let roleGeneral = {
             for (let i in vikingList){
                 let creep = vikingList[i];
                 if (creep.spawning) {continue}
-                creep.moveTo(roomPos, {visualizePathStyle: {stroke: '#ff0000'}});
+                if (i > 0){ creep.moveTo(vikingList[i-1], {visualizePathStyle: {stroke: '#ffffff'}}) }
+                else { creep.moveTo(roomPos, {visualizePathStyle: {stroke: '#ff0000'}}) }
             }
             if (Memory.flags.crusade.roomName != undefined) {
                 if (Memory.flags.crusade.roomName == roomPos.roomName) { 
