@@ -23,26 +23,41 @@ let spawningLogic = {
         } else { logSpawnResults(spawnIndex, result, newName); return false }
     },
 
-    spawnExCreep: function (role, body, roomName) {
+    spawnExCreep: function (role, roomName) {
         newName = role + Memory.roles.index[role];
         for (let i in Game.spawns){
             if (!helper.isAvailable(i)) { continue }
-            let result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
-            while (result === -3){
+            let spawner = Game.spawns[i];
+            let creepTier = spawner.room.memory.spawnTier - 1;
+            if (creepTier < 2) { continue }
+            let body = undefined;
+            switch (role){
+                case ROLE_CLAIMER:
+                    if (creepTier >= bodytype.claimer.length) { creepTier = bodytype.claimer.length - 1}
+                    body = bodytype.claimer[creepTier]
+                    break;
+                case ROLE_LONGHAUL:
+                    if (creepTier >= bodytype.longhauler.length) { creepTier = bodytype.longhauler.length - 1}
+                    body = bodytype.longhauler[creepTier]
+                    break;
+            }
+            let result = spawner.spawnCreep(body, newName, { dryRun: true });
+            while (result == ERR_NAME_EXISTS){
                 Memory.roles.index[role]++;
                 newName = role + Memory.roles.index[role];
-                result = Game.spawns[i].spawnCreep(body, newName, { dryRun: true });
+                result = spawner.spawnCreep(body, newName, { dryRun: true });
             }
             if (result == OK) {
-                result = Game.spawns[i].spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName}});
+                result = spawner.spawnCreep(body, newName, { memory: {role: role, assignedRoom: roomName}});
                 if (result != OK) {
                     console.log(`${i}: Error, dry run said OK, real spawn failed: ${result}`);
                 }
                 Memory.roles.index[role]++;
                 console.log(`${i}: Spawning ${newName} assigned to ${roomName}`);
                 return newName;
-            } else { return null }
-        }        
+            }
+        }
+        return null;
     },
 
     spawnGofer: function (spawnIndex, creepTier, optionsObject) {
