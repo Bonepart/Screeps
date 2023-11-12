@@ -1,34 +1,34 @@
 require('constants');
-let config = require('config');
+const config = require('config');
 
-let roleBuilder = require('role.builder');
-let roleDefender = require('role.defender');
-let roleHarvester = require('role.harvester');
-let roleHealer = require('role.healer');
-let roleMaint = require('role.maint');
-let roleMiner = require('role.miner');
-let roleRanged = require('role.ranged');
-let roleUpgrader = require('role.upgrader');
-let roleZombie = require('role.zombie');
+const roleBuilder = require('role.builder');
+const roleDefender = require('role.defender');
+const roleHarvester = require('role.harvester');
+const roleHealer = require('role.healer');
+const roleMaint = require('role.maint');
+const roleMiner = require('role.miner');
+const roleRanged = require('role.ranged');
+const roleUpgrader = require('role.upgrader');
+const roleZombie = require('role.zombie');
 
-//let roleGeneral = require('role.general');
-let roleLonghaul = require('role.longhaul');
-let roleGofer = require('role.gofer');
-let roleStorageBud = require('role.storagebuddy');
-let roleClaimer = require('role.claimer');
+const roleLonghaul = require('role.longhaul');
+const roleGofer = require('role.gofer');
+const roleStorageBud = require('role.storagebuddy');
+const roleClaimer = require('role.claimer');
+const roleSentry = require('role.sentry');
 
-let towerLogic = require('structure.tower');
-let linkLogic = require('structure.link');
-let bodytype = require('constants.bodytype');
-let processCreeps = require('process.creeps');
-let processDefense = require('process.defense');
-let processRooms = require('process.rooms');
-let explorer = require('process.exploration');
-let construction = require('construction');
-let spawnLogic = require('logic.spawning');
-let common = require('logic.common');
-let helper = require('helper');
-const roleSentry = require('./role.sentry');
+const towerLogic = require('structure.tower');
+const linkLogic = require('structure.link');
+const bodytype = require('constants.bodytype');
+const processCreeps = require('process.creeps');
+const processDefense = require('process.defense');
+const processRooms = require('process.rooms');
+const explorer = require('process.exploration');
+const construction = require('construction');
+const spawnLogic = require('logic.spawning');
+const common = require('logic.common');
+const helper = require('helper');
+
 
 config.loadRoles();
 
