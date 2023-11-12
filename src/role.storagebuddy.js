@@ -20,12 +20,23 @@ let roleStorageBuddy = {
         }
         let myLink = myStorage[0].pos.findClosestByRange(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_LINK}});
 
-        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
-            if(creep.transfer(myStorage[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(myStorage[0], {visualizePathStyle: {stroke: '#ffffff'}});
+        if (creep.store.getUsedCapacity() > 0) {
+            for (let resource in creep.store){
+                let result = creep.transfer(myStorage[0], resource);
+                switch(result){
+                    case OK:
+                        break;
+                    case ERR_NOT_IN_RANGE:
+                        creep.moveTo(myStorage[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                        break;
+                    default:
+                        console.log(`${creep.name} storage transfer result: ${result}`);
+                }
             }
+
         }
         else {
+            if (common.getLooseResources(creep)) { return }
             if(creep.withdraw(myLink, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(myLink, {visualizePathStyle: {stroke: '#ffaa00'}});
             }

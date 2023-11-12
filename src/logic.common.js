@@ -70,15 +70,16 @@ let commonLogic = {
     },
 
     /** @param {Creep} creep **/
-    getLooseEnergy: function(creep) {
-        let searchTarget = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}});
+    getLooseEnergy: function(creep, roomName=false) {
+        if (!roomName || Game.rooms[roomName] == undefined) { roomName = creep.room.name }
+        let searchTarget = creep.pos.findClosestByRange(Game.rooms[roomName].find(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}}));
         if (searchTarget) {
             if(creep.pickup(searchTarget) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
             return true;
         }
-        searchTarget = pathing.findClosestRuin(creep.pos);
+        searchTarget = pathing.findClosestRuin(creep.pos, roomName);
         if (searchTarget){
             if(creep.withdraw(searchTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
@@ -87,6 +88,19 @@ let commonLogic = {
         }
         return false
     },
+
+        /** @param {Creep} creep **/
+        getLooseResources: function(creep, roomName=false) {
+            if (!roomName || Game.rooms[roomName] == undefined) { roomName = creep.room.name }
+            let searchTarget = creep.pos.findClosestByRange(Game.rooms[roomName].find(FIND_DROPPED_RESOURCES));
+            if (searchTarget) {
+                if(creep.pickup(searchTarget) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
+                return true;
+            }
+            return false
+        },
 
     /** @param {Creep} creep **/
     moveToAssignedRoom: function(creep){
