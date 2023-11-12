@@ -2,7 +2,6 @@ require('constants');
 const config = require('config');
 
 const roleBuilder = require('role.builder');
-const roleDefender = require('role.defender');
 const roleHarvester = require('role.harvester');
 const roleHealer = require('role.healer');
 const roleMaint = require('role.maint');
@@ -147,9 +146,6 @@ function runCreeps(roomName, creepList, buildList) {
         switch(creep.memory.role){
             case ROLE_BUILDER:
                 roleBuilder.run(creep, buildList);
-                break;
-            case ARMY_DEFENDER:
-                roleDefender.run(creep);
                 break;
             case ROLE_HARVESTER:
                 roleHarvester.run(creep, energyList, hasLooseEnergy);

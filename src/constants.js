@@ -8,7 +8,6 @@ global.ROLE_MAINTENANCE = 'maintenance';
 global.ROLE_MINER = 'miner';
 
 //Army Creeps
-global.ARMY_DEFENDER = 'defender';
 global.ARMY_VIKING = 'viking';
 global.ARMY_RANGED = 'ranged';
 global.ARMY_HEALER = 'healer';

@@ -14,12 +14,10 @@ let processCreeps = {
         let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == i);
         let storageBuddyList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_STORAGEBUDDY && creep.memory.assignedRoom == i);
         
-        let defenderList = 0;
         let vikingList = 0;
         let rangedList = 0;
         let healerList = 0;
 
-        if (Memory.roles.limit[ARMY_DEFENDER] > 0){defenderList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_DEFENDER)}
         if (Memory.roles.limit[ARMY_VIKING] > 0){vikingList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_VIKING)}
         if (Memory.roles.limit[ARMY_RANGED] > 0){rangedList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_RANGED)}
         if (Memory.roles.limit[ARMY_HEALER] > 0){healerList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_HEALER)}
@@ -37,12 +35,7 @@ let processCreeps = {
 
         if (spawner.store.getUsedCapacity(RESOURCE_ENERGY) >= 250){
             let body = null;
-            if (defenderList.length < Memory.roles.limit[ARMY_DEFENDER]){
-                if (creepTier >= bodytype.defender.length) { creepTier = bodytype.defender.length - 1}
-                body = bodytype.defender[creepTier]
-                spawnLogic.spawnCreep(spawnIndex, ARMY_DEFENDER, body, creepTier);
-            }
-            else if (healerList.length < Memory.roles.limit[ARMY_HEALER]){
+            if (healerList.length < Memory.roles.limit[ARMY_HEALER]){
                 if (creepTier >= bodytype.healer.length) { creepTier = bodytype.healer.length - 1}
                 body = bodytype.healer[creepTier]
                 spawnLogic.spawnCreep(spawnIndex, ARMY_HEALER, body, creepTier);

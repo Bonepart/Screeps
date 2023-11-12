@@ -6,7 +6,6 @@ const roleDefinitions = [
     [ROLE_MAINTENANCE, 1],
     [ROLE_MINER, -1],
 
-    [ARMY_DEFENDER, 0],
     [ARMY_VIKING, 0],
     [ARMY_RANGED, -1],
     [ARMY_HEALER, -1],

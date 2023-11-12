@@ -25,11 +25,6 @@ exports.maintenance = [
 exports.miner = [
     [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 1300
 ];
-exports.defender = [
-    [TOUGH, TOUGH, ATTACK, MOVE, MOVE, MOVE], //Cost 250
-    [TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE], //Cost 490
-    [TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE] //Cost 630
-];
 exports.healer = [
     [ HEAL, MOVE], //Cost 300
     [ RANGED_ATTACK, HEAL, MOVE, MOVE], //Cost 500
