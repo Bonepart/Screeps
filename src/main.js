@@ -86,7 +86,7 @@ module.exports.loop = function () {
                 for (let structure of structuresToRun){
                     switch (structure.structureType){
                         case STRUCTURE_TERMINAL:
-                            terminalLogic.run(structure);
+                            //terminalLogic.run(structure);
                             break;
                         case STRUCTURE_TOWER:
                             towerLogic.run(structure);
@@ -208,11 +208,10 @@ function runCreeps(roomName, creepList, buildList) {
 }
 
 function roomLogging(roomName){
-    
     if(Game.time % 20 == 0){
         let thisRoom = Game.rooms[roomName];
         let storage = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE}});
-        console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, '0')}/${thisRoom.energyCapacityAvailable}`);
+        //console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, '0')}/${thisRoom.energyCapacityAvailable}`);
         if (storage.length > 0) {
             console.log(`${thisRoom.name} energy storage:   ${storage[0].store.getUsedCapacity(RESOURCE_ENERGY)}`);
         }

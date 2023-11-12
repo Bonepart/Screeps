@@ -184,6 +184,7 @@ function searchForResources(creep){
 
 /** @param {Creep} creep **/
 function collectResources(creep){
+    if (creep.ticksToLive < 100 && creep.store.getUsedCapacity() > 0) { creep.memory.collecting = false; creep.memory.resourcesInStorage = false; return true }
     if (creep.memory.moveTarget){
         let targetStorage = Game.getObjectById(creep.memory.moveTarget);
         let result = creep.moveTo(targetStorage, { visualizePathStyle: {stroke: '#ffffff'}});
