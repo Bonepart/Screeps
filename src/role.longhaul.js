@@ -42,7 +42,6 @@ let roleLonghaul = {
                         console.log(`${creep.name} transfer result: ${result}`);
                 }
             }
-            
         }
     }
 }
