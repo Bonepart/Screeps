@@ -34,8 +34,9 @@ config.loadRoles();
 
 module.exports.loop = function () {
     Game.c = require('console');
-    processCreeps.clearMemory();
-    
+    clearMemory();
+    resetIndex();
+    monitorBucket();
 
     let buildList = common.getBuildList();
     for (let roomName in Game.rooms){
@@ -197,6 +198,46 @@ function roomLogging(roomName){
         console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, '0')}/${thisRoom.energyCapacityAvailable}`);
         if (storage.length > 0) {
             console.log(`${thisRoom.name} energy storage:   ${storage[0].store.getUsedCapacity(RESOURCE_ENERGY)}`);
+        }
+    }
+}
+
+function clearMemory(){
+    if(Game.time % 10 == 0) {
+        for(let name in Memory.creeps) {
+            if(!Game.creeps[name]) {
+                delete Memory.creeps[name];
+                console.log('Clearing non-existing creep memory:', name);
+            }
+        }
+        for(let name in Memory.rooms) {
+            if (Memory.rooms[name].sentryID === undefined) { continue }
+            if (Memory.rooms[name].sentryID !== null && Game.creeps[Memory.rooms[name].sentryID] === undefined) {
+                Memory.rooms[name].sentryID = null;
+                console.log(`Clearing invalid Sentry ID from ${name}`);
+            }
+        }
+    }
+}
+
+function resetIndex(){
+    if(Game.time % 100 == 0){
+        for (let i in Memory.roles.index){
+            if (Memory.roles.index[i] >= 90) { 
+                console.log(`${i} index = ${Memory.roles.index[i]}. Reset to 1`);
+                Memory.roles.index[i] = 1;
+            }
+        }
+    }
+}
+
+function monitorBucket(){
+    if(Game.time % 100 == 0){
+        if (Memory.flags.bucket == undefined) { Memory.flags.bucket = Game.cpu.bucket }
+        if (Game.cpu.bucket < Memory.flags.bucket){
+            console.log(`***WARNING*** Bucket is being emptied! (${Game.cpu.bucket})`);
+            Game.notify(`***WARNING*** Bucket is being emptied! (${Game.cpu.bucket})`);
+            Memory.flags.bucket = Game.cpu.bucket;
         }
     }
 }

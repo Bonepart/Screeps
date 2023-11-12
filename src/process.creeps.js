@@ -81,24 +81,6 @@ let processCreeps = {
             checkGofers(spawnIndex, creepTier);
         }
     },
-
-    clearMemory: function(){
-        if(Game.time % 10 == 0) {
-            for(let name in Memory.creeps) {
-                if(!Game.creeps[name]) {
-                    delete Memory.creeps[name];
-                    console.log('Clearing non-existing creep memory:', name);
-                }
-            }
-            for(let name in Memory.rooms) {
-                if (Memory.rooms[name].sentryID === undefined) { continue }
-                if (Memory.rooms[name].sentryID !== null && Game.creeps[Memory.rooms[name].sentryID] === undefined) {
-                    Memory.rooms[name].sentryID = null;
-                    console.log(`Clearing invalid Sentry ID from ${name}`);
-                }
-            }
-        }
-    }
 };
 module.exports = processCreeps;
 
