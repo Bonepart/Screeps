@@ -40,7 +40,8 @@ let processExploration = {
 
     assignLongHauls: function(roomName){
         let longhaulList = 0;
-        if (Memory.roles.limit[ROLE_LONGHAUL] > 0){longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_LONGHAUL)}
+        if(Memory.importContainers == undefined || Memory.importContainers.length == 0) { return }
+        if (Memory.roles.limit[ROLE_LONGHAUL] > 0) { longhaulList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_LONGHAUL) }
         if (longhaulList.length < Memory.roles.limit[ROLE_LONGHAUL]){
             spawnLogic.spawnExCreep(ROLE_LONGHAUL, bodytype.longhauler[0], roomName);
         }
