@@ -212,7 +212,7 @@ function roomLogging(roomName){
         let thisRoom = Game.rooms[roomName];
         let storage = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE}});
         //console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, '0')}/${thisRoom.energyCapacityAvailable}`);
-        if (storage.length > 0) {
+        if (storage.length > 0 && storage[0].store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
             console.log(`${thisRoom.name} energy storage:   ${storage[0].store.getUsedCapacity(RESOURCE_ENERGY)}`);
         }
     }
