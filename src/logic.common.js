@@ -26,7 +26,7 @@ let commonLogic = {
         for (let result of findResults){
             if (excludeList.includes(result.id)) { continue }
             if (result.structureType == STRUCTURE_STORAGE){
-                while (result.store.getUsedCapacity(RESOURCE_ENERGY) <= 500000){
+                while (result.store.getUsedCapacity(RESOURCE_ENERGY) <= 600000){
                     yield result;
                 }
             } else { yield result }
