@@ -11,7 +11,7 @@ let structureTower = {
         let woundedList = thisTower.room.find(FIND_MY_CREEPS, { filter: (creep) => {return creep.hits < creep.hitsMax}});
         if (woundedList.length > 0) { if (healWounded(thisTower, woundedList)) { return } }
 
-        if (thisTower.store.getUsedCapacity(RESOURCE_ENERGY) > 600) { repairStructures(thisTower) }
+        if (thisTower.store.getUsedCapacity(RESOURCE_ENERGY) > 800) { repairStructures(thisTower) }
     }
 }
 module.exports = structureTower;

@@ -76,14 +76,22 @@ module.exports.loop = function () {
                 else if (thisRoom.energyCapacityAvailable >= 500) { thisRoom.memory.spawnTier = 2 }
                 else { thisRoom.memory.spawnTier = 1 };
 
-                let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES);
-                for (let structure in structuresToRun){
-                    switch (structuresToRun[structure].structureType){
+                let structuresToRun = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { 
+                    return structure.structureType == STRUCTURE_TOWER ||
+                            structure.structureType == STRUCTURE_LINK ||
+                            structure.structureType == STRUCTURE_TERMINAL ||
+                            structure.structureType == STRUCTURE_LAB }
+                });
+                for (let structure of structuresToRun){
+                    switch (structure.structureType){
                         case STRUCTURE_TOWER:
-                            towerLogic.run(structuresToRun[structure]);
+                            towerLogic.run(structure);
                             break;
                         case STRUCTURE_LINK:
-                            linkLogic.run(structuresToRun[structure]);
+                            linkLogic.run(structure);
+                            break;
+                        default:
+                            //console.log(`${structure.structureType}`);
                             break;
                     }
                 }

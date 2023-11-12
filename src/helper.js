@@ -132,7 +132,7 @@ let helper = {
                         density = 'Ultra';
                         break;
                 }
-                console.log(`${roomName}  ${mineral.mineralType.padEnd(4)}${mineral.mineralAmount.toString().padStart(6)}\t${density}`);
+                console.log(`${roomName}  ${mineral.mineralType.padEnd(5)}${mineral.mineralAmount.toString().padStart(6)}\t${density}`);
             }
         }
         foundObjects = thisRoom.find(FIND_DEPOSITS);
