@@ -105,7 +105,7 @@ let commonLogic = {
         }
         searchTarget = pathing.findClosestRuinX(creep);
         if (searchTarget){
-            for (let resource of searchTarget.store){
+            for (let resource in searchTarget.store){
                 let result = creep.withdraw(searchTarget, searchTarget.store[resource]);
                 switch (result){
                     case ERR_NOT_IN_RANGE:
