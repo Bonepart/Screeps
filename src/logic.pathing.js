@@ -35,14 +35,23 @@ let pathing = {
         return false;
     },
 
-    findClosestRuin: function (pos, roomName=false){
-        if (!roomName) { roomName = pos.roomName }
-        let searchRoom = Game.rooms[roomName];
-        if (searchRoom.find(FIND_HOSTILE_CREEPS).length > 0) { return false };
-        let targets = searchRoom.find(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }});
-        targets = targets.concat(searchRoom.find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }}))
+    findClosestRuin: function (creep){
+        if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) { return false };
+        let targets = creep.room.find(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }});
+        targets = targets.concat(creep.room.find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }}))
         if (targets.length > 0) {
-            target = pos.findClosestByPath(targets);
+            let target = pos.findClosestByPath(targets);
+            return target;
+        }
+        return false;
+    },
+
+    findClosestRuinX: function (creep){
+        if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) { return false };
+        let targets = creep.room.find(FIND_TOMBSTONES, { filter: (tombstone) => { return tombstone.store.getUsedCapacity() > 0 }});
+        targets = targets.concat(creep.room.find(FIND_RUINS, { filter: (ruin) => { return ruin.store.getUsedCapacity() > 0 }}))
+        if (targets.length > 0) {
+            let target = pos.findClosestByPath(targets);
             return target;
         }
         return false;

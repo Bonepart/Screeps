@@ -70,7 +70,7 @@ let commonLogic = {
     },
 
     /** @param {Creep} creep **/
-    getLooseEnergy: function(creep, roomName=false) {
+    getLooseEnergy: function(creep) {
         if (!roomName || Game.rooms[roomName] == undefined) { roomName = creep.room.name }
         let searchTarget = creep.pos.findClosestByRange(Game.rooms[roomName].find(FIND_DROPPED_RESOURCES, {filter: (resource) => { return resource.resourceType == RESOURCE_ENERGY}}));
         if (searchTarget) {
@@ -79,7 +79,7 @@ let commonLogic = {
             }
             return true;
         }
-        searchTarget = pathing.findClosestRuin(creep.pos, roomName);
+        searchTarget = pathing.findClosestRuin(creep);
         if (searchTarget){
             if(creep.withdraw(searchTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
@@ -89,18 +89,36 @@ let commonLogic = {
         return false
     },
 
-        /** @param {Creep} creep **/
-        getLooseResources: function(creep, roomName=false) {
-            if (!roomName || Game.rooms[roomName] == undefined) { roomName = creep.room.name }
-            let searchTarget = creep.pos.findClosestByRange(Game.rooms[roomName].find(FIND_DROPPED_RESOURCES));
-            if (searchTarget) {
-                if(creep.pickup(searchTarget) == ERR_NOT_IN_RANGE) {
+    /** @param {Creep} creep **/
+    getLooseResources: function(creep) {
+        let searchTarget = creep.pos.findClosestByRange(creep.room.find(FIND_DROPPED_RESOURCES));
+        if (searchTarget) {
+            let result = creep.pickup(searchTarget);
+            switch (result){
+                case ERR_NOT_IN_RANGE:
                     creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
-                }
-                return true;
+                case OK:
+                    return true;
+                default:
+                    console.log(`${creep.name} pickup ${searchTarget.resourceType} failed (${result})`);
+                    return false;
             }
-            return false
-        },
+        }
+        searchTarget = pathing.findClosestRuinX(creep);
+        if (searchTarget){
+            let result = creep.withdraw(searchTarget, searchTarget.store[-1]);
+            switch (result){
+                case ERR_NOT_IN_RANGE:
+                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+                case OK:
+                    return true;
+                default:
+                    console.log(`${creep.name} withdraw ${searchTarget.store[-1]} from ${searchTarget.id} failed (${result})`);
+                    return false;
+            }
+        }
+        return false;
+    },
 
     /** @param {Creep} creep **/
     moveToAssignedRoom: function(creep){
