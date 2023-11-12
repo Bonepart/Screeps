@@ -46,6 +46,7 @@ module.exports.loop = function () {
         processRooms.checkRoomState(roomName);
         processDefense.checkForKeeperLair(roomName);
 
+        if(Memory.flags.runReport){ helper.runMineralReport(roomName);  Memory.flags.runReport = false }
         if(Game.time % 100 == 0){ if (thisRoom.find(FIND_NUKES).length > 0){ Game.notify(`***WARNING NUKE DETECTED IN ${thisRoom.name}***`)} }
 
         switch (thisRoom.memory.roomState){
@@ -189,7 +190,7 @@ function runCreeps(roomName, creepList, buildList) {
             case ARMY_VIKING:
                 break;
             default:
-                console.log(`Unsupported role! (${creep.memory.role})`);
+                console.log(`${creep.name}: Unsupported role! (${creep.memory.role})`);
         }
     }
 }
@@ -253,5 +254,6 @@ function monitorBucket(){
             Memory.flags.bucket = 0;
             console.log('Turned in 10,000 ticks for 1 Pixel');
         }
+        Memory.flags.runReport = true;
     }
 }
