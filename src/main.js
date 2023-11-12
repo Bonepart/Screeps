@@ -239,9 +239,9 @@ function monitorBucket(){
         }
         if (Game.cpu.bucket > Memory.flags.bucket){
             let tickGain = Game.cpu.bucket - Memory.flags.bucket;
-            console.log(`CPU Bucket: ${Memory.flags.bucket} (Gained ${tickGain})`);
+            console.log(`CPU Bucket: ${Game.cpu.bucket} (Gained ${tickGain})`);
         }
-        else { console.log(`CPU Bucket: ${Memory.flags.bucket}`) }
+        else { console.log(`CPU Bucket: ${Game.cpu.bucket}`) }
         Memory.flags.bucket = Game.cpu.bucket;
     }
 }
