@@ -245,5 +245,10 @@ function monitorBucket(){
         }
         else { console.log(`CPU Bucket: ${Game.cpu.bucket}`) }
         Memory.flags.bucket = Game.cpu.bucket;
+        if (Memory.flags.bucket == 10000){
+            Game.cpu.generatePixel();
+            Memory.flags.bucket = Game.cpu.bucket;
+            console.log('Turned in 10,000 ticks for 1 Pixel');
+        }
     }
 }
