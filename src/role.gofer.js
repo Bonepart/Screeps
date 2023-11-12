@@ -144,41 +144,9 @@ function towerSupply(creep){
 /** @param {Creep} creep **/
 function terminalGofer(creep){
     if (creep.memory.collecting){
-        if (creep.memory.moveTarget){
-            let targetStorage = Game.getObjectById(creep.memory.moveTarget);
-            let result = creep.moveTo(targetStorage, { visualizePathStyle: {stroke: '#ffffff'}});
-            switch(result){
-                case OK:
-                    break;
-                default:
-                    console.log(`${creep.name} move result: ${result}`);
-            }
-            if (creep.room.name == targetStorage.room.name && creep.pos.getRangeTo(targetStorage) < 2){ creep.memory.moveTarget = null }
-        }
-        else {
-            for (let i in Game.rooms){
-                if (Game.rooms[i].memory.roomState >= ROOM_OWNED){
-                    let roomStorage = Game.rooms[i].find(FIND_MY_STRUCTURES, {filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }});
-                    if (roomStorage.length > 0){
-                        for (let resource in roomStorage[0].store){
-                            if (resource == RESOURCE_OXYGEN || resource == RESOURCE_HYDROGEN || resource == RESOURCE_ENERGY) { continue }
-                            if (creep.room.name != roomStorage[0].room.name) { creep.memory.moveTarget = roomStorage[0].id; return }
-                            let result = creep.withdraw(roomStorage[0], resource);
-                            console.log(`${creep.name} resource = ${resource}, result = ${result}`);
-                            switch(result){
-                                case ERR_NOT_IN_RANGE:
-                                    console.log(creep.moveTo(roomStorage[0], {reusePath: 0, visualizePathStyle: {stroke: '#ffffff'}}));
-                                case OK:
-                                    return;
-                                default:
-                                    console.log(`${creep.name} storage transfer result: ${result}`);
-                            }
-                        }
-                    }
-                }
-            }
-            creep.memory.collecting = false;
-        }
+        if (!creep.memory.resourcesInStorage) { if(Game.time % 100 == 0){ creep.memory.resourcesInStorage = searchForResources(creep) } }
+        else { if (collectResources(creep)) { return } }
+
     }
     else {
         let myTerminal = Game.getObjectById(creep.memory.terminalID);
@@ -193,5 +161,65 @@ function terminalGofer(creep){
                     console.log(`${creep.name} terminal transfer result: ${result}`);
             }
         }
+    }
+}
+
+/** @param {Creep} creep **/
+function searchForResources(creep){
+    for (let i in Game.rooms){
+        if (Game.rooms[i].memory.roomState >= ROOM_OWNED){
+            let roomStorage = Game.rooms[i].find(FIND_MY_STRUCTURES, {filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }});
+            if (roomStorage.length > 0){
+                for (let resource in roomStorage[0].store){
+                    if (resource == RESOURCE_OXYGEN || resource == RESOURCE_HYDROGEN || resource == RESOURCE_ENERGY) { continue }
+                    creep.memory.resourcesInStorage = true;
+                    creep.memory.moveTarget = roomStorage[0].id; 
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+/** @param {Creep} creep **/
+function collectResources(creep){
+    if (creep.memory.moveTarget){
+        let targetStorage = Game.getObjectById(creep.memory.moveTarget);
+        let result = creep.moveTo(targetStorage, { visualizePathStyle: {stroke: '#ffffff'}});
+        switch(result){
+            case OK:
+                break;
+            default:
+                console.log(`${creep.name} move result: ${result}`);
+        }
+        if (creep.room.name == targetStorage.room.name && creep.pos.getRangeTo(targetStorage) < 2){ creep.memory.moveTarget = null }
+        return true;
+    }
+    else {
+        for (let i in Game.rooms){
+            if (Game.rooms[i].memory.roomState >= ROOM_OWNED){
+                let roomStorage = Game.rooms[i].find(FIND_MY_STRUCTURES, {filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }});
+                if (roomStorage.length > 0){
+                    for (let resource in roomStorage[0].store){
+                        if (resource == RESOURCE_OXYGEN || resource == RESOURCE_HYDROGEN || resource == RESOURCE_ENERGY) { continue }
+                        if (creep.room.name != roomStorage[0].room.name) { creep.memory.moveTarget = roomStorage[0].id; return }
+                        let result = creep.withdraw(roomStorage[0], resource);
+                        console.log(`${creep.name} resource = ${resource}, result = ${result}`);
+                        switch(result){
+                            case ERR_NOT_IN_RANGE:
+                                console.log(creep.moveTo(roomStorage[0], {reusePath: 0, visualizePathStyle: {stroke: '#ffffff'}}));
+                            case OK:
+                                return true;
+                            default:
+                                console.log(`${creep.name} storage transfer result: ${result}`);
+                        }
+                    }
+                }
+            }
+        }
+        if (creep.store.getUsedCapacity() > 0) { creep.memory.collecting = false }
+        creep.memory.resourcesInStorage = false;
+        return false;
     }
 }
