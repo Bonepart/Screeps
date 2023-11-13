@@ -128,8 +128,11 @@ module.exports.loop = function () {
             let minerList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MINER && creep.memory.assignedRoom == roomName);
             let extractorCount = spawner.room.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_EXTRACTOR}}).length;
             if (minerList.length < extractorCount && helper.isAvailable(i)) { 
-                let memoryObject = { role: ROLE_MINER, tier: 0, assignedRoom: roomName };
-                spawnLogic.spawnCreep(i, ROLE_MINER, bodytype.miner[0], memoryObject)
+                let roomMineral = spawner.room.find(FIND_MINERALS)[0];
+                if (roomMineral.mineralAmount > 0){
+                    let memoryObject = { role: ROLE_MINER, tier: 0, assignedRoom: roomName };
+                    spawnLogic.spawnCreep(i, ROLE_MINER, bodytype.miner[0], memoryObject)
+                }
             }
         }
 
