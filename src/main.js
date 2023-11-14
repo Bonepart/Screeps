@@ -70,7 +70,7 @@ module.exports.loop = function () {
                 if (thisRoom.memory.sentryID !== 'NA') { thisRoom.memory.sentryID = 'NA' }
                 if (thisRoom.memory.missionaryID !== undefined) { thisRoom.memory.missionaryID = undefined}
                 processDefense.scanForHostiles(roomName);
-                explorer.checkForMissionary(roomName);
+                if (Memory.flags.useMissionaries) { explorer.checkForMissionary(roomName) }
 
                 if (thisRoom.energyCapacityAvailable >= 1300) { thisRoom.memory.spawnTier = 4 }
                 else if (thisRoom.energyCapacityAvailable >= 800) { thisRoom.memory.spawnTier = 3 }
