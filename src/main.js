@@ -269,6 +269,6 @@ function monitorBucket(){
             Memory.flags.bucket = 0;
             console.log('Turned in 10,000 ticks for 1 Pixel');
         }
-        Memory.flags.runReport = true;
+        //Memory.flags.runReport = true;
     }
 }
