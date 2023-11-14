@@ -154,6 +154,7 @@ let consoleCommands = {
                 }
                 return `${id} not found`;
             case 'list':
+                if (Memory.killList === undefined){ Memory.killList = [] }
                 console.log(`killList Length: ${Memory.killList.length}`);
                 for (let i in Memory.killList){
                     console.log(`${i}: ${Memory.killList[i]}`);
@@ -162,6 +163,38 @@ let consoleCommands = {
             case 'clear':
                 if (Memory.killList !== undefined) {Memory.killList = undefined }
                 return `killList cleared`;
+            default:
+                return `Error: Invalid action (${action})`;
+        }
+    },
+
+    dismantle: function(action, id=undefined){
+        switch(action){
+            case 'add':
+                if (Memory.dismantleList === undefined){ Memory.dismantleList = [] }
+                if (Game.getObjectById(id) === null) { return `Error: Invalid ID (${id})`}
+                Memory.dismantleList.push(id);
+                return `Added ${id} to dismantleList`;
+            case 'del':
+                if (Memory.dismantleList === undefined){ return `Error: Nothing in dismantleList` }
+                if (Game.getObjectById(id) === null) { return `Error: Invalid ID (${id})`}
+                for (let i in Memory.dismantleList){
+                    if (id == Memory.dismantleList[i]){
+                        Memory.dismantleList.splice(i, 1);
+                        return `Removed ${id} from dismantleList`;
+                    }
+                }
+                return `${id} not found`;
+            case 'list':
+                if (Memory.dismantleList === undefined){ Memory.dismantleList = [] }
+                console.log(`dismantleList Length: ${Memory.dismantleList.length}`);
+                for (let i in Memory.dismantleList){
+                    console.log(`${i}: ${Memory.dismantleList[i]}`);
+                }
+                return 'Complete';
+            case 'clear':
+                if (Memory.dismantleList !== undefined) {Memory.dismantleList = undefined }
+                return `dismantleList cleared`;
             default:
                 return `Error: Invalid action (${action})`;
         }
