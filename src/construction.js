@@ -4,7 +4,7 @@ let pathing = require('logic.pathing');
 let construction = {
 
     checkSpawnRoads: function (spawnIndex) {
-        if (Memory.spawns[spawnIndex].hasRoads != -1){
+        if (Memory.rooms[Game.spawns[spawnIndex].room.name].spawns[0].hasRoads != -1){
             this.buildSpawnRoads(spawnIndex, Memory.rooms[Game.spawns[spawnIndex].room.name].spawns[0].hasRoads);
             Memory.rooms[Game.spawns[spawnIndex].room.name].spawns[0].hasRoads++;
         }
