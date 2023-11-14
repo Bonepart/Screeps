@@ -167,10 +167,6 @@ let construction = {
                 }
             }
         }
-    },
-
-    getOpenSourcePoints: function (sourceID) {
-        let source = Game.getObjectById(sourceID);
     }
 }
 module.exports = construction;
