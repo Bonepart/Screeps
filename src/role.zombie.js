@@ -1,4 +1,3 @@
-const pathing = require('logic.pathing');
 const helper = require('./helper');
 
 let roleZombie = {
