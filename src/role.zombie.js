@@ -1,12 +1,16 @@
+const pathing = require('logic.pathing');
+const helper = require('./helper');
 
 let roleZombie = {
 
     /** @param {Creep} creep */
     run: function(creep){
-        let spawner = Game.spawns['Spawn1'];
-        if (spawner.recycleCreep(creep) == ERR_NOT_IN_RANGE){
-            creep.moveTo(spawner, {visualizePathStyle: {stroke: '#ffaa00'}});
-        }
+        let spawns = creep.room.find(FIND_MY_SPAWNS);
+        if (spawns.length > 0){
+            if (spawns[0].recycleCreep(creep) == ERR_NOT_IN_RANGE){
+                creep.moveTo(spawns[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+        } else { creep.moveTo(Game.spawns['Spawn1'], { reusePath: 10, visualizePathStyle: {stroke: '#ffaa00'}}) }
     }
 }
 module.exports = roleZombie;

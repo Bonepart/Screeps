@@ -2,9 +2,8 @@ let helper = require('helper');
 
 let pathing = {
 
-    findClosestSource: function (pos, roomName=false){
-        if (!roomName) { roomName = pos.roomName }
-        let searchRoom = Game.rooms[roomName];
+    findClosestSource: function (pos){
+        let searchRoom = Game.rooms[pos.roomName];
         let roomSources = searchRoom.find(FIND_SOURCES_ACTIVE, {filter: (source) => {
             return !searchRoom.memory.keeperLair.threatActive || (searchRoom.memory.keeperLair.threatActive && source.id != searchRoom.memory.keeperLair.sourceID);
         }});
