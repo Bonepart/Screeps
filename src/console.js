@@ -50,6 +50,12 @@ let consoleCommands = {
 		return `Repair Persistance = ${Memory.roles.repairPersistance}`;
     },
 
+    toggleMissionary: function() {
+        if (!Memory.flags.useMissionaries) { Memory.flags.useMissionaries = true }
+        else { Memory.flags.useMissionaries = false }
+		return `Spawn Missionaries = ${Memory.flags.useMissionaries}`;
+    },
+
     healthCheck: function() {
         for (let creep in Game.creeps){
             console.log(`${creep}:\t\t${Game.creeps[creep].hits}/${Game.creeps[creep].hitsMax}`);
