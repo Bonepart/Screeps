@@ -58,7 +58,7 @@ let spawningLogic = {
         return null;
     },
 
-    spawnGofer: function (spawnIndex, creepTier, optionsObject) {
+    spawnGofer: function (spawnIndex, creepTier, memoryObject) {
         let spawner = Game.spawns[spawnIndex];
         let newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
 
@@ -73,45 +73,10 @@ let spawningLogic = {
             result = spawner.spawnCreep(body, newName, { dryRun: true});
         }
         if (result == OK) {
-            let memoryObject = undefined;
-            switch (optionsObject.task){
-                case TASK_STORE_MINERALS:
-                    memoryObject = {
-                        role: ROLE_GOFER, 
-                        tier: creepTier + 1, 
-                        assignedRoom: optionsObject.assignedRoom,
-                        task: optionsObject.task,
-                        containerID: optionsObject.containerID,
-                        storageID: optionsObject.storageID,
-                        mineralType: optionsObject.mineralType
-                    };
-                    break;
-                case TASK_TOWER_SUPPLY:
-                    memoryObject = {
-                        role: ROLE_GOFER, 
-                        tier: creepTier + 1, 
-                        assignedRoom: optionsObject.assignedRoom,
-                        task: optionsObject.task,
-                        towerID: optionsObject.towerID,
-                        storageID: optionsObject.storageID
-                    };
-                    break;
-                case TASK_TERMINAL_GOFER:
-                    memoryObject = {
-                        role: ROLE_GOFER, 
-                        tier: creepTier + 1, 
-                        assignedRoom: optionsObject.assignedRoom,
-                        task: optionsObject.task,
-                        terminalID: optionsObject.terminalID
-                    };
-                    break;
-                default:
-                    console.log(`${spawner.name} ERROR: spawnGofer unhandled task ${optionsObject.task}`);
-                    return false;
-            }
+            memoryObject.tier = creepTier + 1;
             spawner.spawnCreep(body, newName, { memory: memoryObject});
             Memory.roles.index[ROLE_GOFER]++;
-            console.log(`${spawnIndex}: Spawning T${creepTier+1} ${newName} assigned to ${optionsObject.assignedRoom} for task ${optionsObject.task}`);
+            console.log(`${spawnIndex}: Spawning T${memoryObject.tier} ${newName} assigned to ${memoryObject.assignedRoom} for task ${memoryObject.task}`);
             return true;
         } else { logSpawnResults(spawnIndex, result, newName); return false }
     },
