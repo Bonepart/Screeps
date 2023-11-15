@@ -121,6 +121,27 @@ let consoleCommands = {
         }
     },
 
+    upgradeContainer: function(action, containerID=null) {
+        switch(action){
+            case 'add':
+                let container = Game.getObjectById(containerID);
+                if (container == null) { return `Error: ${containerID} is not a valid Object`}
+                if (container.structureType != STRUCTURE_CONTAINER && container.structureType != STRUCTURE_LINK) { return `Error: ${containerID} is not a valid Container for Upgrading`};
+                Memory.rooms[container.room.name].upgradeContainer = containerID;
+                return `Added ${containerID} as Upgrade Container for ${container.room.name}`;
+            case 'del':
+                for (let roomName in Memory.rooms){
+                    if (Memory.rooms[i].upgradeContainer != undefined && Memory.rooms[i].upgradeContainer == containerID){
+                        Memory.rooms[i].upgradeContainer == undefined;
+                        return `Removed ${containerID}`;
+                    }
+                }
+                return `${containerID} not found`;
+            default:
+                return `Error: Invalid action (${action})`;
+        }
+    },
+
     setCrusade: function(x=undefined, y=undefined, roomName=undefined){
         if (Memory.flags.crusade == undefined){ Memory.flags.crusade = {} }
         if (roomName == undefined) { 
