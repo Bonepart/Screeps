@@ -30,13 +30,28 @@ let roleUpgrader = {
             }
         }
         else {
-            let container = creep.room.controller.pos.findClosestByRange(FIND_STRUCTURES, { 
+            if (Memory.rooms[creep.room.name].upgradeContainer){
+                let container = Game.getObjectById(Memory.rooms[creep.room.name].upgradeContainer);
+                if (container != null && container.store.getUsedCapacity(RESOURCE_ENERGY) > 0){
+                    let result = creep.withdraw(container, RESOURCE_ENERGY);
+                    switch (result){
+                        case ERR_NOT_IN_RANGE:
+                            creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
+                        case OK:
+                            return;
+                        default:
+                            console.log(`${creep.name} withdraw from Upgrade Container failed (${result})`);
+                            break;
+                    }
+                }
+            }
+            let storage = creep.room.controller.pos.findClosestByRange(FIND_STRUCTURES, { 
                 filter: (struct) => {return struct.structureType == STRUCTURE_STORAGE &&
                                             struct.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
             );
-            if (container){
-                if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
+            if (storage){
+                if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             } else {
                 let source = pathing.findClosestSource(creep.pos);
