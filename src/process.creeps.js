@@ -9,7 +9,7 @@ let processCreeps = {
         let roomName = spawner.room.name;
         let hasStorage = Game.rooms[roomName].find(FIND_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }}).length > 0;
         let builderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER && creep.memory.assignedRoom == roomName);
-        let harvesterList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER && creep.memory.assignedRoom == roomName && creep.memory.sourceID == undefined);
+        let harvesterList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_HARVESTER && creep.memory.assignedRoom == roomName /*&& creep.memory.sourceID == undefined*/);
         let upgraderList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_UPGRADER && creep.memory.assignedRoom == roomName);
         let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == roomName);
         let storageBuddyList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_STORAGEBUDDY && creep.memory.assignedRoom == roomName);
@@ -28,6 +28,8 @@ let processCreeps = {
         if (spawner.store.getUsedCapacity(RESOURCE_ENERGY) >= 250){
             let body = null;
             
+            //disabling this spawn method
+            hasStorage = false;
             if (hasStorage){
                 let creepCount = {};
                 for (let i in spawner.room.memory.sourceList){
