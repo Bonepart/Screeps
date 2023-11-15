@@ -7,12 +7,6 @@ let roleMaintenance = {
 
     /** @param {Creep} creep **/
     run: function(creep, pendingRepairs) {
-        if (creep.memory.assignedRoom) {
-            if (creep.room.name != creep.memory.assignedRoom) {
-                common.moveToAssignedRoom(creep);
-                return;
-            }
-        }
         if(processRenewal.renew(creep)){ return };
 
         if(creep.memory.repairing && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
@@ -42,6 +36,7 @@ let roleMaintenance = {
                 if (!Memory.roles.repairPersistance) { creep.memory.repairID = null }
             }
         } else {
+            if (checkDismantleList(creep)) { return }
             let energyStore = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
                     structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
@@ -69,4 +64,23 @@ function setRepairID(creep, pendingRepairs){
         creep.memory.repairID = nextRepair.value.id;
         //console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_MAINTENANCE.length + 3)} repairing ${nextRepair.value.id}`);
     }
+}
+
+/** @param {Creep} creep **/
+function checkDismantleList(creep){
+    if (Memory.dismantleList != undefined && Memory.dismantleList.length > 0) {
+        let dismantleTarget = Game.getObjectById(Memory.dismantleList[0]);
+        if (dismantleTarget == null) { Memory.dismantleList.splice(0, 1); return false }
+        if (dismantleTarget.pos.roomName != creep.room.name) { return false }
+        let result = creep.dismantle(dismantleTarget);
+        switch(result){
+            case ERR_NOT_IN_RANGE:
+                creep.moveTo(dismantleTarget, {visualizePathStyle: {stroke: '#ffffff'}});
+            case OK:
+                return true;
+            default:
+                console.log(`${creep.name} dismantle result: ${result}`);
+        }
+    }
+    return false;
 }

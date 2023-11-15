@@ -48,7 +48,7 @@ let construction = {
                 spawner.room.createConstructionSite(spawner.pos.x-2, spawner.pos.y-1, STRUCTURE_ROAD);
                 spawner.room.createConstructionSite(spawner.pos.x-2, spawner.pos.y, STRUCTURE_ROAD);
                 spawner.room.createConstructionSite(spawner.pos.x-2, spawner.pos.y+1, STRUCTURE_ROAD);
-                Memory.spawns[spawnIndex].hasRoads = -1;
+                Memory.rooms[Game.spawns[spawnIndex].room.name].spawns[0] = -1;
                 break;
         }
     },
