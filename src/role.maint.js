@@ -20,8 +20,11 @@ let roleMaintenance = {
 	    }
 
         if(creep.memory.repairing) {
-            if (creep.memory.repairID == null && creep.room.name == creep.memory.assignedRoom){ setRepairID(creep, pendingRepairs) } 
-            else { common.moveToAssignedRoom(creep); return }
+
+            if (creep.memory.repairID == null) { 
+                if (creep.room.name != creep.memory.assignedRoom){ common.moveToAssignedRoom(creep); return }
+                else { setRepairID(creep, pendingRepairs) }
+            }
             if (creep.memory.repairID != null) {
                 let repairTarget = Game.getObjectById(creep.memory.repairID);
                 if (repairTarget == null) { 
@@ -29,9 +32,11 @@ let roleMaintenance = {
                     console.log(`${creep.name} => Error, repairID = null`);
                     return;
                 }
-                if (repairTarget.hits == repairTarget.hitsMax) { setRepairID(creep, pendingRepairs) }
-                repairTarget = Game.getObjectById(creep.memory.repairID);
-                if (repairTarget.pos.roomName != creep.memory.assignedRoom) { creep.memory.repairID = null; return }
+                if (repairTarget.hits == repairTarget.hitsMax) { 
+                    setRepairID(creep, pendingRepairs);
+                    repairTarget = Game.getObjectById(creep.memory.repairID);
+                    if (repairTarget.pos.roomName != creep.memory.assignedRoom) { creep.memory.repairID = null; return }
+                }
                 if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
