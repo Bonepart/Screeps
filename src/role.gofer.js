@@ -90,6 +90,7 @@ function fillUpgradeContainer(creep){
     let roomStorage = Game.getObjectById(creep.memory.storageID);
 
     if (creep.memory.collecting){
+        if (upgradeContainer.store.getFreeCapacity(RESOURCE_ENERGY) < creep.store.getCapacity(RESOURCE_ENERGY)) { return }
         let result = creep.withdraw(roomStorage, RESOURCE_ENERGY);
         switch (result){
             case ERR_NOT_IN_RANGE:
@@ -107,6 +108,7 @@ function fillUpgradeContainer(creep){
             case ERR_NOT_IN_RANGE:
                 creep.moveTo(upgradeContainer, {visualizePathStyle: {stroke: '#ffaa00'}});
             case OK:
+            case ERR_FULL:
                 break;
             default:
                 console.log(`${creep.name} transfer to Upgrade Container failed (${result})`);
