@@ -34,6 +34,7 @@ global.ROOM_OWNED_SAFE = 3;
 
 //Gofer Tasks
 global.TASK_IMPORTER = 'Importer';
+global.TASK_FILL_UPGRADE_CONTAINER = 'FillUpgradeContainer';
 global.TASK_STORE_MINERALS = 'StoreMinerals'
 global.TASK_TOWER_SUPPLY = 'TowerSupply';
 global.TASK_TERMINAL_GOFER = 'TerminalGofer';
