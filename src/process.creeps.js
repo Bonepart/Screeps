@@ -158,7 +158,7 @@ function checkGofers(spawnIndex, creepTier) {
                 if (!hasGofer){
                     if (creepTier > 1) { creepTier = 1 }
                     let memoryObject = { role: ROLE_GOFER, assignedRoom: thisRoom.name, task: TASK_TOWER_SUPPLY, towerID: tower.id, storageID: roomStorage[0].id };
-                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
+                    //if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
                 }
             }
         }
