@@ -21,6 +21,10 @@ let roleGeneral = {
             return;
         }
 
+        if (targetRoom.memory.roomState >= ROOM_OWNED){
+            if (targetRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_TOWER}}).length > 0) { return }
+        }
+
         let hostiles = Game.rooms[roomPos.roomName].find(FIND_HOSTILE_CREEPS);
         let hostileTowers = Game.rooms[roomPos.roomName].find(FIND_HOSTILE_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_TOWER}});
         let hostileStructures = Game.rooms[roomPos.roomName].find(FIND_HOSTILE_SPAWNS);
