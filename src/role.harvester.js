@@ -33,18 +33,19 @@ let roleHarvester = {
                     case ERR_NOT_IN_RANGE:
                         creep.moveTo(source, {visualizePathStyle: {stroke: '#ffffff'}});
                     case OK:
-                    case ERR_NOT_ENOUGH_RESOURCES:
                         return;
+                    case ERR_NOT_ENOUGH_RESOURCES:
+                        break;
                     default:
                         console.log(`${creep.name} harvest result: ${result}`);
                 }
             }
-            else {
-                let searchTarget = pathing.findClosestSource(creep.pos);
-                if(creep.harvest(searchTarget) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(searchTarget, {visualizePathStyle: {stroke: '#ffaa00'}});
+            let searchTarget = creep.room.find(FIND_SOURCES_ACTIVE);
+            if (searchTarget.length > 0 ){
+                if(creep.harvest(searchTarget[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(searchTarget[0], {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
-            }
+            }            
         }
         else {
             if (depositInBucket(creep, energyList)) { return }

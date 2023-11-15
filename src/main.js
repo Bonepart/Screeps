@@ -212,7 +212,7 @@ function runCreeps(roomName, creepList, buildList) {
 }
 
 function roomLogging(roomName){
-    if(Game.time % 20 == 0){
+    if(Game.time % 40 == 0){
         let thisRoom = Game.rooms[roomName];
         let storage = thisRoom.find(FIND_MY_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE}});
         //console.log(`${thisRoom.name} energy available: ${thisRoom.energyAvailable.toString().padStart(4, '0')}/${thisRoom.energyCapacityAvailable}`);
