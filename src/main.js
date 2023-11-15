@@ -32,6 +32,7 @@ const helper = require('helper');
 config.loadRoles();
 
 module.exports.loop = function () {
+    
     Game.c = require('console');
     clearMemory();
     resetIndex();
@@ -256,7 +257,7 @@ function monitorBucket(){
         if (Memory.flags.bucket == undefined) { Memory.flags.bucket = Game.cpu.bucket }
         if (Game.cpu.bucket < Memory.flags.bucket){
             console.log(`***WARNING*** Bucket is being emptied! (${Memory.flags.bucket} => ${Game.cpu.bucket})`);
-            Game.notify(`***WARNING*** Bucket is being emptied! (${Memory.flags.bucket} => ${Game.cpu.bucket})`);
+            //Game.notify(`***WARNING*** Bucket is being emptied! (${Memory.flags.bucket} => ${Game.cpu.bucket})`);
         }
         else if (Game.cpu.bucket > Memory.flags.bucket){
             let tickGain = Game.cpu.bucket - Memory.flags.bucket;
@@ -270,5 +271,16 @@ function monitorBucket(){
             console.log('Turned in 10,000 ticks for 1 Pixel');
         }
         //Memory.flags.runReport = true;
+    }
+}
+
+function* displayUsedCPU( activeLog=true){
+    let usedCPU = Game.cpu.getUsed();
+    if (activeLog) { console.log(`New Tick, CPU used so far: ${usedCPU}`) }
+    while (true){
+        let getReading = Game.cpu.getUsed();
+        if (activeLog) { console.log(`CPU Used since last call: ${getReading - usedCPU}`) }
+        usedCPU = getReading;
+        yield;
     }
 }
