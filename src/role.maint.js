@@ -38,7 +38,7 @@ let roleMaintenance = {
                     if (repairTarget.pos.roomName != creep.memory.assignedRoom) { creep.memory.repairID = null; return }
                 }
                 if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.moveTo(repairTarget, {reusePath: 10, visualizePathStyle: {stroke: '#ffffff'}});
                 }
                 if (!Memory.roles.repairPersistance) { creep.memory.repairID = null }
             }
@@ -51,13 +51,13 @@ let roleMaintenance = {
             if (energyStore.length > 0){
                 let result = creep.withdraw(energyStore[0], RESOURCE_ENERGY);
                 if(result == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(energyStore[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.moveTo(energyStore[0], {reusePath: 10, visualizePathStyle: {stroke: '#ffffff'}});
                     return;
                 } else if (result == OK) { return }        
             }
 	        let source = pathing.findClosestSource(creep.pos);
             if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+                creep.moveTo(source, {reusePath: 10, visualizePathStyle: {stroke: '#ffaa00'}});
             }
 	    }
     }

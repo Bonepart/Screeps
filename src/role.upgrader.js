@@ -18,7 +18,7 @@ let roleUpgrader = {
 
 	    if(creep.memory.upgrading) {
             if(creep.upgradeController(Game.rooms[creep.memory.assignedRoom].controller) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.rooms[creep.memory.assignedRoom].controller, {visualizePathStyle: {stroke: '#ffffff'}});
+                creep.moveTo(Game.rooms[creep.memory.assignedRoom].controller, {reusePath: 10, visualizePathStyle: {stroke: '#ffffff'}});
             }
         }
         else {
@@ -28,7 +28,7 @@ let roleUpgrader = {
                     let result = creep.withdraw(container, RESOURCE_ENERGY);
                     switch (result){
                         case ERR_NOT_IN_RANGE:
-                            creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
+                            creep.moveTo(container, {reusePath: 10, visualizePathStyle: {stroke: '#ffaa00'}});
                         case OK:
                             return;
                         default:
