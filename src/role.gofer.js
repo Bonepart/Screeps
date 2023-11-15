@@ -16,6 +16,9 @@ let roleGofer = {
             case TASK_IMPORTER:
                 containerImporter(creep);
                 break;
+            case TASK_FILL_UPGRADE_CONTAINER:
+                fillUpgradeContainer(creep);
+                break;
             case TASK_STORE_MINERALS:
                 storeMinerals(creep);
                 break;
@@ -78,6 +81,36 @@ function containerImporter(creep){
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
+        }
+    }
+}
+
+function fillUpgradeContainer(creep){
+    let upgradeContainer = Game.getObjectById(creep.memory.containerID);
+    let roomStorage = Game.getObjectById(creep.memory.storageID);
+
+    if (creep.memory.collecting){
+        let result = creep.withdraw(roomStorage, RESOURCE_ENERGY);
+        switch (result){
+            case ERR_NOT_IN_RANGE:
+                creep.moveTo(roomStorage, {visualizePathStyle: {stroke: '#ffaa00'}});
+            case OK:
+                break;
+            default:
+                console.log(`${creep.name} withdraw from Storage failed (${result})`);
+                break;
+        }
+    }
+    else {
+        let result = creep.transfer(upgradeContainer, RESOURCE_ENERGY);
+        switch (result){
+            case ERR_NOT_IN_RANGE:
+                creep.moveTo(upgradeContainer, {visualizePathStyle: {stroke: '#ffaa00'}});
+            case OK:
+                break;
+            default:
+                console.log(`${creep.name} transfer to Upgrade Container failed (${result})`);
+                break;
         }
     }
 }

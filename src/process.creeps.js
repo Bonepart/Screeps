@@ -129,13 +129,13 @@ function checkGofers(spawnIndex, creepTier) {
             if (goferList.length < 1){
                 let depositContainer = mineral.pos.findInRange(FIND_STRUCTURES, 10, {filter: (structure) => { return structure.structureType == STRUCTURE_CONTAINER}});
                 if (depositContainer.length > 0 && depositContainer[0].store.getUsedCapacity(mineral.mineralType) > 0){
-                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, { 
-                        assignedRoom: thisRoom.name, 
-                        task: TASK_STORE_MINERALS, 
-                        containerID: depositContainer[0].id,
-                        storageID: roomStorage[0].id,
-                        mineralType: mineral.mineralType
-                    })) { return }
+                    let memoryObject = { role: ROLE_GOFER, 
+                                        assignedRoom: thisRoom.name, 
+                                        task: TASK_STORE_MINERALS, 
+                                        containerID: depositContainer[0].id, 
+                                        storageID: roomStorage[0].id,
+                                        mineralType: mineral.mineralType };
+                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
                 }
             }
         }
@@ -153,7 +153,8 @@ function checkGofers(spawnIndex, creepTier) {
                 let hasGofer = false;
                 for (let gofer of goferList){ if (gofer.memory.towerID == tower.id) { hasGofer = true; break } }
                 if (!hasGofer){
-                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, { assignedRoom: thisRoom.name, task: TASK_TOWER_SUPPLY, towerID: tower.id, storageID: roomStorage[0].id })) { return }
+                    let memoryObject = { role: ROLE_GOFER, assignedRoom: thisRoom.name, task: TASK_TOWER_SUPPLY, towerID: tower.id, storageID: roomStorage[0].id };
+                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
                 }
             }
         }
@@ -161,8 +162,19 @@ function checkGofers(spawnIndex, creepTier) {
     if (roomTerminal.length > 0){
         let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == TASK_TERMINAL_GOFER);
         if (goferList.length == 0){
-            let memoryObject = { assignedRoom: thisRoom.name, task: TASK_TERMINAL_GOFER, terminalID: roomTerminal[0].id };
+            let memoryObject = { role: ROLE_GOFER, assignedRoom: thisRoom.name, task: TASK_TERMINAL_GOFER, terminalID: roomTerminal[0].id };
             if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
+        }
+    }
+    if (thisRoom.memory.upgradeContainer){
+        let container = Game.getObjectById(thisRoom.memory.upgradeContainer);
+        if (container == null) { thisRoom.memory.upgradeContainer == undefined}
+        else {
+            let goferList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_GOFER && creep.memory.assignedRoom == thisRoom.name && creep.memory.task == TASK_FILL_UPGRADE_CONTAINER);
+            if (goferList.length == 0 && roomStorage.length > 0 && roomStorage[0].store.getUsedCapacity(RESOURCE_ENERGY) >= 10000){
+                let memoryObject = { role: ROLE_GOFER, assignedRoom: thisRoom.name, task: TASK_FILL_UPGRADE_CONTAINER, storageID: roomStorage[0].id, containerID: thisRoom.memory.upgradeContainer };
+                if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
+            }
         }
     }
 
