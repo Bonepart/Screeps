@@ -40,12 +40,11 @@ let commonLogic = {
             filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER}}
         );
         let pendingRepairs = containerRepairs.concat(_.sortBy(Game.rooms[roomName].find(FIND_STRUCTURES, { 
-            filter: (structure) => { return structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_ROAD}}), (struct) => struct.hits)
+            filter: (structure) => { return  structure.hitsMax > 10000 && (structure.hits < structure.hitsMax * 0.75 || structure.hits < 25000) && structure.structureType == STRUCTURE_ROAD}}), (struct) => struct.hits)
         );
         pendingRepairs = pendingRepairs.concat(_.sortBy(Game.rooms[roomName].find(FIND_STRUCTURES, { 
             filter: (structure) => { return structure.hits < structure.hitsMax && 
-                                            structure.structureType != STRUCTURE_CONTAINER && 
-                                            structure.structureType != STRUCTURE_ROAD}}), (struct) => struct.hits)
+                                            structure.structureType != STRUCTURE_CONTAINER }}), (struct) => struct.hits)
         );
         for (let pendingRepair of pendingRepairs){
             if (excludeList.includes(pendingRepair.id)) { continue }
