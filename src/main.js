@@ -253,6 +253,11 @@ function resetIndex(){
 
 function monitorBucket(){
     if (Memory.flags.runReport) { Memory.flags.runReport = false }
+    if (Game.cpu.bucket == 10000){
+        Game.cpu.generatePixel();
+        Memory.flags.bucket = 0;
+        console.log('Turned in 10,000 ticks for 1 Pixel');
+    }
     if(Game.time % 200 == 0){
         if (Memory.flags.bucket == undefined) { Memory.flags.bucket = Game.cpu.bucket }
         if (Game.cpu.bucket < Memory.flags.bucket){
@@ -262,15 +267,10 @@ function monitorBucket(){
         else if (Game.cpu.bucket > Memory.flags.bucket){
             let tickGain = Game.cpu.bucket - Memory.flags.bucket;
             console.log(`CPU Bucket: ${Game.cpu.bucket} (Gained ${tickGain})`);
-            Game.notify(`CPU Bucket: ${Game.cpu.bucket} (Gained ${tickGain})`, 60);
+            //Game.notify(`CPU Bucket: ${Game.cpu.bucket} (Gained ${tickGain})`, 60);
         }
         else { console.log(`CPU Bucket: ${Game.cpu.bucket}`) }
         Memory.flags.bucket = Game.cpu.bucket;
-        if (Memory.flags.bucket == 10000){
-            Game.cpu.generatePixel();
-            Memory.flags.bucket = 0;
-            console.log('Turned in 10,000 ticks for 1 Pixel');
-        }
         //Memory.flags.runReport = true;
     }
 }
