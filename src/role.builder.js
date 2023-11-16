@@ -67,6 +67,7 @@ let roleBuilder = {
             }
 
             if (energyStore.length > 0){
+                if (buildList.length == 0) { return }
                 let result = creep.withdraw(energyStore[0], RESOURCE_ENERGY);
                 if(result == ERR_NOT_IN_RANGE) {
                     creep.moveTo(energyStore[0], {visualizePathStyle: {stroke: '#ffffff'}});
