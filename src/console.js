@@ -44,6 +44,24 @@ let consoleCommands = {
         return 'Complete';
     },
 
+    checkMarket: function() {
+        let resources = [];
+        for (let room in Game.rooms){
+            if (Game.rooms[room].terminal){
+                for (let type in Game.rooms[room].terminal.store){
+                    if (type == RESOURCE_ENERGY) { continue }
+                    if (!resources.includes(type)) { resources.push(type) }
+                }
+            }
+        }
+        let history = [];
+        for (let type of resources){
+            history.push(Game.market.getHistory(type));
+        }
+        helper.stringify(history);
+        return 'Complete';
+    },
+
     toggleRP: function() {
         if (Memory.roles.repairPersistance) { Memory.roles.repairPersistance = false }
         else { Memory.roles.repairPersistance = true }
