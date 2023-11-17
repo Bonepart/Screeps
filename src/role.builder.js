@@ -1,5 +1,4 @@
 let processRenewal = require('process.renewal');
-let pathing = require('logic.pathing');
 let common = require('logic.common');
 let helper = require('helper');
 
@@ -9,7 +8,6 @@ let roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep, buildList) {
         if(processRenewal.renew(creep)){ return };
-        //helper.creepLog(creep);
 	    if(creep.memory.building && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.building = false;
             creep.say('🔄 harvest');
@@ -47,24 +45,19 @@ let roleBuilder = {
                     }
                 }
                 else {
-                    if (creep.memory.assignedRoom) {
-                        if (creep.room.name != creep.memory.assignedRoom) {
-                            common.moveToAssignedRoom(creep);
-                            return;
-                        }
+                    if (creep.room.name != creep.memory.assignedRoom) {
+                        common.moveToAssignedRoom(creep);
+                        return;
                     }
                 }
             }
 	    }
 	    else {
             // When building = false, need to collect energy
-            let energyStore = [];
-            if (creep.memory.assignedRoom) {
-                energyStore = Game.rooms[creep.memory.assignedRoom].find(FIND_STRUCTURES, {
-                    filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
-                        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
-                );
-            }
+            let energyStore = Game.rooms[creep.memory.assignedRoom].find(FIND_STRUCTURES, {
+                filter: (structure) => { return (structure.structureType == STRUCTURE_STORAGE ) && 
+                    structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0}}
+            );
 
             if (energyStore.length > 0){
                 if (buildList.length == 0) { return }
@@ -74,9 +67,12 @@ let roleBuilder = {
                     return;
                 } else if (result == OK) { return }        
             }
-	        let source = pathing.findClosestSource(creep.pos);
-            if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+            let searchRoom = Game.rooms[creep.memory.assignedRoom];
+	        let source = searchRoom.find(FIND_SOURCES_ACTIVE);
+            if (source.length > 0){
+                if(creep.harvest(source[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
 	    }
 	}
