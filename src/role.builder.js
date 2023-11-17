@@ -20,7 +20,7 @@ let roleBuilder = {
 	    if(creep.memory.building) {
             if (buildList.length > 0) {
                 if(creep.build(buildList[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(buildList[0], {visualizePathStyle: {stroke: '#0000aa'}});
+                    creep.moveTo({pos: buildList[0].pos, range: 3}, {visualizePathStyle: {stroke: '#0000aa'}});
                 }
             }
             else {

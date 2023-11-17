@@ -38,7 +38,7 @@ let roleMaintenance = {
                     if (repairTarget.pos.roomName != creep.memory.assignedRoom) { creep.memory.repairID = null; return }
                 }
                 if (creep.repair(repairTarget) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(repairTarget, {reusePath: 10, visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.moveTo({pos: repairTarget.pos, range: 3}, {reusePath: 10, visualizePathStyle: {stroke: '#ffffff'}});
                 }
                 if (!Memory.roles.repairPersistance) { creep.memory.repairID = null }
             }
