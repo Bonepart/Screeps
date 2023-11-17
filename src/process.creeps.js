@@ -61,7 +61,7 @@ let processCreeps = {
             }
             else if (harvesterList.length < Memory.roles.limit[ROLE_HARVESTER]){
                 if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
-                if (harvesterList.length == 0) { creepTier = 0 }
+                if (harvesterList.length < 2 && spawner.store.getUsedCapacity(RESOURCE_ENERGY) <= 250) { creepTier = 0 }
                 body = bodytype.harvester[creepTier]
                 let memoryObject = { role: ROLE_HARVESTER, tier: creepTier + 1, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ROLE_HARVESTER, body, memoryObject)) { return }
