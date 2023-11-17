@@ -1,13 +1,10 @@
-let processRenewal = require('process.renewal');
 let common = require('logic.common');
 let helper = require('helper');
-
 
 let roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep, buildList) {
-        if(processRenewal.renew(creep)){ return };
 	    if(creep.memory.building && creep.store.getUsedCapacity(RESOURCE_ENERGY) === 0) {
             creep.memory.building = false;
             creep.say('🔄 harvest');
