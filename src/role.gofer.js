@@ -178,13 +178,53 @@ function towerSupply(creep){
 
 /** @param {Creep} creep **/
 function terminalGofer(creep){
+    let assignedRoom = Game.rooms[creep.memory.assignedRoom];
+    let myTerminal = Game.getObjectById(creep.memory.terminalID);
     if (creep.memory.collecting){
         if (!creep.memory.resourcesInStorage) { if(Game.time % 100 == 0){ creep.memory.resourcesInStorage = searchForResources(creep) } }
         else { if (collectResources(creep)) { return } }
 
+        let roomStorage = assignedRoom.find(FIND_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }});
+        if (myTerminal.store.getUsedCapacity(RESOURCE_ENERGY) < 2000){
+            if (roomStorage.length > 0 && roomStorage[0].getUsedCapacity(RESOURCE_ENERGY) > 0){
+                let result = null;
+                if (2000 - myTerminal.store.getUsedCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY)) { result = creep.withdraw(roomStorage[0], RESOURCE_ENERGY) }
+                else { result = creep.withdraw(roomStorage[0], RESOURCE_ENERGY, 2000 - myTerminal.store.getUsedCapacity(RESOURCE_ENERGY)) }
+                result = creep.withdraw(roomStorage[0], RESOURCE_ENERGY);
+                switch (result){
+                    case ERR_NOT_IN_RANGE:
+                        creep.moveTo(roomStorage[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+                        return;
+                    case OK:
+                        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) + myTerminal.store.getUsedCapacity(RESOURCE_ENERGY) >= 2000) { creep.memory.collecting = false }
+                        return;
+                    default:
+                        console.log(`${creep.name} withdraw Energy from Storage failed (${result})`);
+                        break;
+                }      
+            }
+        }
+        if (myTerminal.store.getUsedCapacity(assignedRoom.memory.mineralType) < 2000){
+            if (roomStorage.length > 0 && roomStorage[0].getUsedCapacity(assignedRoom.memory.mineralType) > 0){
+                let result = null;
+                if (2000 - myTerminal.store.getUsedCapacity(assignedRoom.memory.mineralType) >= creep.store.getCapacity(assignedRoom.memory.mineralType)) { result = creep.withdraw(roomStorage[0], assignedRoom.memory.mineralType) }
+                else { result = creep.withdraw(roomStorage[0], assignedRoom.memory.mineralType, 2000 - myTerminal.store.getUsedCapacity(assignedRoom.memory.mineralType)) }
+                result = creep.withdraw(roomStorage[0], assignedRoom.memory.mineralType);
+                switch (result){
+                    case ERR_NOT_IN_RANGE:
+                        creep.moveTo(roomStorage[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+                        return;
+                    case OK:
+                        if (creep.store.getUsedCapacity(assignedRoom.memory.mineralType) + myTerminal.store.getUsedCapacity(assignedRoom.memory.mineralType) >= 2000) { creep.memory.collecting = false }
+                        return;
+                    default:
+                        console.log(`${creep.name} withdraw ${assignedRoom.memory.mineralType} from Storage failed (${result})`);
+                        break;
+                }   
+            }
+        }
     }
     else {
-        let myTerminal = Game.getObjectById(creep.memory.terminalID);
         for (let resource in creep.store){
             let result = creep.transfer(myTerminal, resource);
             switch(result){
