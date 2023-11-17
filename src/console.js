@@ -85,7 +85,7 @@ let consoleCommands = {
                                         console.log(`Sale failed (${result})`);
                                 }
                             } else { console.log("Sale failed. Terminal on cooldown") }
-                        }
+                        } else { console.log(`${room}: ${type}: Selling ${orderAmount} for ${bestPrice} per unit. Unable to afford transaction cost (${transactionCost})`) }
                     }
                 }
             }
