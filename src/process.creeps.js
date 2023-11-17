@@ -61,36 +61,35 @@ let processCreeps = {
             }
             else if (harvesterList.length < Memory.roles.limit[ROLE_HARVESTER]){
                 if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
-                if (harvesterList.length < 2 && spawner.store.getUsedCapacity(RESOURCE_ENERGY) <= 250) { creepTier = 0 }
+                if (harvesterList.length < 1) { creepTier = 0 }
                 body = bodytype.harvester[creepTier]
                 let memoryObject = { role: ROLE_HARVESTER, tier: creepTier + 1, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ROLE_HARVESTER, body, memoryObject)) { return }
             }
-            
-            if (storageBuddyList.length == 0 && hasStorage && Memory.rooms[roomName].links != undefined){
+            else if (storageBuddyList.length == 0 && hasStorage && Memory.rooms[roomName].links != undefined){
                 body = bodytype.storagebuddy;
                 let memoryObject = { role: ROLE_STORAGEBUDDY, tier: 0, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, memoryObject)) { return }
             }
-            if(injuredCount > 0 && healerList.length == 0){
+            else if(injuredCount > 0 && healerList.length == 0){
                 if (creepTier >= bodytype.healer.length) { creepTier = bodytype.healer.length - 1}
                 body = bodytype.healer[creepTier]
                 let memoryObject = { role: ARMY_HEALER, tier: creepTier + 1, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ARMY_HEALER, body, memoryObject)) { return }
             }
-            if(maintList.length < Memory.roles.limit[ROLE_MAINTENANCE]){
+            else if(maintList.length < Memory.roles.limit[ROLE_MAINTENANCE]){
                 if (creepTier >= bodytype.maintenance.length) { creepTier = bodytype.maintenance.length - 1}
                 body = bodytype.maintenance[creepTier]
                 let memoryObject = { role: ROLE_MAINTENANCE, tier: creepTier + 1, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ROLE_MAINTENANCE, body, memoryObject)) { return }
             }
-            if(builderList.length < Memory.roles.limit[ROLE_BUILDER]){
+            else if(builderList.length < Memory.roles.limit[ROLE_BUILDER]){
                 if (creepTier >= bodytype.builder.length) { creepTier = bodytype.builder.length - 1}
                 body = bodytype.builder[creepTier]
                 let memoryObject = { role: ROLE_BUILDER, tier: creepTier + 1, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ROLE_BUILDER, body, memoryObject)) { return }
             }
-            if(upgraderList.length < Memory.roles.limit[ROLE_UPGRADER]){
+            else if(upgraderList.length < Memory.roles.limit[ROLE_UPGRADER]){
                 if (creepTier >= bodytype.upgrader.length) { creepTier = bodytype.upgrader.length - 1}
                 body = bodytype.upgrader[creepTier]
                 let memoryObject = { role: ROLE_UPGRADER, tier: creepTier + 1, assignedRoom: roomName };
