@@ -131,14 +131,15 @@ function checkGofers(spawnIndex, creepTier) {
             if (goferList.length < 1){
                 let depositContainer = mineral.pos.findInRange(FIND_STRUCTURES, 10, {filter: (structure) => { return structure.structureType == STRUCTURE_CONTAINER}});
                 if (depositContainer.length > 0 && depositContainer[0].store.getUsedCapacity(mineral.mineralType) > 0){
-                    if (creepTier > 1) { creepTier = 1 }
+                    let taskTier = creepTier;
+                    if (creepTier > 1) { taskTier = 1 }
                     let memoryObject = { role: ROLE_GOFER, 
                                         assignedRoom: thisRoom.name, 
                                         task: TASK_STORE_MINERALS, 
                                         containerID: depositContainer[0].id, 
                                         storageID: roomStorage[0].id,
                                         mineralType: mineral.mineralType };
-                    if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
+                    if (spawnLogic.spawnGofer(spawnIndex, taskTier, memoryObject)) { return }
                 }
             }
         }
@@ -156,9 +157,10 @@ function checkGofers(spawnIndex, creepTier) {
                 let hasGofer = false;
                 for (let gofer of goferList){ if (gofer.memory.towerID == tower.id) { hasGofer = true; break } }
                 if (!hasGofer){
-                    if (creepTier > 1) { creepTier = 1 }
+                    let taskTier = creepTier;
+                    if (creepTier > 1) { taskTier = 1 }
                     let memoryObject = { role: ROLE_GOFER, assignedRoom: thisRoom.name, task: TASK_TOWER_SUPPLY, towerID: tower.id, storageID: roomStorage[0].id };
-                    //if (spawnLogic.spawnGofer(spawnIndex, creepTier, memoryObject)) { return }
+                    if (spawnLogic.spawnGofer(spawnIndex, taskTier, memoryObject)) { return }
                 }
             }
         }
