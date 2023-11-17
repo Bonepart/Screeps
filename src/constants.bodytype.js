@@ -6,7 +6,7 @@ exports.harvester = [
 ];
 exports.upgrader = [
     [WORK, CARRY, MOVE, MOVE], //Cost 250
-    [WORK, WORK, WORK, CARRY, MOVE, MOVE], //Cost 450
+    [WORK, WORK, CARRY, MOVE, MOVE, MOVE], //Cost 450
     [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], //Cost 800
     [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE] //Cost 1150
 ];
