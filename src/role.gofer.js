@@ -186,7 +186,7 @@ function terminalGofer(creep){
 
         let roomStorage = assignedRoom.find(FIND_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE }});
         if (myTerminal.store.getUsedCapacity(RESOURCE_ENERGY) < 2000){
-            if (roomStorage.length > 0 && roomStorage[0].getUsedCapacity(RESOURCE_ENERGY) > 0){
+            if (roomStorage.length > 0 && roomStorage[0].store.getUsedCapacity(RESOURCE_ENERGY) > 0){
                 let result = null;
                 if (2000 - myTerminal.store.getUsedCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity(RESOURCE_ENERGY)) { result = creep.withdraw(roomStorage[0], RESOURCE_ENERGY) }
                 else { result = creep.withdraw(roomStorage[0], RESOURCE_ENERGY, 2000 - myTerminal.store.getUsedCapacity(RESOURCE_ENERGY)) }
@@ -205,7 +205,7 @@ function terminalGofer(creep){
             }
         }
         if (myTerminal.store.getUsedCapacity(assignedRoom.memory.mineralType) < 2000){
-            if (roomStorage.length > 0 && roomStorage[0].getUsedCapacity(assignedRoom.memory.mineralType) > 0){
+            if (roomStorage.length > 0 && roomStorage[0].store.getUsedCapacity(assignedRoom.memory.mineralType) > 0){
                 let result = null;
                 if (2000 - myTerminal.store.getUsedCapacity(assignedRoom.memory.mineralType) >= creep.store.getCapacity(assignedRoom.memory.mineralType)) { result = creep.withdraw(roomStorage[0], assignedRoom.memory.mineralType) }
                 else { result = creep.withdraw(roomStorage[0], assignedRoom.memory.mineralType, 2000 - myTerminal.store.getUsedCapacity(assignedRoom.memory.mineralType)) }
