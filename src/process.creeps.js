@@ -14,6 +14,8 @@ let processCreeps = {
         let maintList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_MAINTENANCE && creep.memory.assignedRoom == roomName);
         let storageBuddyList = _.filter(Game.creeps, (creep) => creep.memory.role == ROLE_STORAGEBUDDY && creep.memory.assignedRoom == roomName);
 
+        let injuredCount = _.filter(Game.creeps, (creep) => creep.hits < creep.hitsMax).length;
+        let healerList = _.filter(Game.creeps, (creep) => creep.memory.role == ARMY_HEALER);
         let zombieList = _.filter(Game.creeps, (creep) => creep.memory.role == ZOMBIE);
 
         if (zombieList == 0){
@@ -59,6 +61,7 @@ let processCreeps = {
             }
             else if (harvesterList.length < Memory.roles.limit[ROLE_HARVESTER]){
                 if (creepTier >= bodytype.harvester.length) { creepTier = bodytype.harvester.length - 1}
+                if (harvesterList.length == 0) { creepTier = 0 }
                 body = bodytype.harvester[creepTier]
                 let memoryObject = { role: ROLE_HARVESTER, tier: creepTier + 1, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ROLE_HARVESTER, body, memoryObject)) { return }
@@ -68,6 +71,12 @@ let processCreeps = {
                 body = bodytype.storagebuddy;
                 let memoryObject = { role: ROLE_STORAGEBUDDY, tier: 0, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ROLE_STORAGEBUDDY, body, memoryObject)) { return }
+            }
+            if(injuredCount > 0 && healerList.length == 0){
+                if (creepTier >= bodytype.healer.length) { creepTier = bodytype.healer.length - 1}
+                body = bodytype.healer[creepTier]
+                let memoryObject = { role: ARMY_HEALER, tier: creepTier + 1, assignedRoom: roomName };
+                if (spawnLogic.spawnCreep(spawnIndex, ARMY_HEALER, body, memoryObject)) { return }
             }
             if(maintList.length < Memory.roles.limit[ROLE_MAINTENANCE]){
                 if (creepTier >= bodytype.maintenance.length) { creepTier = bodytype.maintenance.length - 1}
