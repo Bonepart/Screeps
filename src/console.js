@@ -1,4 +1,5 @@
 let construction = require('construction');
+let constants = require('constants');
 let helper = require('helper');
 
 let consoleCommands = {
@@ -69,9 +70,23 @@ let consoleCommands = {
                             orderAmount = order.remainingAmount;
                         }
                     }
-                    if (orderAmount > Game.rooms[room].terminal.store.getUsedCapacity(type)) { orderAmount = Game.rooms[room].terminal.store.getUsedCapacity(type) }
-                    let transactionCost = Game.market.calcTransactionCost(orderAmount, room, orderRoomName);
-                    console.log(`${room}: ${type}: Selling ${orderAmount} for ${bestPrice} per unit. Transaction Cost: ${transactionCost}`);
+                    if (bestOrderID != null){
+                        if (orderAmount > Game.rooms[room].terminal.store.getUsedCapacity(type)) { orderAmount = Game.rooms[room].terminal.store.getUsedCapacity(type) }
+                        let transactionCost = Game.market.calcTransactionCost(orderAmount, room, orderRoomName);
+                        if (transactionCost < Game.rooms[room].terminal.store.getUsedCapacity(RESOURCE_ENERGY)) {
+                            console.log(`${room}: ${type}: Selling ${orderAmount} for ${bestPrice} per unit. Transaction Cost: ${transactionCost}. Profit: ${bestPrice * orderAmount}`);
+                            if (Game.rooms[room].terminal.cooldown == 0){
+                                let result = Game.market.deal(bestOrderID, orderAmount, room);
+                                switch (result) {
+                                    case OK:
+                                        console.log('Sale processed and accepted');
+                                        break;
+                                    default:
+                                        console.log(`Sale failed (${result})`);
+                                }
+                            } else { console.log("Sale failed. Terminal on cooldown") }
+                        }
+                    }
                 }
             }
         }
