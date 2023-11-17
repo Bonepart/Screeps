@@ -258,7 +258,7 @@ function monitorBucket(){
         Memory.flags.bucket = 0;
         console.log('Turned in 10,000 ticks for 1 Pixel');
     }
-    if(Game.time % 200 == 0){
+    if(Game.time % 100 == 0){
         if (Memory.flags.bucket == undefined) { Memory.flags.bucket = Game.cpu.bucket }
         if (Game.cpu.bucket < Memory.flags.bucket){
             console.log(`***WARNING*** Bucket is being emptied! (${Memory.flags.bucket} => ${Game.cpu.bucket})`);
@@ -271,7 +271,7 @@ function monitorBucket(){
         }
         else { console.log(`CPU Bucket: ${Game.cpu.bucket}`) }
         Memory.flags.bucket = Game.cpu.bucket;
-        //Memory.flags.runReport = true;
+        Memory.flags.runReport = true;
     }
 }
 

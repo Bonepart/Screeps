@@ -223,6 +223,7 @@ function terminalGofer(creep){
                 }   
             }
         }
+        if (creep.store.getUsedCapacity(RESOURCE_ENERGY) > 0) { creep.memory.collecting = false }
     }
     else {
         for (let resource in creep.store){
