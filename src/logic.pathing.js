@@ -57,7 +57,7 @@ let pathing = {
     },
 
     calcPathForRoad: function (pos, goal){
-        return PathFinder.search(pos, goal, { plainCost: 2, swampCost: 10,        
+        return PathFinder.search(pos, goal, { plainCost: 2, swampCost: 4,        
             roomCallback: function(roomName) {
                 let room = Game.rooms[roomName];
                 if (!room) return;
