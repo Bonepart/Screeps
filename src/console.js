@@ -45,20 +45,38 @@ let consoleCommands = {
     },
 
     checkMarket: function() {
-        let resources = [];
+        
         for (let room in Game.rooms){
             if (Game.rooms[room].terminal){
+                let resources = [];
                 for (let type in Game.rooms[room].terminal.store){
                     if (type == RESOURCE_ENERGY) { continue }
                     if (!resources.includes(type)) { resources.push(type) }
                 }
+                for (let type of resources){
+                    //let history = Game.market.getHistory(type);
+                    //helper.stringify(history);
+                    let buyOrders = Game.market.getAllOrders({ type: ORDER_BUY, resourceType: type});
+                    let bestPrice = -Infinity;
+                    let bestOrderID = null;
+                    let orderAmount = 0; Game.rooms[room].terminal.store.getUsedCapacity(type);
+                    let orderRoomName = null;
+                    for (let order of buyOrders){
+                        if (order.price > bestPrice && order.price >= MINIMUM_PRICE[type]) {
+                            bestPrice = order.price;
+                            bestOrderID = order.id;
+                            orderRoomName = order.roomName;
+                            orderAmount = order.remainingAmount;
+                        }
+                    }
+                    if (orderAmount > Game.rooms[room].terminal.store.getUsedCapacity(type)) { orderAmount = Game.rooms[room].terminal.store.getUsedCapacity(type) }
+                    let transactionCost = Game.market.calcTransactionCost(orderAmount, room, orderRoomName);
+                    console.log(`${room}: ${type}: Selling ${orderAmount} for ${bestPrice} per unit. Transaction Cost: ${transactionCost}`);
+                }
             }
         }
-        let history = [];
-        for (let type of resources){
-            history.push(Game.market.getHistory(type));
-        }
-        helper.stringify(history);
+
+        
         return 'Complete';
     },
 
