@@ -39,8 +39,9 @@ global.TASK_STORE_MINERALS = 'StoreMinerals'
 global.TASK_TOWER_SUPPLY = 'TowerSupply';
 global.TASK_TERMINAL_GOFER = 'TerminalGofer';
 
-//Mineral Minimum Price
-global.MINERAL_MINIMUM = {
+//Minimum Price
+global.MINIMUM_PRICE = {
+    RESOURCE_OXYGEN: 50,
     RESOURCE_GHODIUM_OXIDE: 50,
     RESOURCE_UTRIUM_HYDRIDE: 75,
     RESOURCE_ZYNTHIUM_HYDRIDE: 50,
