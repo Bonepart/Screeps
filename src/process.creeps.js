@@ -29,8 +29,7 @@ let processCreeps = {
             let body = null;
             
             //disabling this spawn method
-            hasStorage = false;
-            if (hasStorage){
+            if (false){
                 let creepCount = {};
                 for (let i in spawner.room.memory.sourceList){
                     creepCount[i] = { id: spawner.room.memory.sourceList[i].id,
@@ -64,6 +63,7 @@ let processCreeps = {
                 let memoryObject = { role: ROLE_HARVESTER, tier: creepTier + 1, assignedRoom: roomName };
                 if (spawnLogic.spawnCreep(spawnIndex, ROLE_HARVESTER, body, memoryObject)) { return }
             }
+            
             if (storageBuddyList.length == 0 && hasStorage && Memory.rooms[roomName].links != undefined){
                 body = bodytype.storagebuddy;
                 let memoryObject = { role: ROLE_STORAGEBUDDY, tier: 0, assignedRoom: roomName };
