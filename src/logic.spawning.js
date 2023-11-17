@@ -60,7 +60,7 @@ let spawningLogic = {
 
     spawnGofer: function (spawnIndex, creepTier, memoryObject) {
         let spawner = Game.spawns[spawnIndex];
-        let newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
+        let newName = memoryObject.task + Memory.roles.index[ROLE_GOFER];
 
         let body = undefined;
         if (creepTier >= bodytype.gofer.length) { creepTier = bodytype.gofer.length - 1}
@@ -69,7 +69,7 @@ let spawningLogic = {
         let result = spawner.spawnCreep(body, newName, { dryRun: true});
         while (result === -3){
             Memory.roles.index[ROLE_GOFER]++;
-            newName = ROLE_GOFER + Memory.roles.index[ROLE_GOFER];
+            newName = memoryObject.task + Memory.roles.index[ROLE_GOFER];
             result = spawner.spawnCreep(body, newName, { dryRun: true});
         }
         if (result == OK) {
