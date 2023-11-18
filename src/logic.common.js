@@ -18,18 +18,28 @@ let commonLogic = {
                                             structure.store.getUsedCapacity(RESOURCE_ENERGY) < 700}
             }
         ));
-        findResults = findResults.concat(searchRoom.find(FIND_MY_STRUCTURES, {
-            filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE  &&
-                                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}
-            }
-        ));
+        let findStorage = searchRoom.find(FIND_MY_STRUCTURES, {
+            filter: (structure) => { return structure.structureType == STRUCTURE_STORAGE && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}
+        );
+        if (findStorage.length == 0){
+            findStorage = searchRoom.find(FIND_MY_STRUCTURES, {
+                filter: (structure) => { return structure.structureType == STRUCTURE_CONTAINER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0}}
+            );
+        }
+        findResults = findResults.concat(findStorage);
         for (let result of findResults){
             if (excludeList.includes(result.id)) { continue }
             if (result.structureType == STRUCTURE_STORAGE){
                 while (result.store.getUsedCapacity(RESOURCE_ENERGY) <= 600000){
                     yield result;
                 }
-            } else { yield result }
+            }
+            if (result.structureType == STRUCTURE_CONTAINER){
+                while (true){
+                    yield result;
+                }
+            }
+            yield result
         }
         return;
     },
@@ -148,7 +158,8 @@ function buildEnergyExcludeList(creepList){
     let excludeList = [];
     for (let creep of creepList){
         if (creep.memory.role == ROLE_HARVESTER && creep.memory.depositID != undefined){
-            excludeList.push(creep.memory.depositID);
+            if(Game.getObjectById(creep.memory.depositID).structureType != STRUCTURE_STORAGE || 
+               Game.getObjectById(creep.memory.depositID).structureType != STRUCTURE_CONTAINER) { excludeList.push(creep.memory.depositID) }
         }
         else if (creep.memory.role == ROLE_GOFER){
             switch(creep.memory.task){
