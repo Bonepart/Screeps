@@ -65,7 +65,7 @@ function setDepositID(creep, energyList){
     let nextBucket = energyList.next();
     if (!nextBucket.done) { 
         creep.memory.depositID = nextBucket.value.id;
-        //console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_HARVESTER.length + 3)} depositing in ${nextBucket.value.id}`);
+        //console.log(`${creep.memory.assignedRoom}-${creep.name.padEnd(ROLE_HARVESTER.length + 2)} depositing in ${Game.getObjectById(nextBucket.value.id).structureType}-${nextBucket.value.id}`);
     }
 }
 
@@ -88,10 +88,9 @@ function depositInBucket(creep, energyList){
         }
         let result = creep.transfer(depositTarget, RESOURCE_ENERGY);
         switch (result){
-            case OK:
-                return true;
             case ERR_NOT_IN_RANGE:
                 creep.moveTo(depositTarget, {visualizePathStyle: {stroke: '#ffffff'}});
+            case OK:
                 return true;
             default:
                 return false;
