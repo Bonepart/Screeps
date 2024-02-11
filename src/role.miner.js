@@ -6,6 +6,7 @@ let roleMiner = {
     run: function(creep) {
         if (creep.memory.mineral == undefined) { init(creep) }
         let container = Game.getObjectById(creep.memory.containerID);
+        if (container == null) { return }
         if (container.store.getFreeCapacity(creep.memory.mineral.type) == 0) { return }
 
         if(creep.memory.mining && creep.store.getFreeCapacity(creep.memory.mineral.type) === 0) {
