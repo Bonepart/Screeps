@@ -132,12 +132,12 @@ module.exports.loop = function () {
                 let roomMineral = spawner.room.find(FIND_MINERALS)[0];
                 if (roomMineral.mineralAmount > 0){
                     let memoryObject = { role: ROLE_MINER, tier: 0, assignedRoom: roomName };
-                    spawnLogic.spawnCreep(i, ROLE_MINER, bodytype.miner[0], memoryObject)
+                    //spawnLogic.spawnCreep(i, ROLE_MINER, bodytype.miner[0], memoryObject)
                 }
             }
         }
 
-        if (helper.isAvailable(i)) { spawnLogic.spawnSentry(i) }
+        //if (helper.isAvailable(i)) { spawnLogic.spawnSentry(i) }
         if (helper.isAvailable(i)) { processCreeps.checkForSpawn(i) }
 
         if(_.filter(Game.creeps, (creep) => creep.memory.role == ROLE_BUILDER).length > 0){
