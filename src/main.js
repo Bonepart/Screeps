@@ -32,7 +32,7 @@ const helper = require('helper');
 config.loadRoles();
 
 module.exports.loop = function () {
-    
+
     Game.c = require('console');
     clearMemory();
     resetIndex();
@@ -119,8 +119,10 @@ module.exports.loop = function () {
     processDefense.checkForCrusade();
 
     for (let i in Game.spawns){
+        console.log(`Spawn Loop ${i}`);
         let spawner = Game.spawns[i];
         let roomName = spawner.room.name;
+        if (Memory.rooms[roomName].roomState < ROOM_OWNED) { continue }
         if (Memory.rooms[roomName].spawns === undefined) { Memory.rooms[roomName].spawns = []};
         if (Memory.rooms[roomName].spawns[0] === undefined) { Memory.rooms[roomName].spawns[0] = { name: i, hasRoads: 0} }
         
