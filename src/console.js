@@ -49,15 +49,20 @@ let consoleCommands = {
         
         for (let room in Game.rooms){
             if (Game.rooms[room].terminal){
+                console.log(`Checking Terminal for Room ${room}`);
                 let resources = [];
                 for (let type in Game.rooms[room].terminal.store){
                     if (type == RESOURCE_ENERGY) { continue }
                     if (!resources.includes(type)) { resources.push(type) }
                 }
+                console.log("Resources in Terminal:");
+                console.log(resources);
                 for (let type of resources){
+                    console.log(`Checking Market for ${type}`);
                     //let history = Game.market.getHistory(type);
                     //helper.stringify(history);
                     let buyOrders = Game.market.getAllOrders({ type: ORDER_BUY, resourceType: type});
+                    console.log(`Number of Buy Orders: ${buyOrders.length}`);
                     let bestPrice = -Infinity;
                     let bestOrderID = null;
                     let orderAmount = 0; Game.rooms[room].terminal.store.getUsedCapacity(type);
@@ -74,7 +79,7 @@ let consoleCommands = {
                         if (orderAmount > Game.rooms[room].terminal.store.getUsedCapacity(type)) { orderAmount = Game.rooms[room].terminal.store.getUsedCapacity(type) }
                         let transactionCost = Game.market.calcTransactionCost(orderAmount, room, orderRoomName);
                         if (transactionCost < Game.rooms[room].terminal.store.getUsedCapacity(RESOURCE_ENERGY)) {
-                            console.log(`${room}: ${type}: Selling ${orderAmount} for ${bestPrice} per unit. Transaction Cost: ${transactionCost}. Profit: ${bestPrice * orderAmount}`);
+                            console.log(`Selling ${orderAmount} for ${bestPrice} per unit. Transaction Cost: ${transactionCost}. Profit: ${bestPrice * orderAmount}`);
                             if (Game.rooms[room].terminal.cooldown == 0){
                                 let result = Game.market.deal(bestOrderID, orderAmount, room);
                                 switch (result) {
@@ -85,7 +90,7 @@ let consoleCommands = {
                                         console.log(`Sale failed (${result})`);
                                 }
                             } else { console.log("Sale failed. Terminal on cooldown") }
-                        } else { console.log(`${room}: ${type}: Selling ${orderAmount} for ${bestPrice} per unit. Unable to afford transaction cost (${transactionCost})`) }
+                        } else { console.log(`Selling ${orderAmount} for ${bestPrice} per unit. Unable to afford transaction cost (${transactionCost})`) }
                     }
                 }
             }
