@@ -31,6 +31,7 @@ let roleStorageBuddy = {
                 let result = creep.transfer(myStorage, resource);
                 switch(result){
                     case OK:
+                    case ERR_FULL:
                         break;
                     case ERR_NOT_IN_RANGE:
                         creep.moveTo(myStorage, {visualizePathStyle: {stroke: '#ffffff'}});
